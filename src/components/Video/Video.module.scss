@@ -1,0 +1,256 @@
+.wrapper {
+    border-bottom: 1px solid rgba(26, 25, 25, 0.07);
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 20px 0px;
+    //width: 692px;
+    max-width: 692px;
+}
+
+.custom-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.body {
+    margin-left: 12px;
+    width: 524px;
+    //flex: 1 1 624px;
+}
+
+.name {
+    .info {
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        cursor: pointer;
+        &:hover > h3 {
+            text-decoration: underline;
+        }
+    }
+
+    h3 {
+        font-family: SofiaPro;
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin-right: 4px;
+    }
+
+    h4 {
+        font-family: var(--font-family);
+        padding-top: 8px;
+        font-weight: 400;
+        font-size: 1.4rem;
+    }
+}
+
+.content {
+    width: 450px;
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+.music {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    &:hover > .name-music {
+        text-decoration: underline;
+    }
+}
+
+.name-music {
+    margin-left: 5px;
+    font-size: 16px;
+    font-weight: 600px;
+}
+
+.video-container {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.video {
+    position: relative;
+    display: block;
+    border-radius: 10px;
+    //width: 100%;
+    height: 100%;
+    margin-right: 20px;
+    cursor: pointer;
+
+    video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    &:hover > .volume-icon,
+    &:hover > .play-icon,
+    &:hover > .report,
+    &:hover > .volume-control {
+        opacity: 1;
+    }
+}
+
+.interactive {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+    height: 237px;
+}
+.icon-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px 0 6px 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #1618230f;
+    cursor: pointer;
+}
+
+.count {
+    color: #161823bf;
+    font-size: 1.2rem;
+    line-height: 17px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.follow-btn {
+    position: absolute;
+    height: 28px;
+    font-weight: 600;
+    top: 26px;
+    right: 0;
+}
+
+.volume-icon {
+    position: absolute;
+    bottom: 25px;
+    right: 20px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease 0s;
+    &:hover,
+    &:hover ~ .play-icon {
+        opacity: 1;
+    }
+}
+.muted {
+    opacity: 1;
+}
+
+.volume-control {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 80px;
+    right: -2px;
+    width: 70px;
+    height: 25px;
+    padding: 5px 0;
+    border-radius: 20px;
+    background-color: #16182357;
+    transform: rotate(-90deg);
+    opacity: 0;
+    transition: opacity 0.3s ease 0s;
+}
+
+.volume-bar {
+    position: relative;
+    width: 46px;
+    height: 3px;
+    border-radius: 5px;
+    background-color: #ffffff57;
+}
+
+input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    z-index: 2;
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background-color: #fff;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+}
+.selector {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.play-icon {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    color: #fff;
+    bottom: 25px;
+    left: 25px;
+    cursor: pointer;
+    transition: opacity 0.3s ease 0s;
+    opacity: 0;
+}
+.play-icon:hover,
+.play-icon:hover .video:nth-child(2) {
+    opacity: 1;
+}
+
+.report {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 24px;
+    right: 16px;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s ease 0s;
+
+    span {
+        margin-left: 4px;
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+
+    &:hover,
+    &:hover .video:nth-child(2),
+    &:hover .video:nth-child(3) {
+        opacity: 1;
+    }
+}
