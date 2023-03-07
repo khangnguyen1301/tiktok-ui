@@ -4,7 +4,7 @@
     height: 695px;
     max-height: 100%;
     padding: 20px 0 65px 8px;
-    overflow-y: auto;
+    overflow-y: overlay;
     transition: background-color 0.5s ease-in-out;
     overscroll-behavior-y: contain;
     &:hover {
@@ -48,7 +48,7 @@
 
 .custom-btn {
     width: 100%;
-    height: 46px;
+    height: 48px;
     margin-top: 20px;
     font-size: 1.8rem;
     font-weight: 600px;
@@ -58,6 +58,8 @@
     font-size: 1.6rem;
     line-height: 22px;
     color: #16182380;
+    width: fit-content;
+    height: 44px;
 }
 
 .hashtag {

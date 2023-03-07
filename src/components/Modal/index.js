@@ -1,1 +1,1 @@
-export { default as FormModal } from './FormModal/FormModal';
+export { default, default as FormModal } from './FormModal';

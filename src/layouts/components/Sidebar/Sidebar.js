@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 
 import styles from './Sidebar.module.scss';
 import classNames from 'classnames/bind';
@@ -19,6 +19,7 @@ import SuggestAccounts from '~/components/SuggestAccounts';
 import * as userService from '~/services/userService';
 import Button from '~/components/Button';
 import images from '~/assets/images';
+import { ModalContext } from '~/components/ModalProvider';
 const cx = classNames.bind(styles);
 
 const DEFAULT_PERPAGE = 15;
@@ -70,6 +71,8 @@ const HASH_TAG = [
 function Sidebar({ className }) {
     const [suggestedUsers, setSuggestedUsers] = useState([]);
     const sideBarRef = useRef();
+    const context = useContext(ModalContext);
+
     useEffect(() => {
         async function fetchApi() {
             const data = await userService.getSuggested({ page: 1, perPage: DEFAULT_PERPAGE });
@@ -77,7 +80,7 @@ function Sidebar({ className }) {
         }
         fetchApi();
     }, []);
-
+    console.log('re render');
     return (
         <aside className={cx('wrapper', className)} ref={sideBarRef}>
             <Menu>
@@ -92,7 +95,7 @@ function Sidebar({ className }) {
             </Menu>
             <div className={cx('log-in')}>
                 <p className={cx('title')}>Log in to follow creators, like videos, and view comments.</p>
-                <Button large outline className={cx('custom-btn')}>
+                <Button large outline className={cx('custom-btn')} onClick={context?.handleShowModal}>
                     Log in
                 </Button>
             </div>

@@ -1,7 +1,151 @@
 .custom-sidebar {
-    width: 224px;
+    width: 232px;
 }
 
 .profile {
-    margin-left: 224px;
+    margin-left: 240px;
+    padding: 32px 24px;
+}
+
+.info {
+    position: relative;
+    flex: 0 0 auto;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    max-width: 624px;
+    padding-right: 92px;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.avatar {
+    width: 116px;
+    height: 116px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.name-container {
+    margin-left: 20px;
+    flex: 1;
+}
+
+.name {
+    display: flex;
+    align-items: center;
+
+    .nick-name {
+        font-size: 3.2rem;
+        font-weight: 700;
+        line-height: 38px;
+        font-family: SofiaPro;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+    }
+
+    .tick {
+        width: 20px;
+        height: 20px;
+        color: rgb(32, 213, 236);
+        margin-left: 8px;
+    }
+}
+
+.full-name {
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 25px;
+    text-overflow: ellipsis;
+}
+.custom-btn {
+    min-width: 208px;
+    line-height: 22px;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 16px 0 0;
+}
+.counter {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+
+    strong {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-right: 6px;
+    }
+    span {
+        color: #161823bf;
+        font-size: 1.6rem;
+        font-weight: 400;
+        margin-right: 50px;
+        padding-bottom: 2px;
+    }
+}
+
+.bio {
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-top: 5px;
+    color: #161823;
+    white-space: pre-line;
+    font-family: ProximaNova;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    font-family: SofiaPro;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 22px;
+
+    span {
+        padding-bottom: 3px;
+        cursor: pointer;
+    }
+
+    &:hover > span {
+        text-decoration: underline;
+    }
+}
+
+.icon {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    width: 64px;
+    top: 10px;
+    right: 10px;
+
+    span {
+        cursor: pointer;
+    }
+}
+
+.video-container {
+}
+
+.tab-redirect {
+    display: flex;
+    justify-content: space-between;
+    width: 460px;
+}
+.tab-item {
+    width: 230px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 25px;
 }

@@ -38,7 +38,6 @@ function Home() {
             setMuted(true);
         }
     };
-
     const handleAdjustVolume = (e) => {
         let value = e.target.value / 100;
         if (value > 0) {
@@ -48,6 +47,7 @@ function Home() {
         }
         setVolume(value);
     };
+
     return (
         <>
             {videoForYou.map((res, index) => (

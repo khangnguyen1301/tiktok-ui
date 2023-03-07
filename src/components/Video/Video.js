@@ -1,16 +1,15 @@
-import classNames from 'classnames/bind';
-import ReactVisibilitySensor from 'react-visibility-sensor';
-
 import { useState, useEffect, useRef } from 'react';
+import ReactVisibilitySensor from 'react-visibility-sensor';
+import classNames from 'classnames/bind';
+import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faFlag } from '@fortawesome/free-regular-svg-icons';
 
 import Image from '~/components/Image';
-import { CommentIcon, HashTagMusicIcon, HeartIcon, ShareIcon, VolumeIcon, VolumeMutedIcon } from '../Icons';
 import Button from '~/components/Button';
 import styles from './Video.module.scss';
 import AccountPreviewHome from '~/components/Video/AccountPreviewHome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { faFlag } from '@fortawesome/free-regular-svg-icons';
+import { CommentIcon, HashTagMusicIcon, HeartIcon, ShareIcon, VolumeIcon, VolumeMutedIcon } from '../Icons';
 
 const cx = classNames.bind(styles);
 
@@ -38,21 +37,25 @@ function Video({ data, volume, adjustVolume, muted, toggleMuted }) {
     };
 
     useEffect(() => {
+        let timerID;
         if (isVisible) {
-            videoRef.current.play();
+            timerID = setTimeout(() => {
+                videoRef.current.play();
+            }, 200);
             setIsPlayed(true);
         } else {
             if (videoRef.current.play) {
-                videoRef.current.pause();
+                videoRef.current.load();
                 setIsPlayed(false);
             }
         }
+
+        return () => clearTimeout(timerID);
     }, [isVisible]);
 
     const handleRef = (visible) => {
         setIsVisible(visible);
     };
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -93,6 +96,7 @@ function Video({ data, volume, adjustVolume, muted, toggleMuted }) {
                                     : { width: '463px' }
                             }
                         >
+                            <img src={data?.thumb_url} alt="" className={cx('thumb-video', { active: isVisible })} />
                             <video src={data?.file_url} loop ref={videoRef}></video>
                             <div className={cx('volume-icon', { muted: muted })}>
                                 <div onClick={toggleMuted}>{muted ? <VolumeMutedIcon /> : <VolumeIcon />}</div>

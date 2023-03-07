@@ -25,6 +25,8 @@ import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
 import { InboxIcon, MessageIcon } from '~/components/Icons';
 import Search from '../Search';
+import { useContext } from 'react';
+import { ModalContext } from '~/components/ModalProvider';
 
 const cx = classNames.bind(styles);
 
@@ -120,7 +122,7 @@ const MENU_ITEMS = [
 ];
 
 function Header({ className }) {
-    const currentUser = true;
+    const context = useContext(ModalContext);
 
     const userMenu = [
         {
@@ -166,9 +168,14 @@ function Header({ className }) {
                 {/* Search */}
                 <Search />
                 <div className={cx('actions')}>
-                    {currentUser ? (
+                    {context.currentUser ? (
                         <>
-                            <Button outline custom leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+                            <Button
+                                outline
+                                custom
+                                leftIcon={<FontAwesomeIcon icon={faPlus} />}
+                                to={config.routes.upload}
+                            >
                                 Upload
                             </Button>
 
@@ -186,14 +193,21 @@ function Header({ className }) {
                         </>
                     ) : (
                         <>
-                            <Button custom leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+                            <Button
+                                custom
+                                leftIcon={<FontAwesomeIcon icon={faPlus} />}
+                                onClick={context.handleShowModal}
+                            >
                                 Upload
                             </Button>
-                            <Button primary>Log in</Button>
+
+                            <Button primary onClick={context.handleShowModal}>
+                                Log in
+                            </Button>
                         </>
                     )}
-                    <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
-                        {currentUser ? (
+                    <Menu items={context.currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+                        {context.currentUser ? (
                             <Image
                                 className={cx('user-avatar')}
                                 src=""

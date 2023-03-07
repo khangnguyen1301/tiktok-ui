@@ -8,9 +8,14 @@ import AccountPreview from './AccountPreview';
 import styles from './SuggestAccounts.module.scss';
 import Tippy from '@tippyjs/react/headless';
 import Image from '~/components/Image';
+
+import { ModalContext } from '../ModalProvider';
+import { useContext } from 'react';
 const cx = classNames.bind(styles);
 
 function AccountItem({ data }) {
+    const context = useContext(ModalContext);
+
     const renderAccount = (props) => {
         return (
             <div tabIndex="-1" {...props}>
@@ -22,7 +27,7 @@ function AccountItem({ data }) {
     };
 
     return (
-        <div className={cx('wrapper-item')}>
+        <div className={cx('wrapper-item')} onClick={context.handleChangePathName}>
             <Tippy
                 interactive
                 appendTo={document.body}

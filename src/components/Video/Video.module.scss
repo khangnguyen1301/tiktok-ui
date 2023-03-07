@@ -101,11 +101,21 @@
         object-fit: cover;
         border-radius: 8px;
     }
-
+    .thumb-video {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+        z-index: 0;
+    }
+    .active {
+        z-index: -1;
+    }
     &:hover > .volume-icon,
     &:hover > .play-icon,
-    &:hover > .report,
-    &:hover > .volume-control {
+    &:hover > .report {
         opacity: 1;
     }
 }
@@ -146,14 +156,17 @@
 }
 
 .volume-icon {
+    height: 50px;
     position: absolute;
-    bottom: 25px;
+    padding-top: 15px;
+    bottom: 20px;
     right: 20px;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.3s ease 0s;
     &:hover,
-    &:hover ~ .play-icon {
+    &:hover ~ .play-icon,
+    &:hover ~ .volume-control {
         opacity: 1;
     }
 }
@@ -176,12 +189,15 @@
     transform: rotate(-90deg);
     opacity: 0;
     transition: opacity 0.3s ease 0s;
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .volume-bar {
     position: relative;
-    width: 46px;
-    height: 3px;
+    width: 45px;
+    height: 2px;
     border-radius: 5px;
     background-color: #ffffff57;
 }
@@ -209,8 +225,7 @@ input {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 0;
-    height: 3px;
+    height: 2px;
     border-radius: 4px;
     background-color: #fff;
 }
@@ -240,6 +255,7 @@ input {
     right: 16px;
     color: #fff;
     opacity: 0;
+    user-select: none;
     transition: opacity 0.3s ease 0s;
 
     span {

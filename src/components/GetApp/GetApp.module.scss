@@ -1,0 +1,36 @@
+.action {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    bottom: -33px;
+    right: 15px;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: 99;
+}
+
+.get-app {
+    border-radius: 52px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #161823bf;
+    cursor: pointer;
+    height: 32px;
+    min-width: 90px;
+    margin-bottom: 10px;
+}
+
+.scroll-top {
+    border-radius: 50%;
+    margin-left: 0;
+    margin-right: 10px;
+    width: 32px;
+    height: 32px;
+    min-width: 0;
+    padding-right: 10px;
+}
+
+.active {
+    bottom: 10px;
+}
