@@ -8,13 +8,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Image from '~/components/Image';
+import { useContext } from 'react';
+import { ModalContext } from '~/components/ModalProvider';
 
 const cx = classNames.bind(styles);
 function AccountPreview({ data, outlineButton = false, bioDescription = false }) {
+    const context = useContext(ModalContext);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
-                <Link className={cx('link')} to={`/@${data?.nickname}`}>
+                <Link className={cx('link')} to={`/@${data?.nickname}`} onClick={context.handleHidePlayer}>
                     <Image className={cx('avatar')} src={data?.avatar} alt={data?.nickname} />
                 </Link>
                 <Button primary={!outlineButton} outline={outlineButton}>
@@ -22,7 +25,7 @@ function AccountPreview({ data, outlineButton = false, bioDescription = false })
                 </Button>
             </div>
             <div className={cx('body')}>
-                <Link to={`/@${data?.nickname}`} className={cx('body-link')}>
+                <Link to={`/@${data?.nickname}`} className={cx('body-link')} onClick={context.handleHidePlayer}>
                     <p className={cx('nickname')}>
                         <strong>{data?.nickname}</strong>
                         {data?.tick && <FontAwesomeIcon className={cx('check')} icon={faCircleCheck} />}
@@ -30,7 +33,7 @@ function AccountPreview({ data, outlineButton = false, bioDescription = false })
                     <p className={cx('name')}>{`${data?.first_name} ${data?.last_name}`}</p>
                 </Link>
                 <p className={cx('analytics')}>
-                    <strong className={cx('value')}>{`${data?.followers_count}`} </strong>
+                    <strong className={cx('value')}>{`${data?.followers_count ?? 0}`} </strong>
                     <span className={cx('label')}>Followers</span>
                     <strong className={cx('value')}>{`${data?.likes_count}`} </strong>
                     <span className={cx('label')}>Likes</span>

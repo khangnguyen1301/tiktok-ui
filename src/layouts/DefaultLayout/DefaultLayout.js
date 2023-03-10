@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 
-import FormModal from '~/components/Modal';
+import FormModal, { VideoPlayerModal } from '~/components/Modal';
 import { ModalContext } from '~/components/ModalProvider';
 import Header from '~/layouts/components/Header';
 import Sidebar from '~/layouts/components/Sidebar';
@@ -23,6 +23,7 @@ function DefaultLayout({ children }) {
             </div>
             <GetApp />
             {context?.active && <FormModal onHide={context.handleHideModal} />}
+            {context?.showVideoPlayer && <VideoPlayerModal />}
         </div>
     );
 }

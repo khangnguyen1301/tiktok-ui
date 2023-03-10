@@ -1,7 +1,7 @@
 import Header from '~/layouts/components/Header';
 import { useContext } from 'react';
 
-import FormModal from '~/components/Modal';
+import FormModal, { VideoPlayerModal } from '~/components/Modal';
 import { ModalContext } from '~/components/ModalProvider';
 import classNames from 'classnames/bind';
 
@@ -20,6 +20,7 @@ function HeaderOnly({ children }) {
             </div>
             <GetApp />
             {context?.active && <FormModal onHide={context.handleHideModal} />}
+            {context?.showVideoPlayer && <VideoPlayerModal />}
         </div>
     );
 }

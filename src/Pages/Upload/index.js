@@ -1,5 +1,7 @@
+import { VideoPlayerModal } from '~/components/Modal';
+
 function Upload() {
-    return <h1>Upload</h1>;
+    return <VideoPlayerModal />;
 }
 
 export default Upload;

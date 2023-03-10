@@ -12,6 +12,7 @@ import {
     faGear,
     faSignOut,
     faPlus,
+    faLaptopCode,
 } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -123,7 +124,9 @@ const MENU_ITEMS = [
 
 function Header({ className }) {
     const context = useContext(ModalContext);
-
+    const userLogin = localStorage.getItem('user-login');
+    const stateLogin = JSON.parse(userLogin);
+    console.log(stateLogin);
     const userMenu = [
         {
             icon: <FontAwesomeIcon icon={faUser} />,
@@ -168,7 +171,7 @@ function Header({ className }) {
                 {/* Search */}
                 <Search />
                 <div className={cx('actions')}>
-                    {context.currentUser ? (
+                    {stateLogin.state ? (
                         <>
                             <Button
                                 outline
@@ -206,8 +209,8 @@ function Header({ className }) {
                             </Button>
                         </>
                     )}
-                    <Menu items={context.currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
-                        {context.currentUser ? (
+                    <Menu items={stateLogin.state ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+                        {stateLogin.state ? (
                             <Image
                                 className={cx('user-avatar')}
                                 src=""

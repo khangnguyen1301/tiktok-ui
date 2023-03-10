@@ -11,11 +11,11 @@ import Image from '~/components/Image';
 
 import { ModalContext } from '../ModalProvider';
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function AccountItem({ data }) {
     const context = useContext(ModalContext);
-
     const renderAccount = (props) => {
         return (
             <div tabIndex="-1" {...props}>
@@ -27,27 +27,31 @@ function AccountItem({ data }) {
     };
 
     return (
-        <div className={cx('wrapper-item')} onClick={context.handleChangePathName}>
-            <Tippy
-                interactive
-                appendTo={document.body}
-                delay={[800, 600]}
-                offset={[-25, 0]}
-                render={renderAccount}
-                placement={'bottom'}
-            >
-                <div className={cx('container')}>
-                    <Image src={data.avatar} alt={data.nickname} className={cx('logo')} />
-                    <div className={cx('content-container')}>
-                        <div className={cx('content')}>
-                            <h4 className={cx('label')}>{data.nickname}</h4>
-                            <span className={cx('icon')}>{data.tick && <FontAwesomeIcon icon={faCheckCircle} />}</span>
+        <Link to={`/@${data.nickname}`} onClick={context.handleChangePathName}>
+            <div className={cx('wrapper-item')}>
+                <Tippy
+                    interactive
+                    appendTo={document.body}
+                    delay={[800, 600]}
+                    offset={[-25, 0]}
+                    render={renderAccount}
+                    placement={'bottom'}
+                >
+                    <div className={cx('container')}>
+                        <Image src={data.avatar} alt={data.nickname} className={cx('logo')} />
+                        <div className={cx('content-container')}>
+                            <div className={cx('content')}>
+                                <h4 className={cx('label')}>{data.nickname}</h4>
+                                <span className={cx('icon')}>
+                                    {data.tick && <FontAwesomeIcon icon={faCheckCircle} />}
+                                </span>
+                            </div>
+                            <p className={cx('nickname')}> {`${data.first_name} ${data.last_name}`} </p>
                         </div>
-                        <p className={cx('nickname')}> {`${data.first_name} ${data.last_name}`} </p>
                     </div>
-                </div>
-            </Tippy>
-        </div>
+                </Tippy>
+            </div>
+        </Link>
     );
 }
 

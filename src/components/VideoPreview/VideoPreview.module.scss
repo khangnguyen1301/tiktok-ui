@@ -1,5 +1,5 @@
 .wrapper {
-    width: 226px;
+    width: 100%;
     height: 302px;
     border-radius: 8px;
     background-color: rgb(221, 230, 226);
@@ -12,6 +12,7 @@
     object-fit: cover;
     border-radius: 8px;
     z-index: 0;
+    cursor: pointer;
 }
 
 .popular-video {
@@ -34,6 +35,23 @@
     flex-direction: column;
     padding-top: 102px;
     z-index: 99;
+}
+
+.content-profile {
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    width: fit-content;
+    display: flex;
+    color: #fff;
+    align-items: center;
+    z-index: 99;
+
+    span {
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-left: 4px;
+    }
 }
 
 .thumb-video {

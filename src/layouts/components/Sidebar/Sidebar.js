@@ -80,7 +80,6 @@ function Sidebar({ className }) {
         }
         fetchApi();
     }, []);
-    console.log('re render');
     return (
         <aside className={cx('wrapper', className)} ref={sideBarRef}>
             <Menu>

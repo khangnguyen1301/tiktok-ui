@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 import classNames from 'classnames/bind';
 import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faFlag } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
 
 import Image from '~/components/Image';
 import Button from '~/components/Button';
@@ -10,21 +11,20 @@ import styles from './Video.module.scss';
 import AccountPreviewHome from '~/components/Video/AccountPreviewHome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CommentIcon, HashTagMusicIcon, HeartIcon, ShareIcon, VolumeIcon, VolumeMutedIcon } from '../Icons';
+import { ModalContext } from '../ModalProvider';
 
 const cx = classNames.bind(styles);
 
-function Video({ data, volume, adjustVolume, muted, toggleMuted }) {
+function Video({ data, volume, adjustVolume, muted, toggleMuted, videoID, index, handleScroll }) {
     const [isVisible, setIsVisible] = useState(false);
     const [isPlayed, setIsPlayed] = useState(true);
-
+    const context = useContext(ModalContext);
     const videoRef = useRef();
     const selectorRef = useRef();
     useEffect(() => {
         muted ? (videoRef.current.volume = 0) : (videoRef.current.volume = volume);
         selectorRef.current.style.width = `${muted ? 0 : volume * 100}%`;
     });
-
-    useEffect(() => {});
 
     const togglePlay = () => {
         if (isPlayed) {
@@ -56,21 +56,32 @@ function Video({ data, volume, adjustVolume, muted, toggleMuted }) {
     const handleRef = (visible) => {
         setIsVisible(visible);
     };
+
+    const handleClickVideo = () => {
+        handleScroll(index);
+        context.handleGetVideoID(videoID);
+        context.handleSetPositionVideo(index);
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
                 <AccountPreviewHome data={data}>
-                    <Image src={data?.user?.avatar} alt={data?.user?.nickname} className={cx('custom-img')} />
+                    <Link to={`/@${data?.user?.nickname}`}>
+                        <Image src={data?.user?.avatar} alt={data?.user?.nickname} className={cx('custom-img')} />
+                    </Link>
                 </AccountPreviewHome>
             </div>
 
             <div className={cx('body')}>
                 <div className={cx('name')}>
                     <AccountPreviewHome data={data}>
-                        <div className={cx('info')}>
-                            <h3>{data?.user?.nickname}</h3>
-                            <h4>{`${data?.user?.first_name} ${data?.user?.last_name}`}</h4>
-                        </div>
+                        <Link to={`/@${data?.user?.nickname}`}>
+                            <div className={cx('info')}>
+                                <h3>{data?.user?.nickname}</h3>
+                                <h4>{`${data?.user?.first_name} ${data?.user?.last_name}`}</h4>
+                            </div>
+                        </Link>
                     </AccountPreviewHome>
                 </div>
                 <div className={cx('content')}>
@@ -97,13 +108,14 @@ function Video({ data, volume, adjustVolume, muted, toggleMuted }) {
                             }
                         >
                             <img src={data?.thumb_url} alt="" className={cx('thumb-video', { active: isVisible })} />
-                            <video src={data?.file_url} loop ref={videoRef}></video>
+                            <video src={data?.file_url} loop ref={videoRef} onClick={handleClickVideo}></video>
                             <div className={cx('volume-icon', { muted: muted })}>
                                 <div onClick={toggleMuted}>{muted ? <VolumeMutedIcon /> : <VolumeIcon />}</div>
                             </div>
                             <div className={cx('volume-control')}>
                                 <div className={cx('volume-bar')}>
                                     <input
+                                        className={cx('input')}
                                         type="range"
                                         min="0"
                                         max="100"

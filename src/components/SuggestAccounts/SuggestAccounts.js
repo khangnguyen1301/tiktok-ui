@@ -32,9 +32,7 @@ function SuggestAccounts({ title, data, sideBarRef }) {
                 <div className={classes}>
                     <p className={cx('title')}> {title} </p>
                     {data.map((res) => (
-                        <Link to={`/@${res.nickname}`} key={res.id}>
-                            <AccountItem data={res} />
-                        </Link>
+                        <AccountItem data={res} key={res.id} />
                     ))}
                 </div>
                 {seeMore ? (

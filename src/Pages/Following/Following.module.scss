@@ -2,7 +2,7 @@
     width: 726px;
     display: grid;
     padding-top: 20px;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, 232px);
     grid-column-gap: 10px;
     grid-row-gap: 25px;
     border-radius: 10px;
