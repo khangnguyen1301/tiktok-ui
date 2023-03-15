@@ -1,5 +1,4 @@
 import { useState, createContext, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
 const ModalContext = createContext();
 
@@ -11,11 +10,14 @@ function ModalProvider({ children }) {
     const [videoID, setVideoID] = useState(0);
     const [positionVideo, setPositionVideo] = useState(0);
     const [listVideo, setListVideo] = useState([]);
+    const [isMuted, setIsMuted] = useState(true);
+
+    const [volume, setVolume] = useState(0.6);
+    const [prevVolume, setPrevVolume] = useState(volume);
 
     const [userData, setUserData] = useState({});
     const location = window.location.pathname;
     useEffect(() => {
-        console.log(location);
         setPositionVideo(0);
     }, [location]);
 
@@ -40,7 +42,7 @@ function ModalProvider({ children }) {
     };
 
     const handleHidePlayer = () => {
-        //document.body.style.scrollba = 'overlay';
+        document.body.style.overflow = 'overlay';
         setShowVideoPlayer(false);
     };
 
@@ -94,8 +96,20 @@ function ModalProvider({ children }) {
         }
     };
 
-    console.log('position video: ', positionVideo);
+    const handleMutedVideo = () => {
+        setIsMuted(!isMuted);
+        setVolume(0.6);
+    };
+
+    const handleAdjustVolume = (e) => {
+        let value = e.target.value / 100;
+        setIsMuted(!value > 0);
+        setVolume(value);
+    };
+
     const value = {
+        volume,
+        isMuted,
         listVideo,
         positionVideo,
         videoID,
@@ -119,6 +133,8 @@ function ModalProvider({ children }) {
         handleSetListVideo,
         handleNextVideo,
         handleBackVideo,
+        handleMutedVideo,
+        handleAdjustVolume,
     };
     console.log(userData);
     return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;

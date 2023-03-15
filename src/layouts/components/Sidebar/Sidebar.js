@@ -72,7 +72,8 @@ function Sidebar({ className }) {
     const [suggestedUsers, setSuggestedUsers] = useState([]);
     const sideBarRef = useRef();
     const context = useContext(ModalContext);
-
+    const userLogin = localStorage.getItem('user-login');
+    const stateLogin = JSON.parse(userLogin);
     useEffect(() => {
         async function fetchApi() {
             const data = await userService.getSuggested({ page: 1, perPage: DEFAULT_PERPAGE });
@@ -92,12 +93,14 @@ function Sidebar({ className }) {
                 />
                 <MenuItem title="LIVE" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
             </Menu>
-            <div className={cx('log-in')}>
-                <p className={cx('title')}>Log in to follow creators, like videos, and view comments.</p>
-                <Button large outline className={cx('custom-btn')} onClick={context?.handleShowModal}>
-                    Log in
-                </Button>
-            </div>
+            {!stateLogin.state && (
+                <div className={cx('log-in')}>
+                    <p className={cx('title')}>Log in to follow creators, like videos, and view comments.</p>
+                    <Button large outline className={cx('custom-btn')} onClick={context?.handleShowModal}>
+                        Log in
+                    </Button>
+                </div>
+            )}
             <SuggestAccounts title="Suggested accounts" data={suggestedUsers} sideBarRef={sideBarRef} />
             <div className={cx('hashtag')}>
                 <p className={cx('discover')}>Discover</p>

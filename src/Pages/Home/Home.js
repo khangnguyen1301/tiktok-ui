@@ -1,22 +1,21 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState, useLayoutEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import * as forYouService from '~/services/forYouService';
 import Video from '~/components/Video';
 import { ModalContext } from '~/components/ModalProvider';
-import { useLocation } from 'react-router-dom';
 
 function Home() {
     const randomPage = Math.floor(Math.random() * 10 + 1);
     const [videoForYou, setVideoForYou] = useState([]);
     const [page, setPage] = useState(randomPage);
-    const [volume, setVolume] = useState(0.6);
-    const [prevVolume, setPrevVolume] = useState(volume);
-    const [muted, setMuted] = useState(true);
     const [positionCurrentElement, setPositionCurrentElement] = useState(0);
+    const [keyDown, setKeyDown] = useState(false);
     const wrapperRef = useRef();
     const context = useContext(ModalContext);
     const location = useLocation();
+    const maxLength = videoForYou.length - 1;
+
     useEffect(() => {
-        console.log('da vao day');
         context.handleSetListVideo([]);
     }, [location.pathname]);
 
@@ -29,14 +28,24 @@ function Home() {
         fetchApi();
     }, [page]);
 
-    useEffect(() => {
-        console.log(context.positionVideo);
-        setPositionCurrentElement(context.positionVideo);
+    useLayoutEffect(() => {
+        if (positionCurrentElement >= maxLength) {
+            return;
+        } else {
+            setPositionCurrentElement(context.positionVideo);
+        }
     }, [context.positionVideo]);
 
-    useEffect(() => {
-        handleScrollElement(positionCurrentElement);
-    }, [positionCurrentElement]);
+    useLayoutEffect(() => {
+        if (context.showVideoPlayer || keyDown) {
+            if (positionCurrentElement > maxLength) {
+                setPositionCurrentElement(maxLength);
+            } else {
+                handleScrollElement(positionCurrentElement);
+                setKeyDown(false);
+            }
+        }
+    }, [positionCurrentElement, keyDown]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
@@ -45,17 +54,24 @@ function Home() {
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeydown);
+        return () => window.removeEventListener('keydown', handleKeydown);
     }, []);
 
     const handleKeydown = (e) => {
-        if (e.key === 'ArrowDown') {
+        //back video
+        if (e.keyCode === 38) {
+            e.preventDefault();
             setTimeout(() => {
-                setPositionCurrentElement((prev) => prev + 1);
+                setPositionCurrentElement((prev) => (prev <= 0 ? 0 : prev - 1));
+                setKeyDown(true);
             }, 200);
         }
-        if (e.key === 'ArrowUp') {
+        //next video
+        if (e.keyCode === 40) {
+            e.preventDefault();
             setTimeout(() => {
-                setPositionCurrentElement((prev) => prev - 1);
+                setPositionCurrentElement((prev) => prev + 1);
+                setKeyDown(true);
             }, 200);
         }
     };
@@ -73,36 +89,21 @@ function Home() {
             setPage((page) => page + 1);
         }
     };
-    const toggleMuted = () => {
-        if (muted) {
-            setVolume(prevVolume);
-            setMuted(false);
-        } else {
-            setPrevVolume(volume);
-            setVolume(0);
-            setMuted(true);
-        }
-    };
-    const handleAdjustVolume = (e) => {
-        let value = e.target.value / 100;
-        setMuted(!value > 0);
 
-        setVolume(value);
-    };
-    console.log(positionCurrentElement);
+    const handleSetCurrentElement = useCallback((position) => {
+        setPositionCurrentElement(position);
+    }, []);
+
     return (
         <div ref={wrapperRef}>
             {videoForYou.map((res, index) => (
                 <Video
                     data={res}
                     key={index}
-                    muted={muted}
-                    toggleMuted={toggleMuted}
-                    volume={volume}
-                    adjustVolume={handleAdjustVolume}
                     videoID={res?.id}
-                    handleScroll={handleScrollElement}
                     index={index}
+                    onCloseModal={index === positionCurrentElement}
+                    currentElement={handleSetCurrentElement}
                 />
             ))}
         </div>

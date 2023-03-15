@@ -5,14 +5,23 @@ import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
-function MenuItem({ data, onClick }) {
+function MenuItem({ data, onClick, customMenuItem = false, custom = false, shareActive = false }) {
     const classes = cx('menu-item', {
         separate: data.separate,
+        customMenuItem,
     });
     return (
-        <Button className={cx(classes)} leftIcon={data.icon} to={data.to} onClick={onClick}>
-            {data.title}
-        </Button>
+        <div className={cx({ custom: custom })}>
+            <Button
+                className={cx(classes)}
+                leftIcon={data.icon}
+                to={data.to}
+                shareButton={shareActive}
+                onClick={onClick}
+            >
+                {data.title}
+            </Button>
+        </div>
     );
 }
 

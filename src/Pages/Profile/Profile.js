@@ -1,23 +1,51 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import classNames from 'classnames/bind';
 
 import styles from './Profile.module.scss';
-import { BlockIcon, LinkIcon, ProfileIcon, ShareIconRegular, ThreeDotIcon } from '~/components/Icons';
+import {
+    BanMiniIcon,
+    BlockIcon,
+    FlagMiniIcon,
+    LinkIcon,
+    MessageMiniIcon,
+    ProfileIcon,
+    ShareIconRegular,
+    ThreeDotIcon,
+} from '~/components/Icons';
 import * as proFileService from '~/services/proFileService';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from '~/layouts/components/Sidebar';
 import Button from '~/components/Button';
-import images from '~/assets/images';
+import Image from '~/components/Image';
 import VideoPreview from '~/components/VideoPreview';
 import { ModalContext } from '~/components/ModalProvider';
+import Menu from '~/components/Popper/Menu';
+import ShareAction from '~/components/ShareAction';
 
 const cx = classNames.bind(styles);
 
 const VIDEO_TAB = 1;
 const LIKED_TAB = 2;
+
+const ACTION_MENU = [
+    {
+        icon: <MessageMiniIcon />,
+        title: 'Send message',
+    },
+    {
+        icon: <FlagMiniIcon />,
+        title: 'Report',
+        separate: true,
+    },
+    {
+        icon: <BanMiniIcon />,
+        title: 'Block',
+        separate: true,
+    },
+];
 
 function Profile() {
     const [user, setUser] = useState({});
@@ -25,14 +53,13 @@ function Profile() {
     const [activeBar, setActiveBar] = useState(VIDEO_TAB);
     const [positionPlay, setPositionPlay] = useState(0);
     const userID = useLocation();
-    const imgRef = useRef();
     const context = useContext(ModalContext);
 
     useEffect(() => {
         context.handleSetPositionVideo(0);
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         const fetchApi = async () => {
             const result = await proFileService.getInfoUser(userID.pathname);
@@ -53,10 +80,6 @@ function Profile() {
         setActiveBar(tab);
     };
 
-    const handleError = () => {
-        imgRef.current.src = images.noImage;
-    };
-
     const handleMouseMove = (value) => {
         setPositionPlay(value);
     };
@@ -67,19 +90,15 @@ function Profile() {
             <div className={cx('profile')}>
                 <div className={cx('info')}>
                     <div className={cx('header')}>
-                        <img
-                            src={user.avatar}
-                            alt={user.nickname}
-                            className={cx('avatar')}
-                            onError={handleError}
-                            ref={imgRef}
-                        />
+                        <Image src={user.avatar} alt={user.nickname} className={cx('avatar')} />
                         <div className={cx('name-container')}>
                             <div className={cx('name')}>
                                 <h2 className={cx('nick-name')}>{user.nickname}</h2>
-                                <span>
-                                    <FontAwesomeIcon icon={faCircleCheck} className={cx('tick')} />
-                                </span>
+                                {user.tick && (
+                                    <span>
+                                        <FontAwesomeIcon icon={faCircleCheck} className={cx('tick')} />
+                                    </span>
+                                )}
                             </div>
                             <h1 className={cx('full-name')}>{`${user.first_name} ${user.last_name}`}</h1>
                             <Button primary large className={cx('custom-btn')}>
@@ -101,12 +120,24 @@ function Profile() {
                         <span>{`www.facebook.com/${user.nickname}`}</span>
                     </div>
                     <div className={cx('icon')}>
-                        <span>
-                            <ShareIconRegular />
-                        </span>
-                        <span>
-                            <ThreeDotIcon />
-                        </span>
+                        <ShareAction delay={[0, 300]} offset={[-43, 0]} placement="bottom-end" zIndex="999">
+                            <span>
+                                <ShareIconRegular />
+                            </span>
+                        </ShareAction>
+                        <Menu
+                            items={ACTION_MENU}
+                            className={cx('custom-menu')}
+                            offset={[60, 0]}
+                            delay={[0, 300]}
+                            placement="bottom-end"
+                            custom
+                            customMenuItem
+                        >
+                            <span>
+                                <ThreeDotIcon />
+                            </span>
+                        </Menu>
                     </div>
                 </div>
 

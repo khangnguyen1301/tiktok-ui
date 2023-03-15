@@ -10,6 +10,7 @@ function AccountPreviewHome({ children, data }) {
         <div>
             <Tippy
                 interactive
+                zIndex="999999"
                 hideOnClick={false}
                 delay={[800, 600]}
                 render={(attrs) => (

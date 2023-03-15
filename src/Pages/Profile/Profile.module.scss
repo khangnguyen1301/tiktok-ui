@@ -199,3 +199,11 @@
         line-height: 28px;
     }
 }
+
+.custom-menu {
+    width: 180px;
+    height: 162px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}

@@ -25,6 +25,10 @@
     }
 }
 
+.title {
+    padding-bottom: 3px;
+}
+
 .icon + .title,
 .title + .icon {
     margin-left: 8px;
@@ -34,7 +38,9 @@
     width: 24px;
     text-align: center;
 }
-
+.share {
+    margin-left: 15px !important;
+}
 // Button types
 .rounded {
     border-radius: 999px;
@@ -64,7 +70,7 @@
 
     &:hover {
         border-color: currentColor;
-        background-color: rgba(254, 44, 85, 0.06);
+        background-color: #16182308;
     }
 }
 
@@ -92,7 +98,7 @@
     border: 1px solid rgba(22, 24, 35, 0.12);
 
     &:hover {
-        background-color: rgba(22, 24, 35, 0.03);
+        background-color: #16182308;
         border: 1px solid rgba(22, 24, 35, 0.12);
     }
 }

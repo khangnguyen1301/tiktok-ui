@@ -16,6 +16,7 @@ function Button({
     small = false,
     large = false,
     custom = false,
+    shareButton = false,
     children,
     className,
     leftIcon,
@@ -56,11 +57,12 @@ function Button({
         small,
         large,
         custom,
+        shareButton,
     });
     return (
         <Comp className={classes} {...props}>
             {leftIcon && <span className={cx('icon')}>{leftIcon}</span>}
-            <span className={cx('title')}>{children}</span>
+            <span className={cx('title', { share: shareButton })}>{children}</span>
             {rightIcon && <span className={cx('icon')}>{rightIcon}</span>}
         </Comp>
     );

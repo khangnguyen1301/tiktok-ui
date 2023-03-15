@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 
@@ -7,14 +7,36 @@ import classNames from 'classnames/bind';
 import styles from './Menu.module.scss';
 import MenuItem from './MenuItem';
 import Header from './Header';
-
+import { ChevronDownIcon } from '~/components/Icons';
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
 
-function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn }) {
-    console.log('re render');
+function Menu({
+    items = [],
+    children,
+    onHideResetAction,
+    customMenuItem,
+    shareMenuItem,
+    offset,
+    delay,
+    placement,
+    zIndex,
+    custom,
+    className,
+    onChange = defaultFn,
+    hideOnClick = false,
+    arrowBottom = false,
+    expanded = false,
+    hidden = false,
+    share = false,
+    shareActive = false,
+}) {
     const [history, setHistory] = useState([{ data: items }]);
     const current = history[history.length - 1];
+
+    useLayoutEffect(() => {
+        setHistory([{ data: items }]);
+    }, [items]);
 
     const handleBack = () => {
         setHistory((prev) => prev.slice(0, prev.length - 1));
@@ -22,14 +44,22 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
 
     const handleResult = (attrs) => (
         <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
-            <PopperWrapper className={cx('menu-popper')}>
+            <PopperWrapper className={cx('menu-popper', { [className]: className, arrow: arrowBottom })}>
                 {history.length > 1 && <Header title={current.title} onBack={handleBack} />}
-                <div className={cx('menu-body')}>{renderItems()}</div>
+                <div className={cx('menu-body', { hidden: hidden })}>{renderItems()}</div>
+                {expanded && (
+                    <div className={cx('expand-btn')} onClick={() => onHideResetAction(false)}>
+                        <ChevronDownIcon />
+                    </div>
+                )}
             </PopperWrapper>
         </div>
     );
 
     const handleReset = () => {
+        if (!expanded && share) {
+            onHideResetAction((prev) => !prev);
+        }
         setHistory((prev) => prev.slice(0, 1));
     };
 
@@ -47,20 +77,25 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
                             onChange(item);
                         }
                     }}
+                    custom={custom}
+                    customMenuItem={customMenuItem}
+                    shareMenuItem={shareMenuItem}
+                    shareActive={shareActive}
                 />
             );
         });
     };
-
     return (
         <Tippy
             interactive
-            delay={[0, 700]}
-            offset={[12, 8]}
-            placement="bottom-end"
+            delay={delay}
+            offset={offset}
+            placement={placement}
             hideOnClick={hideOnClick}
             render={handleResult}
             onHide={handleReset}
+            popperOptions={{ modifiers: [{ name: 'flip', enabled: false }] }}
+            zIndex={zIndex}
         >
             {children}
         </Tippy>
