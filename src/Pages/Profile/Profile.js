@@ -121,9 +121,9 @@ function Profile() {
                     </div>
                     <div className={cx('icon')}>
                         <ShareAction delay={[0, 300]} offset={[-43, 0]} placement="bottom-end" zIndex="999">
-                            <span>
+                            <div className={cx('icon-item')}>
                                 <ShareIconRegular />
-                            </span>
+                            </div>
                         </ShareAction>
                         <Menu
                             items={ACTION_MENU}
@@ -134,9 +134,9 @@ function Profile() {
                             custom
                             customMenuItem
                         >
-                            <span>
+                            <div className={cx('icon-item')}>
                                 <ThreeDotIcon />
-                            </span>
+                            </div>
                         </Menu>
                     </div>
                 </div>

@@ -39,6 +39,7 @@
 
 .menu-body {
     overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 .hidden {

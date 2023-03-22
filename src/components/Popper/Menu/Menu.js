@@ -86,19 +86,21 @@ function Menu({
         });
     };
     return (
-        <Tippy
-            interactive
-            delay={delay}
-            offset={offset}
-            placement={placement}
-            hideOnClick={hideOnClick}
-            render={handleResult}
-            onHide={handleReset}
-            popperOptions={{ modifiers: [{ name: 'flip', enabled: false }] }}
-            zIndex={zIndex}
-        >
-            {children}
-        </Tippy>
+        <div>
+            <Tippy
+                interactive
+                delay={delay}
+                offset={offset}
+                placement={placement}
+                hideOnClick={hideOnClick}
+                render={handleResult}
+                onHide={handleReset}
+                popperOptions={{ modifiers: [{ name: 'flip', enabled: false }] }}
+                zIndex={zIndex}
+            >
+                {children}
+            </Tippy>
+        </div>
     );
 }
 

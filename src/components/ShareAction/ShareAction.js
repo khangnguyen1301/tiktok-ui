@@ -82,7 +82,7 @@ function ShareAction({ children, offset, delay, placement, arrowBottom, zIndex }
         setIsExpanded(value);
     };
     return (
-        <>
+        <div>
             <Menu
                 items={items}
                 onHideResetAction={handleResetAction}
@@ -101,7 +101,7 @@ function ShareAction({ children, offset, delay, placement, arrowBottom, zIndex }
             >
                 {children}
             </Menu>
-        </>
+        </div>
     );
 }
 

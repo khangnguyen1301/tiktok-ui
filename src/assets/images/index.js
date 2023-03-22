@@ -13,6 +13,17 @@ const images = {
     linkedin: require('~/assets/images/linkedin.svg').default,
     telegram: require('~/assets/images/telegram.svg').default,
     pinterest: require('~/assets/images/pinterest.svg').default,
+    upload: require('~/assets/images/upload.svg').default,
+    mobileFrame: require('~/assets/images/tiktok-mobile-frame.png'),
+    hastag: require('~/assets/images/hastag.svg').default,
+    email: require('~/assets/images/gmail.svg').default,
+    check: require('~/assets/images/check.svg').default,
+    footerIcon: require('~/assets/images/footer-icon.svg').default,
+    footerLogo: require('~/assets/images/footer-logo.svg').default,
+    control: require('~/assets/images/control.png'),
+    iconFrame: require('~/assets/images/icon-frame.svg').default,
+    search: require('~/assets/images/search.svg').default,
+    live: require('~/assets/images/live.svg').default,
 };
 
 export default images;

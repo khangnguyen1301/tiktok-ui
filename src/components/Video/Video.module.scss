@@ -194,6 +194,7 @@
     transform: rotate(-90deg);
     opacity: 0;
     transition: opacity 0.3s ease 0s;
+    cursor: pointer;
     &:hover {
         opacity: 1;
     }
@@ -217,6 +218,7 @@
     outline: none;
     border-radius: 5px;
     z-index: 2;
+    cursor: pointer;
     &::-webkit-slider-thumb {
         -webkit-appearance: none;
         background-color: #fff;

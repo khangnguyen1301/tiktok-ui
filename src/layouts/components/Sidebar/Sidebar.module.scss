@@ -5,11 +5,11 @@
     max-height: 100%;
     padding: 20px 0 65px 8px;
     overflow-y: overlay;
-    transition: background-color 0.5s ease-in-out;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
     overscroll-behavior-y: contain;
-    &:hover {
-        transition: opacity 2s ease;
-    }
+    // &:hover {
+    //     transition: opacity 2s ease;
+    // }
 
     &::-webkit-scrollbar {
         width: 6px;
@@ -20,11 +20,12 @@
 
     &::-webkit-scrollbar-thumb {
         border-radius: 5px;
-        background: rgba(0, 0, 0, 0.05);
+        background: transparent;
+        transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
     }
 
-    &:not(:hover)::-webkit-scrollbar-thumb {
-        background: transparent;
+    &:hover::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.05);
     }
 }
 

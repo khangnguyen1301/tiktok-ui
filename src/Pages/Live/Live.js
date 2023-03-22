@@ -1,5 +1,12 @@
+import Thumbnail from '~/components/Thumbnail';
+
 function Live() {
-    return <h1>Live Page</h1>;
+    return (
+        <Thumbnail
+            videoURL="https://files.fullstack.edu.vn/f8-tiktok/videos/1671-63f456355bdd1.mp4"
+            snapShotAtTime={2}
+        />
+    );
 }
 
 export default Live;

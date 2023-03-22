@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -9,13 +9,16 @@ import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import {
     CommentIcon,
+    EmailIcon,
     EmbedIcon,
     FacebookIcon,
+    GmailIcon,
     HashTagMusicIcon,
     HeartIcon,
     HeartMiniIcon,
     PaperPlaneIcon,
     ShareMiniIcon,
+    SmileIcon,
     ThreeDotIcon,
     TikTokIcon,
     TwitterIcon,
@@ -27,6 +30,7 @@ import Image from '~/components/Image';
 import AccountPreviewHome from '~/components/Video/AccountPreviewHome';
 import styles from './VideoPlayerModal.module.scss';
 import * as videoService from '~/services/videoService';
+import * as postCommentService from '~/services/postCommentService';
 import { ModalContext } from '~/components/ModalProvider';
 import ShareAction from '~/components/ShareAction';
 
@@ -36,46 +40,28 @@ function VideoPlayerModal() {
     const [video, setVideo] = useState({});
     const [comments, setComments] = useState([]);
     const [isPlayed, setIsPlayed] = useState(true);
+    const [contentComment, setContentComment] = useState('');
+    const [commentCount, setCommentCount] = useState(0);
 
     const videoRef = useRef();
     const selectorRef = useRef();
     const textRef = useRef();
-    const context = useContext(ModalContext);
+    const commentRef = useRef();
+    const postButtonRef = useRef();
+    const contentRef = useRef();
 
-    useEffect(() => {
+    const context = useContext(ModalContext);
+    const userLogin = localStorage.getItem('user-login');
+    const stateLogin = JSON.parse(userLogin);
+
+    useLayoutEffect(() => {
         videoRef.current.volume = context.isMuted ? 0 : context.volume;
         selectorRef.current.style.width = `${context.isMuted ? 0 : context.volume * 100}%`;
     });
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
-
-        const getComment = () => {
-            let myHeaders = new Headers();
-            myHeaders.append(
-                'Authorization',
-                'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZnVsbHN0YWNrLmVkdS52blwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY3ODM3Mjk1OSwiZXhwIjoxNjgwOTY0OTU5LCJuYmYiOjE2NzgzNzI5NTksImp0aSI6IkZZVU9WbVZqbDBMdW5oTnIiLCJzdWIiOjUyMDMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.iGRQH_zF5tXyClugWNIfUfTySW-pz3PWUC69MT6YSBk',
-            );
-
-            let requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow',
-            };
-
-            fetch(`https://tiktok.fullstack.edu.vn/api/videos/${context.videoID}/comments`, requestOptions)
-                .then((response) => response.json())
-                .then((result) => {
-                    setComments(result);
-                })
-                .catch((error) => console.log('error', error));
-        };
         getComment();
-        const fetchApi = async () => {
-            const result = await videoService.getVideo(context.videoID);
-            setVideo(result);
-            setIsPlayed(true);
-        };
         fetchApi();
     }, [context.videoID]);
 
@@ -91,6 +77,42 @@ function VideoPlayerModal() {
         isPlayed ? videoRef.current.play() : videoRef.current.pause();
     }, [isPlayed]);
 
+    const fetchApi = async () => {
+        const result = await videoService.getVideo(context.videoID);
+        setVideo(result);
+        setCommentCount(result?.comments_count);
+        setIsPlayed(true);
+    };
+
+    const getComment = () => {
+        let myHeaders = new Headers();
+        myHeaders.append(
+            'Authorization',
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZnVsbHN0YWNrLmVkdS52blwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY3ODM3Mjk1OSwiZXhwIjoxNjgwOTY0OTU5LCJuYmYiOjE2NzgzNzI5NTksImp0aSI6IkZZVU9WbVZqbDBMdW5oTnIiLCJzdWIiOjUyMDMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.iGRQH_zF5tXyClugWNIfUfTySW-pz3PWUC69MT6YSBk',
+        );
+
+        let requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+        };
+
+        fetch(`https://tiktok.fullstack.edu.vn/api/videos/${context.videoID}/comments`, requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                setComments(result);
+            })
+            .catch((error) => console.log('error', error));
+    };
+
+    const postComment = () => {
+        postCommentService.postComment(context.videoID, contentComment, getComment);
+        fetchApi();
+        setCommentCount(video?.comments_count);
+        contentRef.current.value = '';
+        contentRef.current.blur();
+        postButtonRef.current.style.color = '#16182357';
+    };
     const handlePlayVideo = () => {
         setIsPlayed(!isPlayed);
     };
@@ -100,6 +122,20 @@ function VideoPlayerModal() {
         navigator.clipboard.writeText(textRef.current.innerText);
     };
 
+    const handleFocusComment = () => {
+        commentRef.current.style.border = '1px solid #16182333';
+    };
+
+    const handleBlurComment = () => {
+        commentRef.current.style.border = '1px solid transparent';
+    };
+
+    const handlePostButton = (e) => {
+        postButtonRef.current.style.color = e.target.value ? '#fe2c55' : '#16182357';
+        postButtonRef.current.style.cursor = 'pointer';
+        setContentComment(e.target.value);
+    };
+    console.log(commentCount);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('video-container')}>
@@ -172,7 +208,11 @@ function VideoPlayerModal() {
                                     <div className={cx('name')}>
                                         <p className={cx('nickname')}>{video?.user?.nickname}</p>
                                         <p className={cx('fullname')}>
-                                            {`${video?.user?.first_name} ${video?.user?.last_name}`}
+                                            {`${video?.user?.first_name} ${
+                                                video?.user?.last_name === ''
+                                                    ? video?.user?.nickname
+                                                    : video?.user?.last_name
+                                            } · ${video?.created_at?.slice(0, 10)}`}
                                         </p>
                                     </div>
                                 </div>
@@ -203,7 +243,7 @@ function VideoPlayerModal() {
                                     <div className={cx('icon')}>
                                         <CommentIcon width="2rem" height="2rem" />
                                     </div>
-                                    <strong className={cx('count')}>{video?.comments_count}</strong>
+                                    <strong className={cx('count')}>{commentCount}</strong>
                                 </div>
                             </div>
 
@@ -288,7 +328,40 @@ function VideoPlayerModal() {
                     ))}
                 </div>
                 <div className={cx('footer-comment')}>
-                    <div className={cx('notify')}>Log in to comment</div>
+                    {!stateLogin ? (
+                        <div className={cx('notify')}>Log in to comment</div>
+                    ) : (
+                        <div className={cx('container')}>
+                            <div className={cx('comment-box')} ref={commentRef}>
+                                <input
+                                    type="text"
+                                    className={cx('comment-enter')}
+                                    placeholder="Add comment..."
+                                    onFocus={handleFocusComment}
+                                    onBlur={handleBlurComment}
+                                    onInput={handlePostButton}
+                                    ref={contentRef}
+                                />
+                                <Tippy
+                                    content={`"@" a user to tag them in your comments`}
+                                    placement="top"
+                                    zIndex="99999"
+                                >
+                                    <button className={cx('comment-icon')}>
+                                        <GmailIcon />
+                                    </button>
+                                </Tippy>
+                                <Tippy content="Click to add emojis" placement="top" zIndex="99999">
+                                    <button className={cx('comment-icon')}>
+                                        <SmileIcon />
+                                    </button>
+                                </Tippy>
+                            </div>
+                            <div className={cx('post-comment')} ref={postButtonRef} onClick={() => postComment()}>
+                                Post
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

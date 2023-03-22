@@ -63,7 +63,7 @@ function VideoPreview({ data, index, handleMouseMove, videoID, play = false, pro
                     muted
                     loop
                     ref={videoRef}
-                    className={cx('popular-video', { active: play || profile })}
+                    className={cx('popular-video', { active: play })}
                     onClick={handleSetPosition}
                 />
             </div>
