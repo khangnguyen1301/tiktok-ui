@@ -11,9 +11,10 @@ function ModalProvider({ children }) {
     const [positionVideo, setPositionVideo] = useState(0);
     const [listVideo, setListVideo] = useState([]);
     const [isMuted, setIsMuted] = useState(true);
+    const [isChangeState, setIsChangeState] = useState(false);
+    const [isComment, setIsComment] = useState(false);
 
     const [volume, setVolume] = useState(0.6);
-    const [prevVolume, setPrevVolume] = useState(volume);
 
     const [userData, setUserData] = useState({});
     const location = window.location.pathname;
@@ -51,8 +52,7 @@ function ModalProvider({ children }) {
     };
 
     const handleUserLogIn = () => {
-        setCurrentUser(true);
-        localStorage.setItem('user-login', JSON.stringify({ state: currentUser }));
+        localStorage.setItem('user-login', JSON.stringify({ state: true }));
     };
 
     const handleUserLogOut = () => {
@@ -70,6 +70,19 @@ function ModalProvider({ children }) {
     const handleSetUserData = (data) => {
         setUserData(data);
         localStorage.setItem('user', JSON.stringify({ data: data.meta.token }));
+        localStorage.setItem(
+            'user-info',
+            JSON.stringify({
+                data: {
+                    avatar: data.data.avatar,
+                    firstName: data.data.first_name,
+                    firstName: data.data.last_name,
+                    nickName: data.data.nickname,
+                    id: data.data.id,
+                    tick: data.data.tick,
+                },
+            }),
+        );
     };
 
     const handleGetVideoID = (id) => {
@@ -107,6 +120,13 @@ function ModalProvider({ children }) {
         setVolume(value);
     };
 
+    const handleChangeState = (state) => {
+        setIsChangeState(state);
+    };
+
+    const handleStateComment = (state) => {
+        setIsComment(state);
+    };
     const value = {
         volume,
         isMuted,
@@ -118,6 +138,8 @@ function ModalProvider({ children }) {
         currentUser,
         active,
         showVideoPlayer,
+        isChangeState,
+        isComment,
         handleShowPlayer,
         handleHidePlayer,
         handleGetVideoID,
@@ -135,7 +157,10 @@ function ModalProvider({ children }) {
         handleBackVideo,
         handleMutedVideo,
         handleAdjustVolume,
+        handleChangeState,
+        handleStateComment,
     };
+    console.log(videoID);
     console.log(userData);
     return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;
 }

@@ -124,13 +124,14 @@ const MENU_ITEMS = [
 function Header({ className }) {
     const context = useContext(ModalContext);
     const userLogin = localStorage.getItem('user-login');
+    const userInfo = JSON.parse(localStorage.getItem('user-info'));
     const stateLogin = JSON.parse(userLogin);
 
     const userMenu = [
         {
             icon: <FontAwesomeIcon icon={faUser} />,
             title: 'View profile',
-            to: '/@hoaa',
+            to: `/@${userInfo.data.nickName}`,
         },
         {
             icon: <FontAwesomeIcon icon={faCoins} />,
@@ -146,7 +147,7 @@ function Header({ className }) {
         {
             icon: <FontAwesomeIcon icon={faSignOut} />,
             title: 'Log out',
-            to: '/logout',
+            logout: true,
             separate: true,
         },
     ];
@@ -218,9 +219,8 @@ function Header({ className }) {
                         {stateLogin.state ? (
                             <Image
                                 className={cx('user-avatar')}
-                                src=""
-                                // src="https://files.fullstack.edu.vn/f8-prod/user_avatars/1/623d4b2d95cec.png"
-                                alt=""
+                                src={userInfo.data.avatar}
+                                alt={userInfo.data.nickName}
                             />
                         ) : (
                             <button className={cx('more-btn')}>

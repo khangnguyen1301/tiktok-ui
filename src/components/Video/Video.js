@@ -6,20 +6,37 @@ import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 
+import * as likeService from '~/services/likeService';
 import Image from '~/components/Image';
 import Button from '~/components/Button';
 import styles from './Video.module.scss';
 import AccountPreviewHome from '~/components/Video/AccountPreviewHome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { CommentIcon, HashTagMusicIcon, HeartIcon, ShareIcon, VolumeIcon, VolumeMutedIcon } from '../Icons';
+import {
+    CommentIcon,
+    HashTagMusicIcon,
+    HeartedIcon,
+    HeartIcon,
+    ShareIcon,
+    VolumeIcon,
+    VolumeMutedIcon,
+} from '../Icons';
 import { ModalContext } from '../ModalProvider';
 import ShareAction from '../ShareAction';
+import Follow from '../Follow';
 
 const cx = classNames.bind(styles);
 
-function Video({ data, videoID, index, currentElement, onCloseModal = false }) {
+function Video({ data, videoID, index, currentElement, updateFollow, handleFollow, onCloseModal = false }) {
     const [isVisible, setIsVisible] = useState(false);
     const [isPlayed, setIsPlayed] = useState(true);
+    const [isLiked, setIsLiked] = useState(data?.is_liked);
+    const [likeCount, setLikeCount] = useState(data?.likes_count);
+    const [commentCount, setCommentCount] = useState(data?.comments_count);
+
+    const userLogin = localStorage.getItem('user-login');
+    const stateLogin = JSON.parse(userLogin);
+
     const context = useContext(ModalContext);
     const videoRef = useRef();
     const selectorRef = useRef();
@@ -60,6 +77,27 @@ function Video({ data, videoID, index, currentElement, onCloseModal = false }) {
         return () => clearTimeout(timerID);
     }, [isVisible]);
 
+    useEffect(() => {
+        if (context.showVideoPlayer) {
+            if (context.isChangeState && context.videoID === data?.id) {
+                setIsLiked(true);
+                setLikeCount((prev) => prev + 1);
+            }
+            if (!context.isChangeState) {
+                setIsLiked(false);
+                setLikeCount((prev) => prev - 1);
+            }
+        }
+    }, [context.isChangeState]);
+
+    useEffect(() => {
+        if (context.isComment && context.showVideoPlayer)
+            if (context.videoID === data?.id) {
+                setCommentCount((prev) => prev + 1);
+                context.handleStateComment(false);
+            }
+    }, [context.isComment]);
+
     const handleVisibleVideo = (visible) => {
         setIsVisible(visible);
     };
@@ -77,6 +115,36 @@ function Video({ data, videoID, index, currentElement, onCloseModal = false }) {
     const handleClickVideo = () => {
         context.handleGetVideoID(videoID);
         context.handleSetPositionVideo(index);
+    };
+
+    const stateLikeVideo = () => {
+        if (isLiked) {
+            //unliked
+            context.handleSetPositionVideo(index);
+            const unLikeVideo = async () => {
+                const result = await likeService.unLikeVideo({ videoID: context.listVideo[index]?.id });
+                setIsLiked(false);
+                setLikeCount((prev) => prev - 1);
+            };
+            unLikeVideo();
+            context.handleChangeState(false);
+        } else {
+            //likeVideo
+            context.handleSetPositionVideo(index);
+            const likeVideo = async () => {
+                const result = await likeService.likeVideo({ videoID: context.listVideo[index]?.id });
+                setIsLiked(true);
+                setLikeCount((prev) => prev + 1);
+                console.log(result);
+            };
+            likeVideo();
+
+            context.handleChangeState(true);
+        }
+    };
+
+    const handleClickComment = () => {
+        stateLogin.state ? context.handleShowPlayer() : context.handleShowModal();
     };
 
     return (
@@ -159,17 +227,24 @@ function Video({ data, videoID, index, currentElement, onCloseModal = false }) {
                     </ReactVisibilitySensor>
 
                     <div className={cx('interactive')}>
-                        <button type="button" className={cx('icon-box')}>
-                            {/* icon */}
-                            <HeartIcon />
-                        </button>
+                        {!stateLogin.state ? (
+                            <button type="button" className={cx('icon-box')} onClick={() => context.handleShowModal()}>
+                                <HeartIcon />
+                            </button>
+                        ) : (
+                            <button type="button" className={cx('icon-box')} onClick={() => stateLikeVideo()}>
+                                {/* icon */}
+                                {isLiked ? <HeartedIcon /> : <HeartIcon />}
+                            </button>
+                        )}
 
-                        <strong className={cx('count')}>{data?.likes_count ?? 0}</strong>
-                        <button type="button" className={cx('icon-box')}>
+                        <strong className={cx('count')}>{likeCount ?? 0}</strong>
+
+                        <button type="button" className={cx('icon-box')} onClick={() => handleClickComment()}>
                             {/* icon */}
                             <CommentIcon />
                         </button>
-                        <strong className={cx('count')}>{data?.comments_count ?? 0}</strong>
+                        <strong className={cx('count')}>{commentCount ?? 0}</strong>
                         <ShareAction
                             offset={[-30, 13]}
                             placement="top-start"
@@ -187,9 +262,20 @@ function Video({ data, videoID, index, currentElement, onCloseModal = false }) {
                     </div>
                 </div>
 
-                <Button small outline className={cx('follow-btn')}>
-                    Follow
-                </Button>
+                {!stateLogin.state ? (
+                    <Button small outline className={cx('follow-btn')} onClick={() => context.handleShowModal()}>
+                        Follow
+                    </Button>
+                ) : (
+                    <Follow
+                        className={cx('follow-btn')}
+                        index={index}
+                        isFollow={data?.user?.is_followed}
+                        handleFollow={handleFollow}
+                        updateFollow={updateFollow}
+                        isUpdateFollow={data?.user?.id === (updateFollow?.id ?? data?.user?.id)}
+                    />
+                )}
             </div>
         </div>
     );

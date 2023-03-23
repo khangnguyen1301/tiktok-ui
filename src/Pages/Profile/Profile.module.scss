@@ -69,6 +69,17 @@
     font-size: 18px;
     margin: 16px 0 0;
 }
+
+.edit-btn {
+    margin: 16px 0 0;
+    height: 36px;
+    font-size: 16px;
+    font-weight: 700;
+    color: rgb(22, 24, 35);
+    min-width: 136px;
+    user-select: none;
+}
+
 .counter {
     margin-top: 22px;
     display: flex;

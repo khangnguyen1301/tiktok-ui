@@ -10,6 +10,7 @@ function MenuItem({ data, onClick, customMenuItem = false, custom = false, share
         separate: data.separate,
         customMenuItem,
     });
+
     return (
         <div className={cx({ custom: custom })}>
             <Button

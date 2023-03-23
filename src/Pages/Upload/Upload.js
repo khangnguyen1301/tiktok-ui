@@ -1,10 +1,11 @@
 import classNames from 'classnames/bind';
 import VideoThumbnail from 'react-video-thumbnail';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Image from '~/components/Image';
 import images from '~/assets/images';
 import Button from '~/components/Button';
+import * as upLoadService from '~/services/uploadService';
 import {
     BottomArrowIcon,
     CheckIcon,
@@ -50,14 +51,7 @@ function Upload() {
     const miniSnapshotRef = useRef();
     const captionRef = useRef();
 
-    const fetchApi = () => {
-        let myHeaders = new Headers();
-        myHeaders.append('Accept', 'application/json');
-        myHeaders.append(
-            'Authorization',
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZnVsbHN0YWNrLmVkdS52blwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY3Nzk4OTc0OCwiZXhwIjoxNjgwNTgxNzQ4LCJuYmYiOjE2Nzc5ODk3NDgsImp0aSI6ImtaaVNzQ0ZHMWNrYnduaG8iLCJzdWIiOjUyMDMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.5LmBiPgsKmVD0xG83anjswoetsH9u42dI5xh3inREzk',
-        );
-
+    const upLoadVideo = async () => {
         let formdata = new FormData();
         formdata.append('description', caption);
         formdata.append('upload_file', videoFile);
@@ -66,22 +60,12 @@ function Upload() {
         formdata.append('viewable', permissionViewer.toLowerCase());
 
         Object.entries(listChecked).map((res) => {
-            if (res[1] === true) {
-                formdata.append('allows[]', res[0]);
+            const [key, value] = res;
+            if (value === true) {
+                formdata.append('allows[]', key);
             }
         });
-
-        let requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: formdata,
-            redirect: 'follow',
-        };
-
-        fetch('https://tiktok.fullstack.edu.vn/api/videos', requestOptions)
-            .then((response) => response.json())
-            .then((result) => console.log(result))
-            .catch((error) => console.log('error', error));
+        const result = await upLoadService.upLoadVideo(formdata);
     };
 
     useEffect(() => {
@@ -491,7 +475,7 @@ function Upload() {
                                             <Button custom className={cx('btn-discard')}>
                                                 Discard
                                             </Button>
-                                            <Button primary className={cx('btn-post')} onClick={() => fetchApi()}>
+                                            <Button primary className={cx('btn-post')} onClick={() => upLoadVideo()}>
                                                 Post
                                             </Button>
                                         </div>

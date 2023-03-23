@@ -31,7 +31,7 @@ function SuggestAccounts({ title, data, sideBarRef }) {
             <div className={cx('wrapper')}>
                 <div className={classes}>
                     <p className={cx('title')}> {title} </p>
-                    {data.map((res) => (
+                    {data?.map((res) => (
                         <AccountItem data={res} key={res.id} />
                     ))}
                 </div>

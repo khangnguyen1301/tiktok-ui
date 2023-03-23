@@ -7,6 +7,7 @@ import images from '~/assets/images';
 import Button from '~/components/Button';
 import { Link } from 'react-router-dom';
 import { ModalContext } from '~/components/ModalProvider';
+import * as userService from '~/services/userService';
 
 const cx = classNames.bind(styles);
 
@@ -122,38 +123,11 @@ function FormModal({ onHide }) {
         [],
     );
 
-    const fetchApi = () => {
-        var myHeaders = new Headers();
-        myHeaders.append(
-            'Authorization',
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZnVsbHN0YWNrLmVkdS52blwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY3NzY3NDMxNiwiZXhwIjoxNjgwMjY2MzE2LCJuYmYiOjE2Nzc2NzQzMTYsImp0aSI6InZYUm52eVVON0tYOWtBMHkiLCJzdWIiOjUyMDEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.LUQ7k9LZunOWgtO9SsDGMUiIth4pDCIzWiU31l_a0Kw',
-        );
-        myHeaders.append('Content-Type', 'application/json');
-
-        var raw = JSON.stringify({
-            email: `${email}`,
-            password: `${password}`,
-        });
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow',
-        };
-
-        fetch('https://tiktok.fullstack.edu.vn/api/auth/login', requestOptions)
-            .then((response) => {
-                if (response.status === 200) {
-                    return response.json();
-                }
-            })
-            .then((result) => {
-                context.handleSetUserData(result);
-                context.handleUserLogIn();
-                window.location.reload();
-            })
-            .catch((error) => console.log('error', error));
+    const handleLogin = async () => {
+        const result = await userService.userLogin({ email: email, password: password });
+        context.handleSetUserData(result);
+        context.handleUserLogIn();
+        window.location.reload();
     };
 
     const resetMenu = () => {
@@ -173,14 +147,16 @@ function FormModal({ onHide }) {
         resetMenu();
     }, [loginRegisterForm, formLoginState]);
 
-    const handleMenu = () => {
+    const handleMenu = (position) => {
         const nextForm = loginRegisterForm.find((form) => form.type === formLoginState);
         const newForm = [...nextForm.contents];
-        newForm.map((form) => {
-            const parent = !!form.children;
-            if (parent) {
+        newForm.map((form, index) => {
+            let parent = !!form.children;
+            if (parent && position === index) {
                 setFilteredForm(form.children);
                 setIsChildren(true);
+            } else {
+                return;
             }
         });
     };
@@ -202,7 +178,7 @@ function FormModal({ onHide }) {
                                         <Button
                                             style={{ height: '44px', marginBottom: '16px' }}
                                             key={index}
-                                            onClick={handleMenu}
+                                            onClick={() => handleMenu(index)}
                                         >
                                             <span className={cx('icon')}>{content.icon}</span>{' '}
                                             <span>{content.title}</span>
@@ -251,7 +227,7 @@ function FormModal({ onHide }) {
                                     className={cx('custom-btn')}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        fetchApi();
+                                        handleLogin();
                                     }}
                                 >
                                     Log in

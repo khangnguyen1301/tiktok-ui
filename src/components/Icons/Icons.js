@@ -255,6 +255,56 @@ export const HeartIcon = ({ width = '2.4rem', height = '2.4rem', className }) =>
     </svg>
 );
 
+export const HeartedIcon = ({ width = '2.4rem', height = '2.4rem', className }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <g filter="url(#LikeRedShadowColor_filter0_d)">
+            <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M15 4.5C21 4.5 24 8.5 24 8.5C24 8.5 27 4.5 33 4.5C40 4.5 45 9.99998 45 17C45 25 38.4622 32.1314 32.5 37.5C28.8191 40.8144 26 43 24 43C22 43 19.101 40.7978 15.5 37.5C9.63898 32.1325 3 25 3 17C3 9.99998 8 4.5 15 4.5Z"
+                fill="#FE2C55"
+            ></path>
+        </g>
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M4.80371 24.3995C7.17815 29.3932 11.5185 33.8538 15.4999 37.4999C19.1009 40.7978 21.9999 42.9999 23.9999 42.9999C25.9999 42.9999 28.819 40.8144 32.4999 37.4999C38.4621 32.1314 44.9999 24.9999 44.9999 16.9999C44.9999 16.8252 44.9968 16.6513 44.9906 16.4785C41.1344 27.3238 27.3575 37 23.5001 37C20.6255 37 11.2219 31.6262 4.80371 24.3995Z"
+            fill="black"
+            fillOpacity="0.03"
+        ></path>
+        <defs>
+            <filter
+                id="LikeRedShadowColor_filter0_d"
+                x="0.6"
+                y="3.3"
+                width="46.8"
+                height="43.3"
+                filterUnits="userSpaceOnUse"
+                colorInterpolationFilters="sRGB"
+            >
+                <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
+                <feColorMatrix
+                    in="SourceAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                ></feColorMatrix>
+                <feOffset dy="1.2"></feOffset>
+                <feGaussianBlur stdDeviation="1.2"></feGaussianBlur>
+                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"></feColorMatrix>
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"></feBlend>
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"></feBlend>
+            </filter>
+        </defs>
+    </svg>
+);
+
 export const CommentIcon = ({ width = '2.4rem', height = '2.4rem', className }) => (
     <svg
         className={className}
@@ -1092,6 +1142,25 @@ export const GmailIcon = ({ className, width = '2.2rem', height = '2.2rem' }) =>
             fillRule="evenodd"
             clipRule="evenodd"
             d="M24 6C14.0589 6 6 14.0589 6 24C6 33.9411 14.0589 42 24 42C28.0553 42 31.7921 40.6614 34.8006 38.401L35.6001 37.8003C36.0416 37.4686 36.6685 37.5576 37.0003 37.9992L38.2016 39.5981C38.5334 40.0397 38.4443 40.6666 38.0028 40.9983L37.2033 41.599C33.5258 44.3619 28.9513 46 24 46C11.8497 46 2 36.1503 2 24C2 11.8497 11.8497 2 24 2C36.1503 2 46 11.8497 46 24V26C46 30.4843 42.1949 34 37.8438 34C35.1966 34 32.8496 32.7142 31.3935 30.733C29.5649 32.7403 26.9303 34 24 34C18.4772 34 14 29.5228 14 24C14 18.4772 18.4772 14 24 14C29.5228 14 34 18.4772 34 24C34 24.5814 33.9502 25.1528 33.8541 25.7096C33.8473 25.8052 33.8438 25.902 33.8438 26C33.8438 28.2091 35.6347 30 37.8438 30C40.1201 30 42 28.1431 42 26V24C42 14.0589 33.9411 6 24 6ZM24 18C20.6863 18 18 20.6863 18 24C18 27.3137 20.6863 30 24 30C26.9395 30 29.3891 27.8841 29.9013 25.0918C29.9659 24.7392 30 24.3744 30 24C30 20.6863 27.3137 18 24 18Z"
+        ></path>
+    </svg>
+);
+
+export const EditIcon = ({ className, width = '2rem', height = '2rem' }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 20 20"
+        className={className}
+        width={width}
+        height={height}
+        class="tiktok-l7zpu2-StyledEditIcon e33dl3i2"
+    >
+        <path
+            fill="currentColor"
+            fillRule="evenodd"
+            d="M15.393 2.226a.842.842 0 00-1.17.02L8.142 8.33a.842.842 0 00-.247.595v2.34c0 .464.377.841.842.841h2.183a.842.842 0 00.596-.246l6.237-6.238a.843.843 0 00-.02-1.211l-2.34-2.184zM9.58 9.273l5.26-5.26 1.107 1.033-5.374 5.375h-.993V9.273zM9.58 2c.232 0 .42.189.42.421v.842a.421.421 0 01-.42.421H4.526a.842.842 0 00-.842.842v10.948c0 .465.377.842.842.842h10.947a.842.842 0 00.842-.842V10.42c0-.232.189-.421.421-.421h.842c.233 0 .422.188.422.421v5.053A2.526 2.526 0 0115.473 18H4.526A2.526 2.526 0 012 15.474V4.526A2.526 2.526 0 014.526 2H9.58z"
+            clipRule="evenodd"
         ></path>
     </svg>
 );

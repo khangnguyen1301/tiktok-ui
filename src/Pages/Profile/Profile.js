@@ -8,6 +8,7 @@ import styles from './Profile.module.scss';
 import {
     BanMiniIcon,
     BlockIcon,
+    EditIcon,
     FlagMiniIcon,
     LinkIcon,
     MessageMiniIcon,
@@ -24,6 +25,7 @@ import VideoPreview from '~/components/VideoPreview';
 import { ModalContext } from '~/components/ModalProvider';
 import Menu from '~/components/Popper/Menu';
 import ShareAction from '~/components/ShareAction';
+import Follow from '~/components/Follow';
 
 const cx = classNames.bind(styles);
 
@@ -52,6 +54,11 @@ function Profile() {
     const [selectTab, setSelectTab] = useState(VIDEO_TAB);
     const [activeBar, setActiveBar] = useState(VIDEO_TAB);
     const [positionPlay, setPositionPlay] = useState(0);
+
+    const userLogin = localStorage.getItem('user-login');
+    const userInfo = JSON.parse(localStorage.getItem('user-info'));
+    const stateLogin = JSON.parse(userLogin);
+
     const userID = useLocation();
     const context = useContext(ModalContext);
 
@@ -101,9 +108,23 @@ function Profile() {
                                 )}
                             </div>
                             <h1 className={cx('full-name')}>{`${user.first_name} ${user.last_name}`}</h1>
-                            <Button primary large className={cx('custom-btn')}>
-                                Follow
-                            </Button>
+
+                            {!stateLogin.state ? (
+                                <Button
+                                    small
+                                    primary
+                                    className={cx('custom-btn')}
+                                    onClick={() => context.handleShowModal()}
+                                >
+                                    Follow
+                                </Button>
+                            ) : userID.pathname === `/@${userInfo.data.nickName}` ? (
+                                <Button leftIcon={<EditIcon />} custom className={cx('edit-btn')}>
+                                    Edit profile
+                                </Button>
+                            ) : (
+                                <Follow className={cx('custom-btn')} userID={user.id} isFollow={user.is_followed} />
+                            )}
                         </div>
                     </div>
                     <div className={cx('counter')}>

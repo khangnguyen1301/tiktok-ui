@@ -5,6 +5,8 @@ import 'tippy.js/dist/tippy.css';
 import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faChevronDown, faChevronUp, faPlay, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import * as likeService from '~/services/likeService';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import {
@@ -14,6 +16,7 @@ import {
     FacebookIcon,
     GmailIcon,
     HashTagMusicIcon,
+    HeartedIcon,
     HeartIcon,
     HeartMiniIcon,
     PaperPlaneIcon,
@@ -30,9 +33,11 @@ import Image from '~/components/Image';
 import AccountPreviewHome from '~/components/Video/AccountPreviewHome';
 import styles from './VideoPlayerModal.module.scss';
 import * as videoService from '~/services/videoService';
-import * as postCommentService from '~/services/postCommentService';
+import * as commentService from '~/services/commentService';
+
 import { ModalContext } from '~/components/ModalProvider';
 import ShareAction from '~/components/ShareAction';
+import Follow from '~/components/Follow';
 
 const cx = classNames.bind(styles);
 
@@ -42,6 +47,8 @@ function VideoPlayerModal() {
     const [isPlayed, setIsPlayed] = useState(true);
     const [contentComment, setContentComment] = useState('');
     const [commentCount, setCommentCount] = useState(0);
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
 
     const videoRef = useRef();
     const selectorRef = useRef();
@@ -62,7 +69,7 @@ function VideoPlayerModal() {
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         getComment();
-        fetchApi();
+        getVideoInfo();
     }, [context.videoID]);
 
     useEffect(() => {
@@ -77,38 +84,25 @@ function VideoPlayerModal() {
         isPlayed ? videoRef.current.play() : videoRef.current.pause();
     }, [isPlayed]);
 
-    const fetchApi = async () => {
+    const getVideoInfo = async () => {
         const result = await videoService.getVideo(context.videoID);
         setVideo(result);
         setCommentCount(result?.comments_count);
+        setIsLiked(result?.is_liked);
+        setLikeCount(result?.likes_count);
         setIsPlayed(true);
     };
 
-    const getComment = () => {
-        let myHeaders = new Headers();
-        myHeaders.append(
-            'Authorization',
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZnVsbHN0YWNrLmVkdS52blwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY3ODM3Mjk1OSwiZXhwIjoxNjgwOTY0OTU5LCJuYmYiOjE2NzgzNzI5NTksImp0aSI6IkZZVU9WbVZqbDBMdW5oTnIiLCJzdWIiOjUyMDMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.iGRQH_zF5tXyClugWNIfUfTySW-pz3PWUC69MT6YSBk',
-        );
-
-        let requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow',
-        };
-
-        fetch(`https://tiktok.fullstack.edu.vn/api/videos/${context.videoID}/comments`, requestOptions)
-            .then((response) => response.json())
-            .then((result) => {
-                setComments(result);
-            })
-            .catch((error) => console.log('error', error));
+    const getComment = async () => {
+        const result = await commentService.getComment({ videoID: context.videoID });
+        setComments(result);
     };
 
-    const postComment = () => {
-        postCommentService.postComment(context.videoID, contentComment, getComment);
-        fetchApi();
-        setCommentCount(video?.comments_count);
+    const postComment = async () => {
+        const result = await commentService.postComment({ videoID: context.videoID, comment: contentComment });
+        getComment();
+        getVideoInfo();
+        context.handleStateComment(true);
         contentRef.current.value = '';
         contentRef.current.blur();
         postButtonRef.current.style.color = '#16182357';
@@ -135,7 +129,29 @@ function VideoPlayerModal() {
         postButtonRef.current.style.cursor = 'pointer';
         setContentComment(e.target.value);
     };
-    console.log(commentCount);
+
+    const stateLikeVideo = () => {
+        if (isLiked) {
+            //unliked
+            const unLikeVideo = async () => {
+                const result = await likeService.unLikeVideo({ videoID: context.videoID });
+                setIsLiked(false);
+                setLikeCount((prev) => prev - 1);
+            };
+            unLikeVideo();
+            context.handleChangeState(false);
+        } else {
+            //likeVideo
+            const likeVideo = async () => {
+                const result = await likeService.likeVideo({ videoID: context.videoID });
+                setIsLiked(true);
+                setLikeCount((prev) => prev + 1);
+            };
+            likeVideo();
+            context.handleChangeState(true);
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('video-container')}>
@@ -219,31 +235,39 @@ function VideoPlayerModal() {
                             </Link>
                         </AccountPreviewHome>
 
-                        <Button outline className={cx('custom-btn')}>
-                            Follow
-                        </Button>
+                        <Follow
+                            className={cx('custom-btn')}
+                            userID={video?.user?.id}
+                            isFollow={video?.user?.is_followed}
+                        />
                     </div>
 
                     <div className={cx('content')}>
                         <div className={cx('description')}>{video?.description}</div>
                         <div className={cx('link-music')}>
-                            <HashTagMusicIcon />
-                            <p>{video?.music}</p>
+                            <span className={cx('music-icon')}>
+                                <HashTagMusicIcon />
+                            </span>
+                            <span>{video?.music}</span>
                         </div>
 
                         <div className={cx('interactive')}>
                             <div className={cx('internal-icon')}>
                                 <div className={cx('icon-box')}>
-                                    <div className={cx('icon')}>
-                                        <HeartIcon width="2rem" height="2rem" />
+                                    <div className={cx('icon')} onClick={() => stateLikeVideo()}>
+                                        {isLiked ? (
+                                            <HeartedIcon width="2rem" height="2rem" />
+                                        ) : (
+                                            <HeartIcon width="2rem" height="2rem" />
+                                        )}
                                     </div>
-                                    <strong className={cx('count')}>{video?.likes_count}</strong>
+                                    <strong className={cx('count')}>{likeCount ?? 0}</strong>
                                 </div>
                                 <div className={cx('icon-box')}>
                                     <div className={cx('icon')}>
                                         <CommentIcon width="2rem" height="2rem" />
                                     </div>
-                                    <strong className={cx('count')}>{commentCount}</strong>
+                                    <strong className={cx('count')}>{commentCount ?? 0}</strong>
                                 </div>
                             </div>
 
@@ -295,7 +319,7 @@ function VideoPlayerModal() {
                     </div>
                 </div>
                 <div className={cx('comment-container')}>
-                    {comments?.data?.map((comment, index) => (
+                    {comments?.map((comment, index) => (
                         <div className={cx('comment-item')} key={index}>
                             <AccountPreviewHome data={comment}>
                                 <Link to={`/@${comment?.user?.nickname}`} onClick={context.handleHidePlayer}>

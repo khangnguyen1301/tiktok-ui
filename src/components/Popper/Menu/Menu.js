@@ -8,6 +8,7 @@ import styles from './Menu.module.scss';
 import MenuItem from './MenuItem';
 import Header from './Header';
 import { ChevronDownIcon } from '~/components/Icons';
+import { computeHeadingLevel } from '@testing-library/react';
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
 
@@ -63,6 +64,12 @@ function Menu({
         setHistory((prev) => prev.slice(0, 1));
     };
 
+    const logOut = () => {
+        console.log('da click');
+        localStorage.setItem('user-login', JSON.stringify({ state: false }));
+        window.location.reload();
+    };
+
     const renderItems = () => {
         return current.data.map((item, index) => {
             const isParent = !!item?.children;
@@ -74,7 +81,12 @@ function Menu({
                         if (isParent) {
                             setHistory((prev) => [...prev, item.children]);
                         } else {
-                            onChange(item);
+                            if (item.logout) {
+                                console.log('da vao day');
+                                logOut();
+                            } else {
+                                onChange(item);
+                            }
                         }
                     }}
                     custom={custom}
@@ -85,6 +97,7 @@ function Menu({
             );
         });
     };
+
     return (
         <div>
             <Tippy
@@ -103,7 +116,6 @@ function Menu({
         </div>
     );
 }
-
 Menu.propTypes = {
     children: PropTypes.node.isRequired,
     items: PropTypes.array,

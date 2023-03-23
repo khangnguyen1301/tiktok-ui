@@ -8,3 +8,12 @@ export const getInfoUser = async (pathName) => {
         console.log(error);
     }
 };
+
+export const getInfoMe = async () => {
+    try {
+        const res = await httpRequest.get(`auth/me`);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};

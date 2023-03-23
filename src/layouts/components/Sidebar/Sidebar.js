@@ -70,17 +70,25 @@ const HASH_TAG = [
 
 function Sidebar({ className }) {
     const [suggestedUsers, setSuggestedUsers] = useState([]);
+    const [followingAccount, setFollowingAccount] = useState([]);
     const sideBarRef = useRef();
     const context = useContext(ModalContext);
     const userLogin = localStorage.getItem('user-login');
     const stateLogin = JSON.parse(userLogin);
     useEffect(() => {
-        async function fetchApi() {
+        if (stateLogin.state) {
+            const getFollowAccount = async () => {
+                const result = await userService.getFollowingList({ page: 1 });
+                setFollowingAccount(result);
+            };
+            getFollowAccount();
+        }
+        const getSuggestAccount = async () => {
             const data = await userService.getSuggested({ page: 1, perPage: DEFAULT_PERPAGE });
             setSuggestedUsers(data);
-        }
-        fetchApi();
-    }, []);
+        };
+        getSuggestAccount();
+    }, [stateLogin.state]);
     return (
         <aside className={cx('wrapper', className)} ref={sideBarRef}>
             <Menu>
@@ -102,6 +110,9 @@ function Sidebar({ className }) {
                 </div>
             )}
             <SuggestAccounts title="Suggested accounts" data={suggestedUsers} sideBarRef={sideBarRef} />
+            {stateLogin.state && (
+                <SuggestAccounts title="Following accounts" data={followingAccount} sideBarRef={sideBarRef} />
+            )}
             <div className={cx('hashtag')}>
                 <p className={cx('discover')}>Discover</p>
                 <div className={cx('hashtag-box')}>

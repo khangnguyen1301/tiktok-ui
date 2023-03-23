@@ -10,9 +10,13 @@ import { Link } from 'react-router-dom';
 import Image from '~/components/Image';
 import { useContext } from 'react';
 import { ModalContext } from '~/components/ModalProvider';
+import Follow from '~/components/Follow';
 
 const cx = classNames.bind(styles);
 function AccountPreview({ data, outlineButton = false, bioDescription = false }) {
+    const userLogin = localStorage.getItem('user-login');
+    const stateLogin = JSON.parse(userLogin);
+
     const context = useContext(ModalContext);
     return (
         <div className={cx('wrapper')}>
@@ -20,9 +24,25 @@ function AccountPreview({ data, outlineButton = false, bioDescription = false })
                 <Link className={cx('link')} to={`/@${data?.nickname}`} onClick={context.handleHidePlayer}>
                     <Image className={cx('avatar')} src={data?.avatar} alt={data?.nickname} />
                 </Link>
-                <Button primary={!outlineButton} outline={outlineButton}>
-                    Follow
-                </Button>
+                {!stateLogin.state ? (
+                    <Button
+                        small
+                        primary={!outlineButton}
+                        outline={outlineButton}
+                        className={cx('custom-btn')}
+                        onClick={() => context.handleShowModal()}
+                    >
+                        Follow
+                    </Button>
+                ) : (
+                    <Follow
+                        primary={!outlineButton}
+                        outline={outlineButton}
+                        userID={data?.id}
+                        isFollow={data?.is_followed}
+                        className={cx('custom-btn')}
+                    />
+                )}
             </div>
             <div className={cx('body')}>
                 <Link to={`/@${data?.nickname}`} className={cx('body-link')} onClick={context.handleHidePlayer}>
