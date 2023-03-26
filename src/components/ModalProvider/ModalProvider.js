@@ -76,7 +76,7 @@ function ModalProvider({ children }) {
                 data: {
                     avatar: data.data.avatar,
                     firstName: data.data.first_name,
-                    firstName: data.data.last_name,
+                    lastName: data.data.last_name,
                     nickName: data.data.nickname,
                     id: data.data.id,
                     tick: data.data.tick,
@@ -160,8 +160,7 @@ function ModalProvider({ children }) {
         handleChangeState,
         handleStateComment,
     };
-    console.log(videoID);
-    console.log(userData);
+
     return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;
 }
 

@@ -21,47 +21,55 @@ import {
     VolumeIcon,
     VolumeMutedIcon,
 } from '../Icons';
-import { ModalContext } from '../ModalProvider';
+
 import ShareAction from '../ShareAction';
 import Follow from '../Follow';
+import TiktokLoading from '../Loadings/TiktokLoading';
+import { useLocalStorage } from '~/hooks';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 
 function Video({ data, videoID, index, currentElement, updateFollow, handleFollow, onCloseModal = false }) {
     const [isVisible, setIsVisible] = useState(false);
     const [isPlayed, setIsPlayed] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [isLiked, setIsLiked] = useState(data?.is_liked);
     const [likeCount, setLikeCount] = useState(data?.likes_count);
     const [commentCount, setCommentCount] = useState(data?.comments_count);
 
-    const userLogin = localStorage.getItem('user-login');
-    const stateLogin = JSON.parse(userLogin);
+    const { getDataLocalStorage } = useLocalStorage();
 
-    const context = useContext(ModalContext);
+    const stateLogin = getDataLocalStorage('user-login');
+
+    const { showLoginModal } = useContext(ModalEnviroment);
+    const videoContext = useContext(VideoEnviroment);
     const videoRef = useRef();
     const selectorRef = useRef();
 
     useLayoutEffect(() => {
-        videoRef.current.volume = context.isMuted ? 0 : context.volume;
-        selectorRef.current.style.width = `${context.isMuted ? 0 : context.volume * 100}%`;
+        videoRef.current.volume = videoContext.isMuted ? 0 : videoContext.volume;
+        selectorRef.current.style.width = `${videoContext.isMuted ? 0 : videoContext.volume * 100}%`;
     });
 
     useEffect(() => {
-        if (context.showVideoPlayer) {
+        if (videoContext.isVideoModalShow) {
             videoRef.current.pause();
             setIsPlayed(false);
         } else {
-            if (onCloseModal && !context.showVideoPlayer && isVisible) {
+            if (onCloseModal && !videoContext.isVideoModalShow && isVisible) {
                 videoRef.current.load();
                 videoRef.current.play();
                 setIsPlayed(true);
             }
         }
-    }, [onCloseModal, context.showVideoPlayer]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onCloseModal, videoContext.isVideoModalShow]);
 
     useLayoutEffect(() => {
         let timerID;
-        if (isVisible && !context.showVideoPlayer) {
+        if (isVisible && !videoContext.isVideoModalShow) {
             timerID = setTimeout(() => {
                 videoRef.current.play();
             }, 250);
@@ -75,28 +83,31 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
         }
 
         return () => clearTimeout(timerID);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isVisible]);
 
     useEffect(() => {
-        if (context.showVideoPlayer) {
-            if (context.isChangeState && context.videoID === data?.id) {
+        if (videoContext.isVideoModalShow) {
+            if (videoContext.isChangeState && videoContext.videoID === data?.id) {
                 setIsLiked(true);
                 setLikeCount((prev) => prev + 1);
             }
-            if (!context.isChangeState) {
+            if (!videoContext.isChangeState) {
                 setIsLiked(false);
                 setLikeCount((prev) => prev - 1);
             }
         }
-    }, [context.isChangeState]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [videoContext.isChangeState]);
 
     useEffect(() => {
-        if (context.isComment && context.showVideoPlayer)
-            if (context.videoID === data?.id) {
+        if (videoContext.isComment && videoContext.isVideoModalShow)
+            if (videoContext.videoID === data?.id) {
                 setCommentCount((prev) => prev + 1);
-                context.handleStateComment(false);
+                videoContext.handleStateComment(false);
             }
-    }, [context.isComment]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [videoContext.isComment]);
 
     const handleVisibleVideo = (visible) => {
         setIsVisible(visible);
@@ -113,38 +124,36 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
     };
 
     const handleClickVideo = () => {
-        context.handleGetVideoID(videoID);
-        context.handleSetPositionVideo(index);
+        videoContext.handleGetVideoID(videoID);
+        videoContext.handleSetPositionVideo(index);
+        videoContext.showVideoPlayer();
     };
 
     const stateLikeVideo = () => {
         if (isLiked) {
             //unliked
-            context.handleSetPositionVideo(index);
+            videoContext.handleSetPositionVideo(index);
             const unLikeVideo = async () => {
-                const result = await likeService.unLikeVideo({ videoID: context.listVideo[index]?.id });
+                // eslint-disable-next-line no-unused-vars
+                const result = await likeService.unLikeVideo({ videoID: videoContext.listVideo[index]?.id });
                 setIsLiked(false);
                 setLikeCount((prev) => prev - 1);
             };
             unLikeVideo();
-            context.handleChangeState(false);
+            videoContext.handleChangeState(false);
         } else {
             //likeVideo
-            context.handleSetPositionVideo(index);
+            videoContext.handleSetPositionVideo(index);
             const likeVideo = async () => {
-                const result = await likeService.likeVideo({ videoID: context.listVideo[index]?.id });
+                const result = await likeService.likeVideo({ videoID: videoContext.listVideo[index]?.id });
                 setIsLiked(true);
                 setLikeCount((prev) => prev + 1);
                 console.log(result);
             };
             likeVideo();
 
-            context.handleChangeState(true);
+            videoContext.handleChangeState(true);
         }
-    };
-
-    const handleClickComment = () => {
-        stateLogin.state ? context.handleShowPlayer() : context.handleShowModal();
     };
 
     return (
@@ -193,11 +202,22 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                                     : { width: '463px' }
                             }
                         >
-                            <img src={data?.thumb_url} alt="" className={cx('thumb-video', { active: isVisible })} />
-                            <video src={data?.file_url} loop ref={videoRef} onClick={handleClickVideo}></video>
-                            <div className={cx('volume-icon', { muted: context.isMuted })}>
-                                <div onClick={context.handleMutedVideo}>
-                                    {context.isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}
+                            {loading && (
+                                <div className={cx('video-loading')}>
+                                    <TiktokLoading medium />
+                                </div>
+                            )}
+                            <img src={data?.thumb_url} alt="" className={cx('thumb-video', { active: isPlayed })} />
+                            <video
+                                src={data?.file_url}
+                                loop
+                                ref={videoRef}
+                                onClick={handleClickVideo}
+                                onLoadedMetadata={() => setLoading(false)}
+                            ></video>
+                            <div className={cx('volume-icon', { muted: videoContext.isMuted })}>
+                                <div onClick={videoContext.handleMutedVideo}>
+                                    {videoContext.isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}
                                 </div>
                             </div>
                             <div className={cx('volume-control')}>
@@ -208,8 +228,8 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                                         min="0"
                                         max="100"
                                         step="1"
-                                        value={context.isMuted ? 0 : context.volume * 100}
-                                        onChange={context.handleAdjustVolume}
+                                        value={videoContext.isMuted ? 0 : videoContext.volume * 100}
+                                        onChange={videoContext.handleAdjustVolume}
                                     />
                                     <div className={cx('selector')} ref={selectorRef}></div>
                                 </div>
@@ -228,7 +248,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
 
                     <div className={cx('interactive')}>
                         {!stateLogin.state ? (
-                            <button type="button" className={cx('icon-box')} onClick={() => context.handleShowModal()}>
+                            <button type="button" className={cx('icon-box')} onClick={showLoginModal}>
                                 <HeartIcon />
                             </button>
                         ) : (
@@ -240,7 +260,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
 
                         <strong className={cx('count')}>{likeCount ?? 0}</strong>
 
-                        <button type="button" className={cx('icon-box')} onClick={() => handleClickComment()}>
+                        <button type="button" className={cx('icon-box')} onClick={() => handleClickVideo()}>
                             {/* icon */}
                             <CommentIcon />
                         </button>
@@ -263,7 +283,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                 </div>
 
                 {!stateLogin.state ? (
-                    <Button small outline className={cx('follow-btn')} onClick={() => context.handleShowModal()}>
+                    <Button small outline className={cx('follow-btn')} onClick={() => videoContext.handleShowModal()}>
                         Follow
                     </Button>
                 ) : (

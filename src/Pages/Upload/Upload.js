@@ -18,7 +18,10 @@ import {
 
 import styles from './Upload.module.scss';
 import Thumbnail from '~/components/Thumbnail';
+import ControlVideo from '~/components/ControlVideo';
+import { useLocalStorage } from '~/hooks';
 
+let animate;
 const cx = classNames.bind(styles);
 
 const initialChecked = {
@@ -37,8 +40,13 @@ function Upload() {
     const [isDetected, setIsDetected] = useState(false);
     const [listChecked, setListChecked] = useState(initialChecked);
     const [permissionViewer, setPermissionViewer] = useState('Public');
-
+    const [isPlayed, setIsPlayed] = useState(false);
+    const [isMuted, setIsMuted] = useState(false);
+    const [currentTimeVideo, setCurrentTimeVideo] = useState(0);
+    const [durationTime, setDurationTime] = useState(0);
     const [snapshots, setSnapshots] = useState([]);
+
+    const { getDataLocalStorage } = useLocalStorage();
 
     const inputRef = useRef();
     const checkRef = useRef();
@@ -50,21 +58,26 @@ function Upload() {
     const translateRef = useRef();
     const miniSnapshotRef = useRef();
     const captionRef = useRef();
+    const avatarRotateRef = useRef();
+
+    const userInfo = getDataLocalStorage('user-info');
 
     const upLoadVideo = async () => {
         let formdata = new FormData();
         formdata.append('description', caption);
         formdata.append('upload_file', videoFile);
         formdata.append('thumbnail_time', thumbnailRef.current.currentTime.toFixed(0));
-        formdata.append('music', `Orginal sound - duykhang1301`);
+        formdata.append('music', `Orginal sound - ${userInfo.data.nickName}`);
         formdata.append('viewable', permissionViewer.toLowerCase());
 
+        // eslint-disable-next-line array-callback-return
         Object.entries(listChecked).map((res) => {
             const [key, value] = res;
             if (value === true) {
                 formdata.append('allows[]', key);
             }
         });
+        // eslint-disable-next-line no-unused-vars
         const result = await upLoadService.upLoadVideo(formdata);
     };
 
@@ -74,7 +87,34 @@ function Upload() {
         } else {
             handleCaption();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoFile, nameSlice]);
+
+    useEffect(() => {
+        animate = avatarRotateRef.current?.animate(
+            [
+                {
+                    transform: 'rotate(360deg)',
+                },
+            ],
+            {
+                duration: 2000,
+                iterations: Infinity,
+            },
+        );
+        animate?.pause();
+    }, [nameSlice]);
+
+    useEffect(() => {
+        if (isPlayed) {
+            videoRef.current?.play();
+            console.log(animate);
+            animate?.play();
+        } else {
+            videoRef.current?.pause();
+            animate?.pause();
+        }
+    }, [videoFile, isPlayed]);
 
     // handle drag events
     const handleDrag = function (e) {
@@ -148,6 +188,34 @@ function Upload() {
         for (let index = 0; index < captionSlice?.length - 4; index++) {
             setNameSlice((prev) => [...prev, captionSlice[index]]);
         }
+    };
+    const handleCurrentTime = (value) => {
+        videoRef.current.currentTime = value;
+    };
+
+    const handlePlayVideo = () => {
+        setIsPlayed(!isPlayed);
+    };
+
+    const handleSetCurrentTime = () => {
+        setCurrentTimeVideo(videoRef.current?.currentTime);
+    };
+
+    const handleSetDurationTime = () => {
+        setDurationTime(videoRef.current?.duration);
+    };
+
+    const handleMuted = () => {
+        if (!isMuted) {
+            videoRef.current.muted = true;
+        } else {
+            videoRef.current.muted = false;
+        }
+        setIsMuted(!isMuted);
+    };
+
+    const handleEndedVideo = () => {
+        setIsPlayed(false);
     };
     return (
         <div className={cx('wrapper')}>
@@ -255,12 +323,12 @@ function Upload() {
                                 <div className={cx('mobile-frame')}>
                                     <img src={images.mobileFrame} alt="" className={cx('frame')} />
                                     <div className={cx('meta-data')}>
-                                        <div className={cx('nickname')}>@duykhang1301</div>
+                                        <div className={cx('nickname')}>{userInfo.data.nickName}</div>
                                         <div className={cx('name-video')}>{nameSlice.join('')}</div>
                                         <div className={cx('music')}>
                                             <HashTagMusicIcon />
                                             <div className={cx('music-running')}>
-                                                <span>Orginal sound - duykhang1301</span>
+                                                <span>{`Orginal sound - ${userInfo.data.nickName}`}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -274,13 +342,39 @@ function Upload() {
                                         <img src={images.search} alt="" />
                                     </div>
                                     <div className={cx('icon-frame')}>
-                                        <Image src="" className={cx('avatar')} />
+                                        <Image
+                                            src={userInfo.data.avatar}
+                                            alt={userInfo.data.nickName}
+                                            className={cx('avatar')}
+                                        />
                                         <img src={images.iconFrame} alt="" />
-                                        <div src="" className={cx('avatar-rotate-container')}>
-                                            <Image src="" className={cx('avatar-rotate')} />
+                                        <div className={cx('avatar-rotate-container')} ref={avatarRotateRef}>
+                                            <Image
+                                                src={userInfo.data.avatar}
+                                                alt={userInfo.data.nickName}
+                                                className={cx('avatar-rotate')}
+                                            />
                                         </div>
                                     </div>
-                                    <video src={srcVideo} muted loop className={cx('video-preview')} ref={videoRef} />
+                                    <video
+                                        src={srcVideo}
+                                        className={cx('video-preview')}
+                                        onTimeUpdate={handleSetCurrentTime}
+                                        onLoadedData={handleSetDurationTime}
+                                        onEnded={handleEndedVideo}
+                                        ref={videoRef}
+                                    />
+                                    <div className={cx('video-control')}>
+                                        <ControlVideo
+                                            currentTime={currentTimeVideo}
+                                            duration={durationTime}
+                                            isPlayed={isPlayed}
+                                            onPlayed={handleCurrentTime}
+                                            handlePlayed={handlePlayVideo}
+                                            isMuted={isMuted}
+                                            handleMuted={handleMuted}
+                                        />
+                                    </div>
                                 </div>
                                 <div className={cx('form')}>
                                     <div className={cx('caption')}>

@@ -1,11 +1,17 @@
-import Thumbnail from '~/components/Thumbnail';
+import classNames from 'classnames/bind';
+import styles from './Live.module.scss';
+import LiveLoading from '~/components/Loadings/LiveLoading';
+import Sidebar from '~/layouts/components/Sidebar';
+const cx = classNames.bind(styles);
 
 function Live() {
     return (
-        <Thumbnail
-            videoURL="https://files.fullstack.edu.vn/f8-tiktok/videos/1671-63f456355bdd1.mp4"
-            snapShotAtTime={2}
-        />
+        <div>
+            <Sidebar className={cx('custom-sidebar')} />
+            <div className={cx('wrapper')}>
+                <LiveLoading />
+            </div>
+        </div>
     );
 }
 

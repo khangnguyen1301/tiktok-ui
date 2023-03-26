@@ -38,3 +38,16 @@ export const userLogin = async ({ email, password }) => {
         console.log(error);
     }
 };
+
+export const userUpdateInfo = async (formData) => {
+    try {
+        const res = await httpRequest.post('auth/me', formData, {
+            params: {
+                _method: 'PATCH',
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};

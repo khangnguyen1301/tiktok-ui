@@ -7,6 +7,18 @@
     overflow-y: hidden;
 }
 
+.none-following {
+    color: rgba(22, 24, 35, 0.5);
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 20px;
+    padding: 0px 8px;
+}
+
+.noneFollow {
+    height: auto;
+}
+
 .more {
     height: auto;
     overflow-y: visible;

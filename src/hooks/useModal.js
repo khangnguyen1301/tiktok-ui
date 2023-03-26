@@ -1,17 +1,24 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
-const useModal = () => {
-    const [isShowing, setIsShowing] = useState(false);
+const useModal = (Modal) => {
+    const [isShow, setIsShow] = useState(false);
 
-    console.log(isShowing);
-    const toggle = () => {
-        setIsShowing(!isShowing);
+    const handleShowModal = () => {
+        document.body.style.overflow = 'hidden';
+        setIsShow(true);
     };
 
-    return {
-        isShowing,
-        toggle,
+    const handleHideModal = () => {
+        document.body.style.overflow = 'overlay';
+        setIsShow(false);
     };
+
+    const ModalComponent = () => {
+        return isShow && createPortal(<Modal onHideModal={handleHideModal} />, document.body);
+    };
+
+    return [ModalComponent, handleShowModal, isShow];
 };
 
 export default useModal;

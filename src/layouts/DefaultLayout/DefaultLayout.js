@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
 
-import FormModal, { VideoPlayerModal } from '~/components/Modal';
-import { ModalContext } from '~/components/ModalProvider';
 import Header from '~/layouts/components/Header';
 import Sidebar from '~/layouts/components/Sidebar';
 
 import styles from './DefaultLayout.module.scss';
 import classNames from 'classnames/bind';
 import GetApp from '~/components/GetApp';
+import { useContext } from 'react';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+import { VideoPlayerModal } from '~/components/Modal';
 
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children }) {
-    const context = useContext(ModalContext);
+    const context = useContext(VideoEnviroment);
     return (
         <div className={cx('wrapper')}>
             <Header />
@@ -22,8 +22,7 @@ function DefaultLayout({ children }) {
                 <div className={cx('content')}>{children}</div>
             </div>
             <GetApp />
-            {context?.active && <FormModal onHide={context.handleHideModal} />}
-            {context?.showVideoPlayer && <VideoPlayerModal />}
+            {context.isVideoModalShow && <VideoPlayerModal onHideModal={context.hideVideoPlayer} />}
         </div>
     );
 }

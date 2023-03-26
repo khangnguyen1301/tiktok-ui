@@ -8,17 +8,18 @@ import styles from './VideoPreview.module.scss';
 import Image from '../Image';
 import Button from '../Button';
 import { PlayIcon } from '../Icons';
-import { ModalContext } from '../ModalProvider';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 const cx = classNames.bind(styles);
 
 function VideoPreview({ data, index, handleMouseMove, videoID, play = false, profile = false }) {
     const videoRef = useRef();
-    const context = useContext(ModalContext);
+    const context = useContext(VideoEnviroment);
     useEffect(() => {
         play ? videoRef.current.play() : videoRef.current.load();
     }, [play]);
 
     const handleSetPosition = () => {
+        context.showVideoPlayer();
         context.handleGetVideoID(videoID);
         context.handleSetPositionVideo(index);
     };

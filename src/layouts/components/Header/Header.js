@@ -2,17 +2,7 @@ import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faCircleQuestion,
-    faEllipsisVertical,
-    faKeyboard,
-    faLanguage,
-    faUser,
-    faCoins,
-    faGear,
-    faSignOut,
-    faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faPlus } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
@@ -23,129 +13,42 @@ import config from '~/config';
 
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
-import { InboxIcon, MessageIcon } from '~/components/Icons';
+import { GetCoinsIcon, InboxIcon, LogoutIcon, MessageIcon, SettingsIcon, UserMenuIcon } from '~/components/Icons';
 import Search from '../Search';
 import { useContext } from 'react';
-import { ModalContext } from '~/components/ModalProvider';
+import { useLocalStorage } from '~/hooks';
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import { MENU_ITEMS } from '~/contants/contants';
 
 const cx = classNames.bind(styles);
 
-const MENU_ITEMS = [
-    {
-        icon: <FontAwesomeIcon icon={faLanguage} />,
-        title: 'English',
-        children: {
-            title: 'Language',
-            data: [
-                {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-                {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-                {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-                {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-                {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-                {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-                {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-            ],
-        },
-    },
-    {
-        icon: <FontAwesomeIcon icon={faCircleQuestion} />,
-        title: 'Feedback and help',
-        to: '/feedback',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faKeyboard} />,
-        title: 'Keyboard shortcuts',
-    },
-];
-
 function Header({ className }) {
-    const context = useContext(ModalContext);
-    const userLogin = localStorage.getItem('user-login');
-    const userInfo = JSON.parse(localStorage.getItem('user-info'));
-    const stateLogin = JSON.parse(userLogin);
+    const { showLoginModal } = useContext(ModalEnviroment);
+
+    const { getDataLocalStorage } = useLocalStorage();
+
+    const userInfo = getDataLocalStorage('user-info');
+    const stateLogin = getDataLocalStorage('user-login');
 
     const userMenu = [
         {
-            icon: <FontAwesomeIcon icon={faUser} />,
+            icon: <UserMenuIcon />,
             title: 'View profile',
             to: `/@${userInfo.data.nickName}`,
         },
         {
-            icon: <FontAwesomeIcon icon={faCoins} />,
+            icon: <GetCoinsIcon />,
             title: 'Get coins',
             to: '/coin',
         },
         {
-            icon: <FontAwesomeIcon icon={faGear} />,
+            icon: <SettingsIcon />,
             title: 'Settings',
             to: '/settings',
         },
         ...MENU_ITEMS,
         {
-            icon: <FontAwesomeIcon icon={faSignOut} />,
+            icon: <LogoutIcon />,
             title: 'Log out',
             logout: true,
             separate: true,
@@ -171,7 +74,7 @@ function Header({ className }) {
                 {/* Search */}
                 <Search />
                 <div className={cx('actions')}>
-                    {stateLogin.state ? (
+                    {stateLogin?.state ? (
                         <>
                             <Button
                                 outline
@@ -196,31 +99,27 @@ function Header({ className }) {
                         </>
                     ) : (
                         <>
-                            <Button
-                                custom
-                                leftIcon={<FontAwesomeIcon icon={faPlus} />}
-                                onClick={context.handleShowModal}
-                            >
+                            <Button custom leftIcon={<FontAwesomeIcon icon={faPlus} />} onClick={showLoginModal}>
                                 Upload
                             </Button>
 
-                            <Button primary onClick={context.handleShowModal}>
+                            <Button primary onClick={showLoginModal}>
                                 Log in
                             </Button>
                         </>
                     )}
                     <Menu
-                        items={stateLogin.state ? userMenu : MENU_ITEMS}
+                        items={stateLogin?.state ? userMenu : MENU_ITEMS}
                         onChange={handleMenuChange}
-                        offset={[12, 8]}
+                        offset={[14, 8]}
                         placement="bottom-end"
                         delay={[0, 700]}
                     >
-                        {stateLogin.state ? (
+                        {stateLogin?.state ? (
                             <Image
                                 className={cx('user-avatar')}
-                                src={userInfo.data.avatar}
-                                alt={userInfo.data.nickName}
+                                src={userInfo.data?.avatar}
+                                alt={userInfo.data?.nickName}
                             />
                         ) : (
                             <button className={cx('more-btn')}>

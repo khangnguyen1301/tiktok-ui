@@ -1,8 +1,9 @@
 import Button from '../Button';
 import * as followService from '~/services/followService';
 import { useContext, useState } from 'react';
-import { ModalContext } from '../ModalProvider';
+
 import { useLocation } from 'react-router-dom';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 
 function Follow({
     className,
@@ -16,8 +17,7 @@ function Follow({
     isUpdateFollow,
 }) {
     const [isFollowed, setIsFollowed] = useState(isFollow);
-    const context = useContext(ModalContext);
-    const location = useLocation();
+    const context = useContext(VideoEnviroment);
 
     const follow = async () => {
         const result = await followService.followUser({ userID: userID || context.listVideo[index]?.user?.id });

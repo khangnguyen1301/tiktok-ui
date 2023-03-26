@@ -1,0 +1,42 @@
+.wrapper {
+    display: flex;
+    // height: 124px;
+    padding-top: 24px;
+}
+
+.avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+    margin-top: 12px;
+}
+.username,
+.full-name {
+    width: 200px;
+    height: 16px;
+    border-radius: 2px;
+}
+.full-name {
+    width: 160px;
+    margin-top: 6px;
+    margin-bottom: 15px;
+}
+
+.description {
+    width: 478px;
+    height: 16px;
+    margin-bottom: 5px;
+}
+
+.avatar,
+.username,
+.full-name,
+.description {
+    background-color: var(--background-gray-color-03);
+}

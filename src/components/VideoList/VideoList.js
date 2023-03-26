@@ -1,13 +1,16 @@
 import { useCallback, useContext, useEffect, useRef, useState, useLayoutEffect } from 'react';
+
+import HomeAccountLoading from '../Loadings/HomeAccountLoading';
 import Video from '~/components/Video';
-import { ModalContext } from '~/components/ModalProvider';
+
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 
 function VideoList({ data }) {
     const [positionCurrentElement, setPositionCurrentElement] = useState(0);
     const [updateFollow, setUpdateFollow] = useState({});
     const [keyDown, setKeyDown] = useState(false);
     const wrapperRef = useRef();
-    const context = useContext(ModalContext);
+    const context = useContext(VideoEnviroment);
     const maxLength = data.length - 1;
     useLayoutEffect(() => {
         if (positionCurrentElement >= maxLength) {
@@ -15,10 +18,11 @@ function VideoList({ data }) {
         } else {
             setPositionCurrentElement(context.positionVideo);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context.positionVideo]);
 
     useLayoutEffect(() => {
-        if (context.showVideoPlayer || keyDown) {
+        if (context.isVideoModalShow || keyDown) {
             if (positionCurrentElement > maxLength) {
                 setPositionCurrentElement(maxLength);
             } else {
@@ -26,6 +30,7 @@ function VideoList({ data }) {
                 setKeyDown(false);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [positionCurrentElement, keyDown]);
 
     useEffect(() => {
@@ -70,18 +75,22 @@ function VideoList({ data }) {
 
     return (
         <div ref={wrapperRef}>
-            {data?.map((video, index) => (
-                <Video
-                    data={video}
-                    key={index}
-                    videoID={video?.id}
-                    index={index}
-                    onCloseModal={index === positionCurrentElement}
-                    currentElement={handleSetCurrentElement}
-                    handleFollow={handleFollow}
-                    updateFollow={updateFollow}
-                />
-            ))}
+            {data.length === 0 ? (
+                <HomeAccountLoading />
+            ) : (
+                data?.map((video, index) => (
+                    <Video
+                        data={video}
+                        key={index}
+                        videoID={video?.id}
+                        index={index}
+                        onCloseModal={index === positionCurrentElement}
+                        currentElement={handleSetCurrentElement}
+                        handleFollow={handleFollow}
+                        updateFollow={updateFollow}
+                    />
+                ))
+            )}
         </div>
     );
 }

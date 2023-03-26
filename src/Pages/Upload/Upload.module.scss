@@ -257,7 +257,9 @@
     position: relative;
     width: 284px;
     height: 587px;
-
+    &:hover > .video-control {
+        opacity: 1;
+    }
     .frame {
         position: absolute;
         top: 0;
@@ -356,6 +358,7 @@
         border-radius: 50%;
         object-fit: cover;
         margin-bottom: 16px;
+        background-color: rgba($color: #757171, $alpha: 0.7);
     }
     .avatar-rotate-container {
         width: 40px;
@@ -372,8 +375,8 @@
         height: 24px;
         border-radius: 50%;
         object-fit: cover;
-        animation: spinner 2s linear infinite;
     }
+
     .video-preview {
         width: 90%;
         height: 84%;
@@ -383,6 +386,17 @@
         top: 26px;
         left: 14px;
         object-fit: cover;
+    }
+
+    .video-control {
+        position: absolute;
+        bottom: 50px;
+        left: 8px;
+        width: 95%;
+        height: auto;
+        z-index: 5;
+        opacity: 0;
+        transition: opacity 200ms ease 0s;
     }
 }
 
@@ -413,6 +427,7 @@
         line-height: 1.5;
         font-weight: 700;
         color: #161823;
+        font-family: var(--font-family);
     }
 
     .count-char {
@@ -544,7 +559,7 @@
 .image-dragbox {
     position: absolute;
     top: -12px;
-    left: -25px;
+    left: -15px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,132 +1,32 @@
 import classNames from 'classnames/bind';
 import { useState, useMemo, useEffect, useContext } from 'react';
 
-import { ChevronDownIcon, ChevronLeftIcon, QRIcon, UserIcon, XMarkIcon } from '~/components/Icons';
+import { ChevronDownIcon, ChevronLeftIcon, XMarkIcon } from '~/components/Icons';
 import styles from './FormModal.module.scss';
-import images from '~/assets/images';
+import { FORM_ITEMS } from '~/contants/contants';
 import Button from '~/components/Button';
 import { Link } from 'react-router-dom';
-import { ModalContext } from '~/components/ModalProvider';
+
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import * as userService from '~/services/userService';
 
 const cx = classNames.bind(styles);
 
-function FormModal({ onHide }) {
+function FormModal({ onHideModal }) {
     const [formLoginState, setFormLoginState] = useState('login');
     const [filteredForm, setFilteredForm] = useState([{}]);
     const [isChildren, setIsChildren] = useState(false);
-    const [user, setUser] = useState({});
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
 
-    const context = useContext(ModalContext);
-    const loginRegisterForm = useMemo(
-        () => [
-            {
-                type: 'login',
-                title: 'Log in to TikTok',
-                contents: [
-                    {
-                        icon: <QRIcon />,
-                        title: 'Use QR code',
-                    },
-                    {
-                        login: 'email',
-                        icon: <UserIcon />,
-                        title: 'Use phone / email / username',
-                        children: {
-                            title: 'Log in',
-                            data: [{ title: 'Phone' }],
-                        },
-                    },
-                    {
-                        icon: <img src={images.facebook} alt="" />,
-                        title: 'Continue with Facebook',
-                    },
-                    {
-                        icon: <img src={images.google} alt="" />,
-                        title: 'Continue with Google',
-                    },
-                    {
-                        icon: <img src={images.twitter} alt="" />,
-                        title: 'Continue with Twitter',
-                    },
-                    {
-                        icon: <img src={images.line} alt="" />,
-                        title: 'Continue with LINE',
-                    },
-                    {
-                        icon: <img src={images.kakaotalk} alt="" />,
-                        title: 'Continue with KakaoTalk',
-                    },
-                    {
-                        icon: <img src={images.apple} alt="" />,
-                        title: 'Continue with Apple',
-                    },
-                    {
-                        icon: <img src={images.instagram} alt="" />,
-                        title: 'Continue with Instagram',
-                    },
-                ],
-            },
-            {
-                type: 'register',
-                title: 'Sign up for TikTok',
-                showMore: true,
-                contents: [
-                    {
-                        icon: <UserIcon />,
-                        title: 'Use phone or email',
-                    },
-                    {
-                        icon: <img src={images.facebook} alt="" />,
-                        title: 'Continue with Facebook',
-                    },
-                    {
-                        icon: <img src={images.google} alt="" />,
-                        title: 'Continue with Google',
-                    },
-                ],
-            },
-            {
-                type: 'register-expanded',
-                title: 'Sign up for TikTok',
-                contents: [
-                    {
-                        icon: <UserIcon />,
-                        title: 'Use phone or email',
-                    },
-                    {
-                        icon: <img src={images.facebook} alt="" />,
-                        title: 'Continue with Facebook',
-                    },
-                    {
-                        icon: <img src={images.google} alt="" />,
-                        title: 'Continue with Google',
-                    },
-                    {
-                        icon: <img src={images.twitter} alt="" />,
-                        title: 'Continue with Twitter',
-                    },
-                    {
-                        icon: <img src={images.line} alt="" />,
-                        title: 'Continue with LINE',
-                    },
-                    {
-                        icon: <img src={images.kakaotalk} alt="" />,
-                        title: 'Continue with KakaoTalk',
-                    },
-                ],
-            },
-        ],
-        [],
-    );
+    const { handleSetUserData, handleUserLogIn } = useContext(ModalEnviroment);
+    const loginRegisterForm = useMemo(() => FORM_ITEMS, []);
 
     const handleLogin = async () => {
         const result = await userService.userLogin({ email: email, password: password });
-        context.handleSetUserData(result);
-        context.handleUserLogIn();
+        handleSetUserData(result);
+        handleUserLogIn();
         window.location.reload();
     };
 
@@ -148,9 +48,9 @@ function FormModal({ onHide }) {
     }, [loginRegisterForm, formLoginState]);
 
     const handleMenu = (position) => {
-        const nextForm = loginRegisterForm.find((form) => form.type === formLoginState);
-        const newForm = [...nextForm.contents];
-        newForm.map((form, index) => {
+        const nextForm = [...loginRegisterForm.find((form) => form.type === formLoginState).contents];
+        // const newForm = [...nextForm.contents];
+        nextForm.map((form, index) => {
             let parent = !!form.children;
             if (parent && position === index) {
                 setFilteredForm(form.children);
@@ -258,7 +158,7 @@ function FormModal({ onHide }) {
                     </div>
                 </div>
 
-                <div className={cx('close-btn')} onClick={onHide}>
+                <div className={cx('close-btn')} onClick={onHideModal}>
                     <XMarkIcon />
                 </div>
             </div>

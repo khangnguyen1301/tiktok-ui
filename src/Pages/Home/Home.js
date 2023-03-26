@@ -2,18 +2,19 @@ import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as videoService from '~/services/videoService';
 
-import { ModalContext } from '~/components/ModalProvider';
 import VideoList from '~/components/VideoList';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 
 function Home() {
     const randomPage = Math.floor(Math.random() * 10 + 1);
     const [videoForYou, setVideoForYou] = useState([]);
     const [page, setPage] = useState(randomPage);
-    const context = useContext(ModalContext);
+    const context = useContext(VideoEnviroment);
     const location = useLocation();
 
     useEffect(() => {
         context.handleSetListVideo([]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
     useEffect(() => {
@@ -23,6 +24,7 @@ function Home() {
             context.handleSetListVideo((prev) => [...prev, ...result]);
         };
         fetchApi();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
     useEffect(() => {

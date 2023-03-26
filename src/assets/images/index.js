@@ -24,6 +24,9 @@ const images = {
     iconFrame: require('~/assets/images/icon-frame.svg').default,
     search: require('~/assets/images/search.svg').default,
     live: require('~/assets/images/live.svg').default,
+    play: require('~/assets/images/circle-play-button.svg').default,
+    fullscreen: require('~/assets/images/fullscreen-button.svg').default,
+    pause: require('~/assets/images/pause-button.svg').default,
 };
 
 export default images;

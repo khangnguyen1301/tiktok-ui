@@ -9,13 +9,13 @@ import styles from './SuggestAccounts.module.scss';
 import Tippy from '@tippyjs/react/headless';
 import Image from '~/components/Image';
 
-import { ModalContext } from '../ModalProvider';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 const cx = classNames.bind(styles);
 
 function AccountItem({ data }) {
-    const context = useContext(ModalContext);
+    const context = useContext(VideoEnviroment);
     const renderAccount = (props) => {
         return (
             <div tabIndex="-1" {...props}>

@@ -8,6 +8,40 @@
     --text-color: #161823;
     --default-layout-header-height: 60px;
     --default-layout-width: 1150px;
+
+    --text-primary-color: rgb(22, 24, 35);
+    --caret-color: rgb(254, 44, 85);
+
+    --default-background-media: #ddd; // Background of image, video when loading
+    --background-primary-color: rgba(254, 44, 85, 0.06);
+    --background-primary-color2: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
+    --background-disable-color: rgb(245, 245, 245);
+    --background-gray-color-03: rgba(22, 24, 35, 0.03);
+    --background-gray-color-1: rgba(22, 24, 35, 0.1);
+    --background-gray-color-06: rgba(22, 24, 35, 0.06);
+    --background-gray-color-12: rgba(22, 24, 35, 0.12);
+    --background-gray-color-14: rgba(22, 24, 35, 0.14);
+    --background-gray-color-16: rgba(22, 24, 35, 0.16);
+    --background-gray-color-34: rgba(22, 24, 35, 0.34);
+    --background-gray-color-02: rgba(22, 24, 35, 0.2);
+    --background-gray-color-75: rgba(22, 24, 35, 0.75);
+
+    --background-gray-color-241: rgb(241, 241, 241);
+    --background-gray-color-248: rgb(248, 248, 248);
+
+    --box-shadow-popper: rgb(0 0 0 / 12%) 0px 2px 12px;
+    --box-shadow-popper-2: rgb(0 0 0 / 12%) 0px 4px 16px;
+    --box-shadow-header: 0px 1px 1px rgb(0 0 0 / 12%);
+
+    --border-color-style: #c5c6c9;
+
+    // Size of layout component
+    --g-header-height: 60px;
+
+    // DOM breakpoint
+    --large-screen: 1071px;
+    --medium-screen: 767px;
+    --small-screen: 479px;
 }
 
 html {

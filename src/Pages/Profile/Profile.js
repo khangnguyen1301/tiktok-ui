@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,10 +23,12 @@ import Sidebar from '~/layouts/components/Sidebar';
 import Button from '~/components/Button';
 import Image from '~/components/Image';
 import VideoPreview from '~/components/VideoPreview';
-import { ModalContext } from '~/components/ModalProvider';
 import Menu from '~/components/Popper/Menu';
 import ShareAction from '~/components/ShareAction';
 import Follow from '~/components/Follow';
+import { useLocalStorage } from '~/hooks';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 
@@ -54,19 +57,19 @@ function Profile() {
     const [selectTab, setSelectTab] = useState(VIDEO_TAB);
     const [activeBar, setActiveBar] = useState(VIDEO_TAB);
     const [positionPlay, setPositionPlay] = useState(0);
-
-    const userLogin = localStorage.getItem('user-login');
-    const userInfo = JSON.parse(localStorage.getItem('user-info'));
-    const stateLogin = JSON.parse(userLogin);
+    const { getDataLocalStorage } = useLocalStorage();
+    const stateLogin = getDataLocalStorage('user-login');
+    const userInfo = getDataLocalStorage('user-info');
 
     const userID = useLocation();
-    const context = useContext(ModalContext);
+    const { showLoginModal, showUpdateModal } = useContext(ModalEnviroment);
+    const context = useContext(VideoEnviroment);
 
     useEffect(() => {
         context.handleSetPositionVideo(0);
     }, []);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         const fetchApi = async () => {
             const result = await proFileService.getInfoUser(userID.pathname);
@@ -74,7 +77,6 @@ function Profile() {
             context.handleSetListVideo(result?.videos);
         };
         fetchApi();
-
         setSelectTab(VIDEO_TAB);
         setActiveBar(VIDEO_TAB);
     }, [userID.pathname]);
@@ -97,48 +99,54 @@ function Profile() {
             <div className={cx('profile')}>
                 <div className={cx('info')}>
                     <div className={cx('header')}>
-                        <Image src={user.avatar} alt={user.nickname} className={cx('avatar')} />
+                        <Image src={user?.avatar} alt={user?.nickname} className={cx('avatar')} />
                         <div className={cx('name-container')}>
                             <div className={cx('name')}>
-                                <h2 className={cx('nick-name')}>{user.nickname}</h2>
-                                {user.tick && (
+                                <h2 className={cx('nick-name')}>{user?.nickname}</h2>
+                                {user?.tick && (
                                     <span>
                                         <FontAwesomeIcon icon={faCircleCheck} className={cx('tick')} />
                                     </span>
                                 )}
                             </div>
-                            <h1 className={cx('full-name')}>{`${user.first_name} ${user.last_name}`}</h1>
+                            <h1 className={cx('full-name')}>{`${user?.first_name} ${user?.last_name}`}</h1>
 
-                            {!stateLogin.state ? (
-                                <Button
-                                    small
-                                    primary
-                                    className={cx('custom-btn')}
-                                    onClick={() => context.handleShowModal()}
-                                >
+                            {!stateLogin?.state ? (
+                                <Button small primary className={cx('custom-btn')} onClick={showLoginModal}>
                                     Follow
                                 </Button>
-                            ) : userID.pathname === `/@${userInfo.data.nickName}` ? (
-                                <Button leftIcon={<EditIcon />} custom className={cx('edit-btn')}>
+                            ) : userID.pathname.includes(userInfo.data.nickName) ? (
+                                <Button
+                                    leftIcon={<EditIcon />}
+                                    custom
+                                    className={cx('edit-btn')}
+                                    onClick={showUpdateModal}
+                                >
                                     Edit profile
                                 </Button>
                             ) : (
-                                <Follow className={cx('custom-btn')} userID={user.id} isFollow={user.is_followed} />
+                                <Follow
+                                    primary
+                                    outline={false}
+                                    className={cx('custom-btn')}
+                                    userID={user?.id}
+                                    isFollow={user?.is_followed}
+                                />
                             )}
                         </div>
                     </div>
                     <div className={cx('counter')}>
-                        <strong>{user.followings_count}</strong>
+                        <strong>{user?.followings_count}</strong>
                         <span>Following</span>
-                        <strong>{user.followers_count}</strong>
+                        <strong>{user?.followers_count}</strong>
                         <span>Followers</span>
-                        <strong>{user.likes_count}</strong>
+                        <strong>{user?.likes_count}</strong>
                         <span>Likes</span>
                     </div>
-                    <h2 className={cx('bio')}>{user.bio ?? 'No bio yet'}</h2>
+                    <h2 className={cx('bio')}>{user?.bio ?? 'No bio yet'}</h2>
                     <div className={cx('link')}>
                         <LinkIcon />
-                        <span>{`www.facebook.com/${user.nickname}`}</span>
+                        <span>{`www.facebook.com/${user?.nickname}`}</span>
                     </div>
                     <div className={cx('icon')}>
                         <ShareAction delay={[0, 300]} offset={[-43, 0]} placement="bottom-end" zIndex="999">
@@ -188,7 +196,7 @@ function Profile() {
                             })}
                         ></div>
                     </div>
-                    {user.videos?.length === 0 && (
+                    {user?.videos?.length === 0 && (
                         <div className={cx('none-item')}>
                             <ProfileIcon />
                             {selectTab === VIDEO_TAB ? (

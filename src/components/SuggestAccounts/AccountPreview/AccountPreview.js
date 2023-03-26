@@ -9,15 +9,17 @@ import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Image from '~/components/Image';
 import { useContext } from 'react';
-import { ModalContext } from '~/components/ModalProvider';
 import Follow from '~/components/Follow';
+import { useLocalStorage } from '~/hooks';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 
 const cx = classNames.bind(styles);
 function AccountPreview({ data, outlineButton = false, bioDescription = false }) {
-    const userLogin = localStorage.getItem('user-login');
-    const stateLogin = JSON.parse(userLogin);
+    const { getDataLocalStorage } = useLocalStorage();
 
-    const context = useContext(ModalContext);
+    const stateLogin = getDataLocalStorage('user-login');
+
+    const context = useContext(VideoEnviroment);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>

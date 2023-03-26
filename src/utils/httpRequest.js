@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const TOKEN = `Bearer ${JSON.parse(localStorage.getItem('user')).data}`;
-console.log(TOKEN);
 axios.defaults.headers.common['Authorization'] = TOKEN;
 
 const httpRequest = axios.create({
@@ -13,8 +12,8 @@ export const get = async (path, options = {}) => {
     return response.data;
 };
 
-export const post = async (path, options = {}) => {
-    const response = await httpRequest.post(path, options);
+export const post = async (path, options = {}, params = {}) => {
+    const response = await httpRequest.post(path, options, params);
     return response.data;
 };
 

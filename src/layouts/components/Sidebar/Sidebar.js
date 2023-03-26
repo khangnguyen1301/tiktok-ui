@@ -19,7 +19,9 @@ import SuggestAccounts from '~/components/SuggestAccounts';
 import * as userService from '~/services/userService';
 import Button from '~/components/Button';
 import images from '~/assets/images';
-import { ModalContext } from '~/components/ModalProvider';
+import { useLocalStorage } from '~/hooks';
+
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 const cx = classNames.bind(styles);
 
 const DEFAULT_PERPAGE = 15;
@@ -71,10 +73,12 @@ const HASH_TAG = [
 function Sidebar({ className }) {
     const [suggestedUsers, setSuggestedUsers] = useState([]);
     const [followingAccount, setFollowingAccount] = useState([]);
+    const { showLoginModal } = useContext(ModalEnviroment);
+    const { getDataLocalStorage } = useLocalStorage();
+
     const sideBarRef = useRef();
-    const context = useContext(ModalContext);
-    const userLogin = localStorage.getItem('user-login');
-    const stateLogin = JSON.parse(userLogin);
+
+    const stateLogin = getDataLocalStorage('user-login');
     useEffect(() => {
         if (stateLogin.state) {
             const getFollowAccount = async () => {
@@ -104,14 +108,19 @@ function Sidebar({ className }) {
             {!stateLogin.state && (
                 <div className={cx('log-in')}>
                     <p className={cx('title')}>Log in to follow creators, like videos, and view comments.</p>
-                    <Button large outline className={cx('custom-btn')} onClick={context?.handleShowModal}>
+                    <Button large outline className={cx('custom-btn')} onClick={showLoginModal}>
                         Log in
                     </Button>
                 </div>
             )}
             <SuggestAccounts title="Suggested accounts" data={suggestedUsers} sideBarRef={sideBarRef} />
             {stateLogin.state && (
-                <SuggestAccounts title="Following accounts" data={followingAccount} sideBarRef={sideBarRef} />
+                <SuggestAccounts
+                    title="Following accounts"
+                    data={followingAccount}
+                    sideBarRef={sideBarRef}
+                    noneFollow={followingAccount.length === 0}
+                />
             )}
             <div className={cx('hashtag')}>
                 <p className={cx('discover')}>Discover</p>
@@ -126,10 +135,9 @@ function Sidebar({ className }) {
             </div>
             <div className={cx('effect')}>
                 <div className={cx('bg-container')}>
-                    <img src={images.btnBackground} className={cx('effect-btn')} />
-                    <a href="https://effecthouse.tiktok.com/" target={'_blank'}>
+                    <img src={images.btnBackground} alt="" className={cx('effect-btn')} />
+                    <a href="https://effecthouse.tiktok.com/" target={'_blank'} rel="noreferrer">
                         <div className={cx('bg-content')}>
-                            {' '}
                             <CreateEffectIcon />
                             <span className={cx('content')}>Create effects</span>
                         </div>

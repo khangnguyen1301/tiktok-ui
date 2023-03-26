@@ -3,12 +3,12 @@ import classNames from 'classnames/bind';
 
 import AccountItem from '~/components/SuggestAccounts/AccountItem';
 import styles from './SuggestAccounts.module.scss';
-import { Link } from 'react-router-dom';
+
 import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-function SuggestAccounts({ title, data, sideBarRef }) {
+function SuggestAccounts({ title, data, sideBarRef, noneFollow = false }) {
     const [seeMore, setSeeMore] = useState(false);
 
     const scrollTop = () => {
@@ -25,24 +25,33 @@ function SuggestAccounts({ title, data, sideBarRef }) {
     };
     let classes = cx('wrapper-content', {
         more: seeMore,
+        noneFollow,
     });
     return (
         <div>
             <div className={cx('wrapper')}>
                 <div className={classes}>
                     <p className={cx('title')}> {title} </p>
-                    {data?.map((res) => (
-                        <AccountItem data={res} key={res.id} />
-                    ))}
+                    {data.length > 0 ? (
+                        data?.map((res) => <AccountItem data={res} key={res.id} />)
+                    ) : (
+                        <div className={cx('none-following')}>
+                            <span>Accounts you follow will appear here</span>
+                        </div>
+                    )}
                 </div>
-                {seeMore ? (
-                    <span className={cx('more-btn')} onClick={handleSeeMore}>
-                        See less
-                    </span>
-                ) : (
-                    <span className={cx('more-btn')} onClick={handleSeeMore}>
-                        See all
-                    </span>
+                {!noneFollow && (
+                    <div>
+                        {seeMore ? (
+                            <span className={cx('more-btn')} onClick={handleSeeMore}>
+                                See less
+                            </span>
+                        ) : (
+                            <span className={cx('more-btn')} onClick={handleSeeMore}>
+                                See all
+                            </span>
+                        )}
+                    </div>
                 )}
             </div>
         </div>

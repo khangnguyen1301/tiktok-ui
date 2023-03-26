@@ -9,6 +9,7 @@ import MenuItem from './MenuItem';
 import Header from './Header';
 import { ChevronDownIcon } from '~/components/Icons';
 import { computeHeadingLevel } from '@testing-library/react';
+import { useLocalStorage } from '~/hooks';
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
 
@@ -33,6 +34,9 @@ function Menu({
     shareActive = false,
 }) {
     const [history, setHistory] = useState([{ data: items }]);
+
+    const { setDataLocalStorage } = useLocalStorage();
+
     const current = history[history.length - 1];
 
     useLayoutEffect(() => {
@@ -65,8 +69,7 @@ function Menu({
     };
 
     const logOut = () => {
-        console.log('da click');
-        localStorage.setItem('user-login', JSON.stringify({ state: false }));
+        setDataLocalStorage('user-login', { state: false });
         window.location.reload();
     };
 

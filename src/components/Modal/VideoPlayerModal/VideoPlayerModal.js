@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState, useLayoutEffect } from 'react';
+import { useContext, useEffect, useRef, useState, useLayoutEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -8,10 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import * as likeService from '~/services/likeService';
 import classNames from 'classnames/bind';
-import Button from '~/components/Button';
 import {
     CommentIcon,
-    EmailIcon,
     EmbedIcon,
     FacebookIcon,
     GmailIcon,
@@ -35,13 +33,15 @@ import styles from './VideoPlayerModal.module.scss';
 import * as videoService from '~/services/videoService';
 import * as commentService from '~/services/commentService';
 
-import { ModalContext } from '~/components/ModalProvider';
 import ShareAction from '~/components/ShareAction';
 import Follow from '~/components/Follow';
+import { useLocalStorage } from '~/hooks';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 
-function VideoPlayerModal() {
+function VideoPlayerModal({ onHideModal }) {
     const [video, setVideo] = useState({});
     const [comments, setComments] = useState([]);
     const [isPlayed, setIsPlayed] = useState(true);
@@ -57,9 +57,12 @@ function VideoPlayerModal() {
     const postButtonRef = useRef();
     const contentRef = useRef();
 
-    const context = useContext(ModalContext);
-    const userLogin = localStorage.getItem('user-login');
-    const stateLogin = JSON.parse(userLogin);
+    const context = useContext(VideoEnviroment);
+    const { showLoginModal, isFormModalShow } = useContext(ModalEnviroment);
+    const { getDataLocalStorage } = useLocalStorage();
+
+    const stateLogin = getDataLocalStorage('user-login');
+    const userInfo = getDataLocalStorage('user-info');
 
     useLayoutEffect(() => {
         videoRef.current.volume = context.isMuted ? 0 : context.volume;
@@ -67,10 +70,16 @@ function VideoPlayerModal() {
     });
 
     useEffect(() => {
-        document.body.style.overflow = 'hidden';
         getComment();
         getVideoInfo();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context.videoID]);
+
+    useEffect(() => {
+        const nickName = window.location.pathname.includes('/me') ? 'me' : `/@${context.nickName}`;
+        window.history.replaceState(null, '', `${nickName ?? ''}/video/${context.videoID}`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [context.videoID, context.nickName]);
 
     useEffect(() => {
         if (context.isMuted) {
@@ -78,11 +87,16 @@ function VideoPlayerModal() {
         } else {
             videoRef.current.volume = context.volume;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [context.isMuted]);
 
     useEffect(() => {
         isPlayed ? videoRef.current.play() : videoRef.current.pause();
     }, [isPlayed]);
+
+    useEffect(() => {
+        setIsPlayed(!isFormModalShow);
+    }, [isFormModalShow]);
 
     const getVideoInfo = async () => {
         const result = await videoService.getVideo(context.videoID);
@@ -99,6 +113,7 @@ function VideoPlayerModal() {
     };
 
     const postComment = async () => {
+        // eslint-disable-next-line no-unused-vars
         const result = await commentService.postComment({ videoID: context.videoID, comment: contentComment });
         getComment();
         getVideoInfo();
@@ -134,6 +149,7 @@ function VideoPlayerModal() {
         if (isLiked) {
             //unliked
             const unLikeVideo = async () => {
+                // eslint-disable-next-line no-unused-vars
                 const result = await likeService.unLikeVideo({ videoID: context.videoID });
                 setIsLiked(false);
                 setLikeCount((prev) => prev - 1);
@@ -143,6 +159,7 @@ function VideoPlayerModal() {
         } else {
             //likeVideo
             const likeVideo = async () => {
+                // eslint-disable-next-line no-unused-vars
                 const result = await likeService.likeVideo({ videoID: context.videoID });
                 setIsLiked(true);
                 setLikeCount((prev) => prev + 1);
@@ -171,7 +188,7 @@ function VideoPlayerModal() {
                 </div>
 
                 <div className={cx('back-icon')}>
-                    <div className={cx('btn-close')} onClick={context.handleHidePlayer}>
+                    <div className={cx('btn-close')} onClick={onHideModal}>
                         <FontAwesomeIcon icon={faXmark} />
                     </div>
                     <div className={cx('tiktok-logo')}>
@@ -186,15 +203,15 @@ function VideoPlayerModal() {
 
                 <div
                     className={cx('btn-back', { hide: context.positionVideo === 0 })}
-                    onClick={context.handleBackVideo}
+                    onClick={() => context.handleBackVideo()}
                 >
                     <FontAwesomeIcon icon={faChevronUp} />
                 </div>
-                <div className={cx('btn-next')} onClick={context.handleNextVideo}>
+                <div className={cx('btn-next')} onClick={() => context.handleNextVideo()}>
                     <FontAwesomeIcon icon={faChevronDown} />
                 </div>
 
-                <div className={cx('button')} onClick={context.handleMutedVideo}>
+                <div className={cx('button')} onClick={() => context.handleMutedVideo()}>
                     {context.isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}
                 </div>
                 <div className={cx('adjust-volume')}>
@@ -352,8 +369,10 @@ function VideoPlayerModal() {
                     ))}
                 </div>
                 <div className={cx('footer-comment')}>
-                    {!stateLogin ? (
-                        <div className={cx('notify')}>Log in to comment</div>
+                    {!stateLogin.state ? (
+                        <div className={cx('notify')} onClick={showLoginModal}>
+                            Log in to comment
+                        </div>
                     ) : (
                         <div className={cx('container')}>
                             <div className={cx('comment-box')} ref={commentRef}>
@@ -392,4 +411,4 @@ function VideoPlayerModal() {
     );
 }
 
-export default VideoPlayerModal;
+export default memo(VideoPlayerModal);
