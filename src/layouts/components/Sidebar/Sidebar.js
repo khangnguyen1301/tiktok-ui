@@ -127,7 +127,11 @@ function Sidebar({ className }) {
                 <div className={cx('hashtag-box')}>
                     {HASH_TAG.map((hashtag, index) => (
                         <button key={index} className={cx('hashtag-btn')}>
-                            {hashtag.tag ? <HashTagIcon /> : <HashTagMusicIcon className={cx('style-music')} />}
+                            {hashtag.tag ? (
+                                <HashTagIcon className={cx('style-music')} />
+                            ) : (
+                                <HashTagMusicIcon className={cx('style-music')} />
+                            )}
                             <span className={cx('hashtag-content')}>{hashtag.content}</span>
                         </button>
                     ))}

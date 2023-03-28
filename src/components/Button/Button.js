@@ -21,6 +21,7 @@ function Button({
     className,
     leftIcon,
     rightIcon,
+    rightIconCustom,
     onClick,
     ...passProps
 }) {

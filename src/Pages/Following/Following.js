@@ -7,7 +7,6 @@ import * as videoService from '~/services/videoService';
 
 import { useLocalStorage } from '~/hooks';
 import VideoList from '~/components/VideoList';
-import { ModalContext } from '~/components/ModalProvider';
 import { useLocation } from 'react-router-dom';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 

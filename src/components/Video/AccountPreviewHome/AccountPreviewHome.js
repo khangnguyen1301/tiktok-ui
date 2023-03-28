@@ -20,6 +20,8 @@ function AccountPreviewHome({ children, data }) {
                         </PopperWrapper>
                     </div>
                 )}
+                // /appendTo={document.body}
+                popperOptions={{ modifiers: [{ name: 'flip', enabled: false }] }}
                 placement={'bottom-start'}
             >
                 {children}

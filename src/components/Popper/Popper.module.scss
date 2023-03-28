@@ -6,6 +6,7 @@
     min-height: 100px;
     padding-top: 8px;
     border-radius: 8px;
-    background: rgb(255, 255, 255);
+    background-color: var(--default-poper-color);
     box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }

@@ -12,6 +12,7 @@ import { useContext } from 'react';
 import Follow from '~/components/Follow';
 import { useLocalStorage } from '~/hooks';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 function AccountPreview({ data, outlineButton = false, bioDescription = false }) {
@@ -19,11 +20,13 @@ function AccountPreview({ data, outlineButton = false, bioDescription = false })
 
     const stateLogin = getDataLocalStorage('user-login');
 
+    const { showLoginModal } = useContext(ModalEnviroment);
+
     const context = useContext(VideoEnviroment);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
-                <Link className={cx('link')} to={`/@${data?.nickname}`} onClick={context.handleHidePlayer}>
+                <Link className={cx('link')} to={`/@${data?.nickname}`} onClick={() => context.hideVideoPlayer()}>
                     <Image className={cx('avatar')} src={data?.avatar} alt={data?.nickname} />
                 </Link>
                 {!stateLogin.state ? (
@@ -31,8 +34,8 @@ function AccountPreview({ data, outlineButton = false, bioDescription = false })
                         small
                         primary={!outlineButton}
                         outline={outlineButton}
-                        className={cx('custom-btn')}
-                        onClick={() => context.handleShowModal()}
+                        className={cx('follow-btn')}
+                        onClick={showLoginModal}
                     >
                         Follow
                     </Button>
@@ -42,7 +45,7 @@ function AccountPreview({ data, outlineButton = false, bioDescription = false })
                         outline={outlineButton}
                         userID={data?.id}
                         isFollow={data?.is_followed}
-                        className={cx('custom-btn')}
+                        className={cx('follow-btn')}
                     />
                 )}
             </div>

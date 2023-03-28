@@ -38,6 +38,8 @@ import Follow from '~/components/Follow';
 import { useLocalStorage } from '~/hooks';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import LineLoading from '~/components/Loadings/LineLoading';
+import AvatarLoading from '~/components/Loadings/AvatarLoading';
 
 const cx = classNames.bind(styles);
 
@@ -62,7 +64,7 @@ function VideoPlayerModal({ onHideModal }) {
     const { getDataLocalStorage } = useLocalStorage();
 
     const stateLogin = getDataLocalStorage('user-login');
-    const userInfo = getDataLocalStorage('user-info');
+    // const userInfo = getDataLocalStorage('user-info');
 
     useLayoutEffect(() => {
         videoRef.current.volume = context.isMuted ? 0 : context.volume;
@@ -120,7 +122,7 @@ function VideoPlayerModal({ onHideModal }) {
         context.handleStateComment(true);
         contentRef.current.value = '';
         contentRef.current.blur();
-        postButtonRef.current.style.color = '#16182357';
+        postButtonRef.current.style.color = 'var(--background-gray-color-34)';
     };
     const handlePlayVideo = () => {
         setIsPlayed(!isPlayed);
@@ -140,7 +142,7 @@ function VideoPlayerModal({ onHideModal }) {
     };
 
     const handlePostButton = (e) => {
-        postButtonRef.current.style.color = e.target.value ? '#fe2c55' : '#16182357';
+        postButtonRef.current.style.color = e.target.value ? '#fe2c55' : 'var(--background-gray-color-34)';
         postButtonRef.current.style.cursor = 'pointer';
         setContentComment(e.target.value);
     };
@@ -232,32 +234,52 @@ function VideoPlayerModal({ onHideModal }) {
 
             <div className={cx('sidebar')}>
                 <div className={cx('header')}>
-                    <div className={cx('info')}>
-                        <AccountPreviewHome data={video}>
-                            <Link to={`/@${video?.user?.nickname}`} onClick={context.handleHidePlayer}>
-                                <div className={cx('name-container')}>
-                                    <Image src={video?.user?.avatar} className={cx('avatar')} />
-
-                                    <div className={cx('name')}>
-                                        <p className={cx('nickname')}>{video?.user?.nickname}</p>
-                                        <p className={cx('fullname')}>
-                                            {`${video?.user?.first_name} ${
-                                                video?.user?.last_name === ''
-                                                    ? video?.user?.nickname
-                                                    : video?.user?.last_name
-                                            } · ${video?.created_at?.slice(0, 10)}`}
-                                        </p>
+                    {Object.keys(video).length === 0 ? (
+                        <div className={cx('info')}>
+                            <div className={cx('name-container')}>
+                                <div className={cx('avatar')}>
+                                    <AvatarLoading />
+                                </div>
+                                <div className={cx('name')}>
+                                    <div className={cx('nickname')}>
+                                        {' '}
+                                        <LineLoading />
+                                    </div>
+                                    <div className={cx('fullname')}>
+                                        {' '}
+                                        <LineLoading />
                                     </div>
                                 </div>
-                            </Link>
-                        </AccountPreviewHome>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={cx('info')}>
+                            <AccountPreviewHome data={video}>
+                                <Link to={`/@${video?.user?.nickname}`} onClick={context.handleHidePlayer}>
+                                    <div className={cx('name-container')}>
+                                        <Image src={video?.user?.avatar} className={cx('avatar')} />
 
-                        <Follow
-                            className={cx('custom-btn')}
-                            userID={video?.user?.id}
-                            isFollow={video?.user?.is_followed}
-                        />
-                    </div>
+                                        <div className={cx('name')}>
+                                            <p className={cx('nickname')}>{video?.user?.nickname}</p>
+                                            <p className={cx('fullname')}>
+                                                {`${video?.user?.first_name} ${
+                                                    video?.user?.last_name === ''
+                                                        ? video?.user?.nickname
+                                                        : video?.user?.last_name
+                                                } · ${video?.created_at?.slice(0, 10)}`}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </AccountPreviewHome>
+
+                            <Follow
+                                className={cx('custom-btn')}
+                                userID={video?.user?.id}
+                                isFollow={video?.user?.is_followed}
+                            />
+                        </div>
+                    )}
 
                     <div className={cx('content')}>
                         <div className={cx('description')}>{video?.description}</div>
@@ -315,7 +337,12 @@ function VideoPlayerModal({ onHideModal }) {
                                         <TwitterIcon />
                                     </button>
                                 </Tippy>
-                                <ShareAction offset={[-43, 10]} placement="bottom-end" delay={[0, 300]}>
+                                <ShareAction
+                                    offset={[-43, 10]}
+                                    placement="bottom-end"
+                                    delay={[0, 300]}
+                                    zIndex="999999999"
+                                >
                                     <div className={cx('share-btn')}>
                                         <button>
                                             <ShareMiniIcon />
@@ -335,39 +362,57 @@ function VideoPlayerModal({ onHideModal }) {
                         </div>
                     </div>
                 </div>
-                <div className={cx('comment-container')}>
-                    {comments?.map((comment, index) => (
-                        <div className={cx('comment-item')} key={index}>
-                            <AccountPreviewHome data={comment}>
-                                <Link to={`/@${comment?.user?.nickname}`} onClick={context.handleHidePlayer}>
-                                    <div className={cx('avatar-box')}>
-                                        <Image
-                                            src={comment?.user?.avatar}
-                                            alt={comment?.user?.nickname}
-                                            className={cx('avatar')}
-                                        />
-                                    </div>
-                                    <div className={cx('nickname-item')}>
-                                        <strong>{comment?.user?.nickname}</strong>
-                                    </div>
-                                </Link>
-                            </AccountPreviewHome>
-
-                            <div className={cx('content-comment')}>
-                                <p>{comment?.comment}</p>
-                                <div className={cx('reply')}>
-                                    <span className={cx('created-date')}>{comment?.created_at.slice(0, 10)}</span>
-                                    <span className={cx('reply-btn')}>Reply</span>
+                {Object.keys(video).length === 0 ? (
+                    <div className={cx('comment-container')}>
+                        <div className={cx('comment-item')}>
+                            <div className={cx('avatar-box')}>
+                                <div className={cx('avatar')}>
+                                    <AvatarLoading />
                                 </div>
                             </div>
-                            <div className={cx('icon')}>
-                                <ThreeDotIcon className={cx('hidden')} />
-                                <HeartMiniIcon className={cx('color-icon')} />
-                                <span className={cx('likes-count')}>{comment?.likes_count}</span>
+                            <div className={cx('nickname-item')}>
+                                <LineLoading />
+                            </div>
+                            <div className={cx('content-comment')} style={{ marginTop: '35px' }}>
+                                <LineLoading />
                             </div>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ) : (
+                    <div className={cx('comment-container')}>
+                        {comments?.map((comment, index) => (
+                            <div className={cx('comment-item')} key={index}>
+                                <AccountPreviewHome data={comment}>
+                                    <Link to={`/@${comment?.user?.nickname}`} onClick={onHideModal}>
+                                        <div className={cx('avatar-box')}>
+                                            <Image
+                                                src={comment?.user?.avatar}
+                                                alt={comment?.user?.nickname}
+                                                className={cx('avatar')}
+                                            />
+                                        </div>
+                                        <div className={cx('nickname-item')}>
+                                            <strong>{comment?.user?.nickname}</strong>
+                                        </div>
+                                    </Link>
+                                </AccountPreviewHome>
+
+                                <div className={cx('content-comment')}>
+                                    <p>{comment?.comment}</p>
+                                    <div className={cx('reply')}>
+                                        <span className={cx('created-date')}>{comment?.created_at.slice(0, 10)}</span>
+                                        <span className={cx('reply-btn')}>Reply</span>
+                                    </div>
+                                </div>
+                                <div className={cx('icon')}>
+                                    <ThreeDotIcon className={cx('hidden')} />
+                                    <HeartMiniIcon className={cx('color-icon')} />
+                                    <span className={cx('likes-count')}>{comment?.likes_count}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
                 <div className={cx('footer-comment')}>
                     {!stateLogin.state ? (
                         <div className={cx('notify')} onClick={showLoginModal}>

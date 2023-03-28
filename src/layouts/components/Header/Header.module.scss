@@ -11,8 +11,9 @@
     display: flex;
     justify-content: center;
     height: var(--default-layout-header-height, 60px);
-    box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
-    background-color: var(--white);
+    box-shadow: var(--box-shadow-header);
+    background-color: var(--default-background);
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .inner {
@@ -30,8 +31,12 @@
     align-items: center;
 
     .logo {
+        color: var(--text-primary-color);
         display: flex;
         align-items: center;
+    }
+    img {
+        color: var(--text-primary-color);
     }
 }
 
@@ -61,10 +66,12 @@
     margin-left: 28px;
     padding: 4px 8px;
     background-color: transparent;
+    color: var(--text-primary-color);
     cursor: pointer;
 }
 
 .action-btn {
+    color: var(--text-primary-color) !important;
     position: relative;
     display: flex;
     font-size: 2.2rem;

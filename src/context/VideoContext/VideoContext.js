@@ -1,4 +1,4 @@
-import { createContext, useLayoutEffect, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 import { VideoPlayerModal } from '~/components/Modal';
 import useVideoModal from '~/hooks/useVideoModal';
@@ -10,6 +10,7 @@ function VideoContext({ children }) {
     const [nickName, setNickName] = useState('');
     const [videoID, setVideoID] = useState(0);
     const [positionVideo, setPositionVideo] = useState(0);
+
     const [listVideo, setListVideo] = useState([]);
     const [isMuted, setIsMuted] = useState(true);
     const [isChangeState, setIsChangeState] = useState(false);
@@ -17,12 +18,7 @@ function VideoContext({ children }) {
 
     const [volume, setVolume] = useState(0.6);
 
-    const [VideoModal, showVideoPlayer, hideVideoPlayer, isVideoModalShow] = useVideoModal(VideoPlayerModal);
-
-    // const location = window.location.pathname;
-    // useEffect(() => {
-    //     setPositionVideo(0);
-    // }, [location]);
+    const [, showVideoPlayer, hideVideoPlayer, isVideoModalShow] = useVideoModal(VideoPlayerModal);
 
     useEffect(() => {
         setNickName(listVideo[positionVideo]?.user?.nickname);
@@ -54,19 +50,11 @@ function VideoContext({ children }) {
         setVideoID(id);
     };
     const handleNextVideo = () => {
-        if (positionVideo >= listVideo.length - 1) {
-            setPositionVideo(listVideo.length - 1);
-        } else {
-            setPositionVideo((prev) => prev + 1);
-        }
+        setPositionVideo((prev) => prev + 1);
     };
 
     const handleBackVideo = () => {
-        if (positionVideo <= 0) {
-            setPositionVideo(0);
-        } else {
-            setPositionVideo((prev) => prev - 1);
-        }
+        setPositionVideo((prev) => prev - 1);
     };
 
     const handleMutedVideo = () => {
@@ -87,10 +75,12 @@ function VideoContext({ children }) {
     const handleStateComment = (state) => {
         setIsComment(state);
     };
+
     const value = {
         isVideoModalShow,
         showVideoPlayer,
         hideVideoPlayer,
+
         volume,
         isMuted,
         listVideo,

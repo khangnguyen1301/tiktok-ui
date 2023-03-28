@@ -26,6 +26,15 @@
 
 .time-video {
     margin-left: 15px;
+    display: flex;
+    .current-time {
+        width: 40px;
+    }
+
+    .duration-time {
+        margin-left: 3px;
+        width: 40px;
+    }
 }
 .fullscreen,
 .button {

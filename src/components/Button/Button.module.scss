@@ -10,10 +10,9 @@
     font-weight: 700;
     font-family: 'ProximaNova', sans-serif;
     cursor: pointer;
-    background-color: var(--white);
+    background-color: var(--default-background);
     border: 1px solid transparent;
     user-select: none;
-
     + .wrapper {
         margin-left: 8px;
         // margin-right: 7px;
@@ -27,6 +26,7 @@
 
 .title {
     padding-bottom: 3px;
+    color: var(--text-primary-color);
 }
 
 .icon + .title,
@@ -34,6 +34,7 @@
     margin-left: 8px;
 }
 .icon {
+    color: var(--text-primary-color);
     display: inline-block;
     width: 24px;
     text-align: center;
@@ -44,19 +45,22 @@
 // Button types
 .rounded {
     border-radius: 999px;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
-    border-color: rgba(22, 24, 35, 0.12);
+    box-shadow: 0 2px 8px var(--box-shadow-button);
+    border-color: var(--background-gray-color-12);
 
     &:hover {
-        border-color: rgba(22, 24, 35, 0.2);
-        background-color: rgba(22, 24, 35, 0.03);
+        border-color: var(--background-gray-color-02);
+        background-color: var(--background-gray-color-03);
     }
 }
 
 .primary {
-    color: var(--white);
     background-color: var(--primary);
     border-color: var(--primary);
+
+    span {
+        color: var(--white);
+    }
 
     &:hover {
         border-color: var(--primary);
@@ -65,11 +69,12 @@
 }
 
 .outline {
-    color: var(--primary);
-    border-color: currentColor;
-
+    border-color: var(--primary);
+    background-color: var(--white-color-2);
+    span {
+        color: var(--primary);
+    }
     &:hover {
-        border-color: currentColor;
         background-color: #fe2c550f;
     }
 }
@@ -93,12 +98,17 @@
     min-width: 140px;
 }
 .custom {
+    color: var(--text-primary-color);
     margin-right: 7px;
-    color: var(--text-color);
     border: 1px solid rgba(22, 24, 35, 0.12);
+    background-color: var(--background-gray-color-03);
 
     &:hover {
-        background-color: #16182308;
-        border: 1px solid rgba(22, 24, 35, 0.12);
+        background-color: var(--background-gray-color-03);
+        // border: 1px solid var(--background-gray-color-12);
+    }
+
+    span {
+        color: var(--text-primary-color);
     }
 }

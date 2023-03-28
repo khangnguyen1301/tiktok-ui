@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import images from '~/assets/images';
-import { VolumeIcon, VolumeMutedIcon } from '../Icons';
+import { VolumeIcon, VolumeMutedIcon } from '~/components/Icons';
 import styles from './ControlVideo.module.scss';
 
 const cx = classNames.bind(styles);
@@ -15,14 +15,14 @@ function ControlVideo({ currentTime, duration, isMuted, handleMuted, isPlayed, h
     const controlRef = useRef();
     const selectorRef = useRef();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const [currentMinutes, currentSeconds] = calcTime(currentTime);
         const [durationMinutes, durationSeconds] = calcTime(duration);
         setMinutes(currentMinutes);
         setSeconds(currentSeconds);
         setDurationMinutes(durationMinutes);
         setDurationSeconds(durationSeconds);
-        controlRef.current.value = currentSeconds;
+        controlRef.current.value = currentTime;
         handleSelector();
     }, [currentTime, duration]);
 
@@ -51,11 +51,15 @@ function ControlVideo({ currentTime, duration, isMuted, handleMuted, isPlayed, h
                     </div>
 
                     <div className={cx('time-video')}>
-                        <span>
-                            {`${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? '0' + seconds : seconds} / ${
-                                durationMinutes < 10 ? `0${durationMinutes}` : durationMinutes
-                            }:${durationSeconds < 10 ? `0${durationSeconds}` : durationSeconds}`}
-                        </span>
+                        <div className={cx('current-time')}>
+                            {`${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? '0' + seconds : seconds}`}
+                        </div>
+                        <div>{`/`}</div>
+                        <div className={cx('duration-time')}>
+                            {`${durationMinutes < 10 ? `0${durationMinutes}` : durationMinutes}:${
+                                durationSeconds < 10 ? `0${durationSeconds}` : durationSeconds
+                            }`}
+                        </div>
                     </div>
                 </div>
 

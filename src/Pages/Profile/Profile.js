@@ -29,6 +29,9 @@ import Follow from '~/components/Follow';
 import { useLocalStorage } from '~/hooks';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import AvatarLoading from '~/components/Loadings/AvatarLoading';
+import LineLoading from '~/components/Loadings/LineLoading';
+import VideoLoading from '~/components/Loadings/VideoLoading';
 
 const cx = classNames.bind(styles);
 
@@ -53,7 +56,8 @@ const ACTION_MENU = [
 ];
 
 function Profile() {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
+    const [follow, setFollow] = useState(false);
     const [selectTab, setSelectTab] = useState(VIDEO_TAB);
     const [activeBar, setActiveBar] = useState(VIDEO_TAB);
     const [positionPlay, setPositionPlay] = useState(0);
@@ -69,11 +73,13 @@ function Profile() {
         context.handleSetPositionVideo(0);
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        setFollow(false);
         const fetchApi = async () => {
             const result = await proFileService.getInfoUser(userID.pathname);
             setUser(result);
+            setFollow(result.is_followed);
             context.handleSetListVideo(result?.videos);
         };
         fetchApi();
@@ -92,142 +98,171 @@ function Profile() {
     const handleMouseMove = (value) => {
         setPositionPlay(value);
     };
-
     return (
         <div className={cx('wrapper')}>
             <Sidebar className={cx('custom-sidebar')} />
-            <div className={cx('profile')}>
-                <div className={cx('info')}>
-                    <div className={cx('header')}>
-                        <Image src={user?.avatar} alt={user?.nickname} className={cx('avatar')} />
-                        <div className={cx('name-container')}>
-                            <div className={cx('name')}>
-                                <h2 className={cx('nick-name')}>{user?.nickname}</h2>
-                                {user?.tick && (
-                                    <span>
-                                        <FontAwesomeIcon icon={faCircleCheck} className={cx('tick')} />
-                                    </span>
+            {user === null ? (
+                <div className={cx('profile')}>
+                    <div className={cx('info')}>
+                        <div className={cx('header')}>
+                            <div className={cx('avatar')}>
+                                <AvatarLoading />
+                            </div>
+                            <div className={cx('name-container')}>
+                                <LineLoading />
+                                <LineLoading />
+                                <LineLoading />
+                            </div>
+                        </div>
+                        <div className={cx('counter')}>
+                            <LineLoading />
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className={cx('profile')}>
+                    <div className={cx('info')}>
+                        <div className={cx('header')}>
+                            <Image src={user?.avatar} alt={user?.nickname} className={cx('avatar')} />
+
+                            <div className={cx('name-container')}>
+                                <div className={cx('name')}>
+                                    <h2 className={cx('nick-name')}>{user?.nickname}</h2>
+                                    {user?.tick && (
+                                        <span>
+                                            <FontAwesomeIcon icon={faCircleCheck} className={cx('tick')} />
+                                        </span>
+                                    )}
+                                </div>
+
+                                <h1 className={cx('full-name')}>{`${user?.first_name} ${user?.last_name}`}</h1>
+
+                                {!stateLogin?.state ? (
+                                    <Button small primary className={cx('custom-btn')} onClick={showLoginModal}>
+                                        Follow
+                                    </Button>
+                                ) : userID.pathname.includes(userInfo.data.nickName) ? (
+                                    <Button
+                                        leftIcon={<EditIcon />}
+                                        custom
+                                        className={cx('edit-btn')}
+                                        onClick={showUpdateModal}
+                                    >
+                                        Edit profile
+                                    </Button>
+                                ) : (
+                                    <Follow
+                                        primary
+                                        outline={false}
+                                        className={cx('custom-btn')}
+                                        userID={user?.id}
+                                        isFollow={follow}
+                                    />
                                 )}
                             </div>
-                            <h1 className={cx('full-name')}>{`${user?.first_name} ${user?.last_name}`}</h1>
+                        </div>
 
-                            {!stateLogin?.state ? (
-                                <Button small primary className={cx('custom-btn')} onClick={showLoginModal}>
-                                    Follow
-                                </Button>
-                            ) : userID.pathname.includes(userInfo.data.nickName) ? (
-                                <Button
-                                    leftIcon={<EditIcon />}
-                                    custom
-                                    className={cx('edit-btn')}
-                                    onClick={showUpdateModal}
-                                >
-                                    Edit profile
-                                </Button>
-                            ) : (
-                                <Follow
-                                    primary
-                                    outline={false}
-                                    className={cx('custom-btn')}
-                                    userID={user?.id}
-                                    isFollow={user?.is_followed}
-                                />
-                            )}
+                        <div className={cx('counter')}>
+                            <strong>{user?.followings_count}</strong>
+                            <span>Following</span>
+                            <strong>{user?.followers_count}</strong>
+                            <span>Followers</span>
+                            <strong>{user?.likes_count}</strong>
+                            <span>Likes</span>
+                        </div>
+
+                        <h2 className={cx('bio')}>{user?.bio ?? 'No bio yet'}</h2>
+                        <div className={cx('link')}>
+                            <LinkIcon />
+                            <span>{`www.facebook.com/${user?.nickname}`}</span>
+                        </div>
+                        <div className={cx('icon')}>
+                            <ShareAction delay={[0, 300]} offset={[-43, 0]} placement="bottom-end" zIndex="999">
+                                <div className={cx('icon-item')}>
+                                    <ShareIconRegular />
+                                </div>
+                            </ShareAction>
+                            <Menu
+                                items={ACTION_MENU}
+                                className={cx('custom-menu')}
+                                offset={[60, 0]}
+                                delay={[0, 300]}
+                                placement="bottom-end"
+                                custom
+                                customMenuItem
+                            >
+                                <div className={cx('icon-item')}>
+                                    <ThreeDotIcon />
+                                </div>
+                            </Menu>
                         </div>
                     </div>
-                    <div className={cx('counter')}>
-                        <strong>{user?.followings_count}</strong>
-                        <span>Following</span>
-                        <strong>{user?.followers_count}</strong>
-                        <span>Followers</span>
-                        <strong>{user?.likes_count}</strong>
-                        <span>Likes</span>
-                    </div>
-                    <h2 className={cx('bio')}>{user?.bio ?? 'No bio yet'}</h2>
-                    <div className={cx('link')}>
-                        <LinkIcon />
-                        <span>{`www.facebook.com/${user?.nickname}`}</span>
-                    </div>
-                    <div className={cx('icon')}>
-                        <ShareAction delay={[0, 300]} offset={[-43, 0]} placement="bottom-end" zIndex="999">
-                            <div className={cx('icon-item')}>
-                                <ShareIconRegular />
-                            </div>
-                        </ShareAction>
-                        <Menu
-                            items={ACTION_MENU}
-                            className={cx('custom-menu')}
-                            offset={[60, 0]}
-                            delay={[0, 300]}
-                            placement="bottom-end"
-                            custom
-                            customMenuItem
-                        >
-                            <div className={cx('icon-item')}>
-                                <ThreeDotIcon />
-                            </div>
-                        </Menu>
-                    </div>
-                </div>
 
-                <div className={cx('video-container')}>
-                    <div className={cx('tab-redirect')}>
-                        <span
-                            className={cx('tab-item', { text: selectTab === VIDEO_TAB })}
-                            onClick={() => handleSelectTab(VIDEO_TAB)}
-                            onMouseOver={() => handleActiveBarShow(VIDEO_TAB)}
-                            onMouseOut={() => handleActiveBarShow(selectTab)}
-                        >
-                            Videos
-                        </span>
+                    <div className={cx('video-container')}>
+                        <div className={cx('tab-redirect')}>
+                            <span
+                                className={cx('tab-item', { text: selectTab === VIDEO_TAB })}
+                                onClick={() => handleSelectTab(VIDEO_TAB)}
+                                onMouseOver={() => handleActiveBarShow(VIDEO_TAB)}
+                                onMouseOut={() => handleActiveBarShow(selectTab)}
+                            >
+                                Videos
+                            </span>
 
-                        <div
-                            className={cx('tab-item', { text: selectTab === LIKED_TAB })}
-                            onClick={() => handleSelectTab(LIKED_TAB)}
-                            onMouseOver={() => handleActiveBarShow(LIKED_TAB)}
-                            onMouseOut={() => handleActiveBarShow(selectTab)}
-                        >
-                            <BlockIcon />
-                            <span>Liked</span>
+                            <div
+                                className={cx('tab-item', { text: selectTab === LIKED_TAB })}
+                                onClick={() => handleSelectTab(LIKED_TAB)}
+                                onMouseOver={() => handleActiveBarShow(LIKED_TAB)}
+                                onMouseOut={() => handleActiveBarShow(selectTab)}
+                            >
+                                <BlockIcon />
+                                <span>Liked</span>
+                            </div>
+                            <div
+                                className={cx('active-bar', {
+                                    active: activeBar !== VIDEO_TAB,
+                                })}
+                            ></div>
                         </div>
-                        <div
-                            className={cx('active-bar', {
-                                active: activeBar !== VIDEO_TAB,
-                            })}
-                        ></div>
-                    </div>
-                    {user?.videos?.length === 0 && (
-                        <div className={cx('none-item')}>
-                            <ProfileIcon />
-                            {selectTab === VIDEO_TAB ? (
-                                <p> No videos have been posted yet</p>
+                        {user?.videos?.length === 0 && (
+                            <div className={cx('none-item')}>
+                                <ProfileIcon />
+                                {selectTab === VIDEO_TAB ? (
+                                    <p> No videos have been posted yet</p>
+                                ) : (
+                                    <p> No liked videos yet</p>
+                                )}
+                            </div>
+                        )}
+                        {selectTab === VIDEO_TAB ? (
+                            user === null ? (
+                                <div className={cx('video-item')}>
+                                    <VideoLoading />
+                                </div>
                             ) : (
+                                <div className={cx('video-item')}>
+                                    {user?.videos?.map((res, index) => (
+                                        <VideoPreview
+                                            data={res}
+                                            key={res.id}
+                                            index={index}
+                                            handleMouseMove={handleMouseMove}
+                                            play={index === positionPlay}
+                                            profile={true}
+                                            videoID={res.id}
+                                        />
+                                    ))}
+                                </div>
+                            )
+                        ) : (
+                            <div className={cx('none-item')}>
+                                <ProfileIcon />
                                 <p> No liked videos yet</p>
-                            )}
-                        </div>
-                    )}
-                    {selectTab === VIDEO_TAB ? (
-                        <div className={cx('video-item')}>
-                            {user?.videos?.map((res, index) => (
-                                <VideoPreview
-                                    data={res}
-                                    key={res.id}
-                                    index={index}
-                                    handleMouseMove={handleMouseMove}
-                                    play={index === positionPlay}
-                                    profile={true}
-                                    videoID={res.id}
-                                />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className={cx('none-item')}>
-                            <ProfileIcon />
-                            <p> No liked videos yet</p>
-                        </div>
-                    )}
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }

@@ -85,7 +85,7 @@ function UpdateProFileModal({ onHideModal }) {
         setBio(text);
         setTextCount(text.length);
     };
-    console.log(avatar);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('update-wrapper')}>

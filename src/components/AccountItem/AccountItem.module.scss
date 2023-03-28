@@ -5,7 +5,7 @@
     cursor: pointer;
 
     &:hover {
-        background: rgba(22, 24, 35, 0.03);
+        background: var(--background-gray-color-03);
     }
 }
 
@@ -22,6 +22,7 @@
 }
 
 .name {
+    color: var(--text-primary-color);
     font-size: 1.6rem;
     font-weight: 500;
 }
@@ -34,5 +35,5 @@
 
 .username {
     font-size: 1.4rem;
-    color: rgba(22, 24, 35, 1);
+    color: var(--text-primary-color);
 }

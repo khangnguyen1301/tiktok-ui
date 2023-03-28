@@ -1,9 +1,13 @@
+import classNames from 'classnames/bind';
+import styles from './Follow.module.scss';
+
 import Button from '../Button';
 import * as followService from '~/services/followService';
-import { useContext, useState } from 'react';
+import { useContext, useLayoutEffect, useState } from 'react';
 
-import { useLocation } from 'react-router-dom';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+
+const cx = classNames.bind(styles);
 
 function Follow({
     className,
@@ -16,8 +20,12 @@ function Follow({
     handleFollow,
     isUpdateFollow,
 }) {
-    const [isFollowed, setIsFollowed] = useState(isFollow);
+    const [isFollowed, setIsFollowed] = useState(false);
     const context = useContext(VideoEnviroment);
+
+    useLayoutEffect(() => {
+        setIsFollowed(isFollow);
+    }, [userID]);
 
     const follow = async () => {
         const result = await followService.followUser({ userID: userID || context.listVideo[index]?.user?.id });
@@ -34,11 +42,17 @@ function Follow({
     return (
         <div>
             {((updateFollow?.is_followed ?? isFollowed) && isUpdateFollow) || isFollowed ? (
-                <Button custom className={className} onClick={() => unFollow()}>
+                <Button custom className={cx('follow', { [className]: className })} onClick={() => unFollow()}>
                     Following
                 </Button>
             ) : (
-                <Button small outline={outline} primary={primary} className={className} onClick={() => follow()}>
+                <Button
+                    small
+                    outline={outline}
+                    primary={primary}
+                    className={cx('un-follow', { [className]: className })}
+                    onClick={() => follow()}
+                >
                     Follow
                 </Button>
             )}

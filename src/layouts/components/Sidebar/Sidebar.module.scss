@@ -25,7 +25,7 @@
     }
 
     &:hover::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.05);
+        background: var(--background-thumb-scrollbar);
     }
 }
 
@@ -40,7 +40,7 @@
 }
 
 .log-in {
-    border-top: 1px solid rgba(26, 25, 25, 0.07);
+    border-top: 1px solid var(--boder-top);
     margin-top: 8px;
     width: 100%;
     height: 156px;
@@ -58,13 +58,13 @@
 .title {
     font-size: 1.6rem;
     line-height: 22px;
-    color: #16182380;
+    color: var(--background-gray-color-05);
     width: fit-content;
     height: 44px;
 }
 
 .hashtag {
-    border-top: 1px solid rgba(26, 25, 25, 0.07);
+    border-top: 1px solid var(--boder-top);
     padding: 16px 8px 8px;
     position: relative;
     box-sizing: border-box;
@@ -75,7 +75,7 @@
     margin-bottom: 8px;
     font-size: 1.45rem;
     line-height: 20px;
-    color: rgba(22, 24, 35, 0.6);
+    color: var(--background-gray-color-75);
     font-family: var(--font-family);
     font-weight: 600;
 }
@@ -96,17 +96,18 @@
     margin-bottom: 12px;
     margin-left: 0 !important;
     padding: 3px 10px;
-    border: 1px solid rgba(22, 24, 35, 0.2);
+    border: 1px solid var(--background-gray-color-02);
     border-radius: 12px;
-    background: rgb(255, 255, 255);
+    background: var(--background-hashtag);
     margin-right: 8px;
     cursor: pointer;
     .style-music {
+        color: var(--background-gray-color-75);
         flex-shrink: 0;
     }
 
     &:hover {
-        background-color: #16182308;
+        background-color: var(--background-gray-color-03);
     }
 }
 
@@ -114,7 +115,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    color: rgba(22, 24, 35, 0.75);
+    color: var(--background-gray-color-75);
     font-family: var(--font-family);
     font-weight: 400;
     font-size: 14px;
@@ -129,7 +130,7 @@
 }
 
 .effect {
-    border-top: 1px solid rgba(26, 25, 25, 0.07);
+    border-top: 1px solid var(--boder-top);
     padding: 16px 8px 0 8px;
     position: relative;
     box-sizing: border-box;
@@ -155,7 +156,7 @@
 }
 
 .content {
-    color: #161822;
+    color: #000;
     font-family: SofiaPro;
     font-weight: 600;
     font-size: 1.6rem;
@@ -164,7 +165,7 @@
 }
 
 .link-container {
-    color: #16182380;
+    color: var(--background-gray-color-05);
     font-family: var(--font-family);
     margin-top: 25px;
     padding: 0 40px 0 8px;
@@ -186,7 +187,7 @@
 }
 
 .tiktok {
-    color: #16182380;
+    color: var(--background-gray-color-05);
     font-family: var(--font-family);
     font-weight: 600;
     font-size: 1.2rem;

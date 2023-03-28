@@ -36,6 +36,7 @@ function AccountItem({ data }) {
                     offset={[-25, 0]}
                     render={renderAccount}
                     placement={'bottom'}
+                    popperOptions={{ modifiers: [{ name: 'flip', enabled: false }] }}
                 >
                     <div className={cx('container')}>
                         <Image src={data.avatar} alt={data.nickname} className={cx('logo')} />

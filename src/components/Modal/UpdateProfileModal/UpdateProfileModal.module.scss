@@ -14,6 +14,7 @@
     z-index: 9999;
     box-sizing: border-box;
     overflow: auto;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 .update-wrapper {
     padding: 32px 16px;
@@ -24,7 +25,7 @@
 .update-container {
     max-width: 700px;
     border-radius: 8px;
-    background-color: #fff;
+    background-color: var(--default-background);
     -webkit-box-pack: center;
     -webkit-box-align: center;
 }
@@ -39,15 +40,15 @@
     font-weight: 600;
     padding: 24px 24px 12px;
     line-height: 36px;
-    color: rgb(22, 24, 35);
-    border-bottom: 0.5px solid rgba(22, 24, 35, 0.2);
+    color: var(--text-primary-color);
+    border-bottom: 0.5px solid var(--background-gray-color-02);
 }
 
 .title {
 }
 
 .close-btn {
-    color: rgba(22, 24, 35, 0.75);
+    color: var(--background-gray-color-75);
     cursor: pointer;
 }
 
@@ -60,10 +61,11 @@
 .birthday,
 .bio,
 .profile-photo {
+    color: var(--text-primary-color);
     height: 129px;
     padding: 16px 0px;
     display: flex;
-    border-bottom: 0.5px solid rgba(22, 24, 35, 0.12);
+    border-bottom: 0.5px solid var(--background-gray-color-12);
 
     span {
         width: 120px;
@@ -100,7 +102,7 @@
         border: 1px solid rgb(208, 208, 211);
         width: 32px;
         height: 32px;
-        background-color: var(--white);
+        background-color: var(--default-background);
         cursor: pointer;
     }
 }
@@ -174,10 +176,14 @@
     }
     .save-btn,
     .cancel-btn {
+        background-color: var(--background-gray-color-241);
         min-width: 96px;
         min-height: 28px;
         font-size: 1.4rem;
         font-weight: 600;
+        &:hover {
+            background-color: var(--background-gray-color-248);
+        }
     }
 
     .save-container {

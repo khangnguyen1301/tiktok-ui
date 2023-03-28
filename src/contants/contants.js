@@ -1,7 +1,8 @@
 import { faCircleQuestion, faKeyboard, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import images from '~/assets/images';
-import { UserIcon, QRIcon, LanguagesIcon, FeedbackIcon, KeyboardIcon } from '~/components/Icons';
+import { UserIcon, QRIcon, LanguagesIcon, FeedbackIcon, KeyboardIcon, MoonIcon } from '~/components/Icons';
+import Theme from '~/components/Theme';
 
 export const DEFAULT_USER_INFO = {
     state: false,
@@ -16,6 +17,102 @@ export const DEFAULT_USER_INFO = {
 };
 
 export const MENU_ITEMS = [
+    {
+        icon: <LanguagesIcon />,
+        title: 'English',
+        children: {
+            title: 'Language',
+            data: [
+                {
+                    type: 'language',
+                    code: 'en',
+                    title: 'English',
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt',
+                },
+                {
+                    type: 'language',
+                    code: 'en',
+                    title: 'English',
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt',
+                },
+                {
+                    type: 'language',
+                    code: 'en',
+                    title: 'English',
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt',
+                },
+                {
+                    type: 'language',
+                    code: 'en',
+                    title: 'English',
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt',
+                },
+                {
+                    type: 'language',
+                    code: 'en',
+                    title: 'English',
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt',
+                },
+                {
+                    type: 'language',
+                    code: 'en',
+                    title: 'English',
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt',
+                },
+                {
+                    type: 'language',
+                    code: 'en',
+                    title: 'English',
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt',
+                },
+            ],
+        },
+    },
+    {
+        icon: <FeedbackIcon />,
+        title: 'Feedback and help',
+        to: '/feedback',
+    },
+    {
+        icon: <KeyboardIcon />,
+        title: 'Keyboard shortcuts',
+    },
+    {
+        icon: <MoonIcon />,
+        title: 'Dark mode',
+        rightIcon: <Theme />,
+    },
+];
+
+export const MENU_ITEMS_UPLOAD_LAYOUT = [
     {
         icon: <LanguagesIcon />,
         title: 'English',

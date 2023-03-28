@@ -8,7 +8,7 @@ import styles from './Menu.module.scss';
 import MenuItem from './MenuItem';
 import Header from './Header';
 import { ChevronDownIcon } from '~/components/Icons';
-import { computeHeadingLevel } from '@testing-library/react';
+
 import { useLocalStorage } from '~/hooks';
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
@@ -25,6 +25,7 @@ function Menu({
     zIndex,
     custom,
     className,
+    uploadLayout,
     onChange = defaultFn,
     hideOnClick = false,
     arrowBottom = false,
@@ -68,7 +69,7 @@ function Menu({
         setHistory((prev) => prev.slice(0, 1));
     };
 
-    const logOut = () => {
+    const handleUserLogOut = () => {
         setDataLocalStorage('user-login', { state: false });
         window.location.reload();
     };
@@ -85,8 +86,7 @@ function Menu({
                             setHistory((prev) => [...prev, item.children]);
                         } else {
                             if (item.logout) {
-                                console.log('da vao day');
-                                logOut();
+                                handleUserLogOut();
                             } else {
                                 onChange(item);
                             }
@@ -96,6 +96,7 @@ function Menu({
                     customMenuItem={customMenuItem}
                     shareMenuItem={shareMenuItem}
                     shareActive={shareActive}
+                    uploadLayout={uploadLayout}
                 />
             );
         });

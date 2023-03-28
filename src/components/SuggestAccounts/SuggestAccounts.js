@@ -5,6 +5,7 @@ import AccountItem from '~/components/SuggestAccounts/AccountItem';
 import styles from './SuggestAccounts.module.scss';
 
 import { useState } from 'react';
+import LineLoading from '../Loadings/LineLoading';
 
 const cx = classNames.bind(styles);
 
@@ -30,16 +31,25 @@ function SuggestAccounts({ title, data, sideBarRef, noneFollow = false }) {
     return (
         <div>
             <div className={cx('wrapper')}>
-                <div className={classes}>
-                    <p className={cx('title')}> {title} </p>
-                    {data.length > 0 ? (
-                        data?.map((res) => <AccountItem data={res} key={res.id} />)
-                    ) : (
-                        <div className={cx('none-following')}>
-                            <span>Accounts you follow will appear here</span>
-                        </div>
-                    )}
-                </div>
+                {data.length === 0 ? (
+                    <div className={classes}>
+                        <p className={cx('title')}> {title} </p>
+                        {[...Array(8)].map((res, index) => (
+                            <LineLoading key={index} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className={classes}>
+                        <p className={cx('title')}> {title} </p>
+                        {data.length > 0 ? (
+                            data?.map((res) => <AccountItem data={res} key={res.id} />)
+                        ) : (
+                            <div className={cx('none-following')}>
+                                <span>Accounts you follow will appear here</span>
+                            </div>
+                        )}
+                    </div>
+                )}
                 {!noneFollow && (
                     <div>
                         {seeMore ? (

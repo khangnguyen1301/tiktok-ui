@@ -1,12 +1,13 @@
 .wrapper {
-    border-bottom: 1px solid rgba(26, 25, 25, 0.07);
+    max-width: 692px;
+    border-bottom: 1px solid var(--boder-top);
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     padding: 20px 0px;
-    //width: 692px;
-    max-width: 692px;
+    background-color: var(--default-background);
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .custom-img {
@@ -36,9 +37,11 @@
         display: flex;
         align-items: center;
         flex-direction: row;
+        color: var(--text-primary-color);
     }
 
     h3 {
+        color: var(--text-primary-color);
         font-family: SofiaPro;
         font-weight: 700;
         font-size: 1.8rem;
@@ -47,6 +50,7 @@
     }
 
     h4 {
+        color: var(--text-primary-color);
         font-family: var(--font-family);
         padding-top: 8px;
         font-weight: 400;
@@ -56,12 +60,14 @@
 }
 
 .content {
+    color: var(--text-primary-color);
     width: 450px;
     font-size: 1.6rem;
     font-weight: 400;
 }
 
 .music {
+    color: var(--text-primary-color);
     display: flex;
     align-items: center;
     width: fit-content;
@@ -152,12 +158,13 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: #1618230f;
+    background-color: var(--background-gray-color-06);
+    color: var(--text-primary-color);
     cursor: pointer;
 }
 
 .count {
-    color: #161823bf;
+    color: var(--background-gray-color-75);
     font-size: 1.2rem;
     line-height: 17px;
     text-align: center;

@@ -27,6 +27,7 @@ const images = {
     play: require('~/assets/images/circle-play-button.svg').default,
     fullscreen: require('~/assets/images/fullscreen-button.svg').default,
     pause: require('~/assets/images/pause-button.svg').default,
+    fileCheck: require('~/assets/images/check-icon.svg').default,
 };
 
 export default images;

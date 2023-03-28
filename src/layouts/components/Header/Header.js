@@ -7,13 +7,20 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 import styles from './Header.module.scss';
-import images from '~/assets/images';
 import Image from '~/components/Image';
 import config from '~/config';
 
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
-import { GetCoinsIcon, InboxIcon, LogoutIcon, MessageIcon, SettingsIcon, UserMenuIcon } from '~/components/Icons';
+import {
+    GetCoinsIcon,
+    InboxIcon,
+    LogoIcon,
+    LogoutIcon,
+    MessageIcon,
+    SettingsIcon,
+    UserMenuIcon,
+} from '~/components/Icons';
 import Search from '../Search';
 import { useContext } from 'react';
 import { useLocalStorage } from '~/hooks';
@@ -67,7 +74,7 @@ function Header({ className }) {
             <div className={cx('inner', className)}>
                 <div className={cx('logo-container')}>
                     <Link to={config.routes.home} className={cx('logo')}>
-                        <img src={images.logo} alt="Tiktok" />
+                        <LogoIcon />
                     </Link>
                 </div>
 

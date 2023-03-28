@@ -79,6 +79,7 @@ function FormModal({ onHideModal }) {
                                             style={{ height: '44px', marginBottom: '16px' }}
                                             key={index}
                                             onClick={() => handleMenu(index)}
+                                            className={cx('menu-item')}
                                         >
                                             <span className={cx('icon')}>{content.icon}</span>{' '}
                                             <span>{content.title}</span>
@@ -147,13 +148,13 @@ function FormModal({ onHideModal }) {
 
                     <div className={cx('footer')}>
                         {formLoginState === 'login' ? (
-                            <>
+                            <div className={cx('notify')}>
                                 Don't have an account? <p onClick={() => setFormLoginState('register')}> Sign up</p>{' '}
-                            </>
+                            </div>
                         ) : (
-                            <>
+                            <div className={cx('notify')}>
                                 Already have an account? <p onClick={() => setFormLoginState('login')}>Log in</p>
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>

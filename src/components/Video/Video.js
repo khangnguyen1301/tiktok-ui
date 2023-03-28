@@ -65,7 +65,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onCloseModal, videoContext.isVideoModalShow]);
+    }, [videoContext.isVideoModalShow]);
 
     useLayoutEffect(() => {
         let timerID;

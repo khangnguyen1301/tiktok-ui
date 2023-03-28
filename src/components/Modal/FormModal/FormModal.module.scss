@@ -22,7 +22,7 @@
     max-height: 693px;
     height: 80%;
     overflow: hidden;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--default-background);
     animation: showLoginForm 0.33s linear, hidden 0.23s linear;
 }
 
@@ -67,14 +67,21 @@
     }
 
     .more-btn {
+        color: var(--text-primary-color);
         display: flex;
         justify-content: center;
         cursor: pointer;
     }
 }
 
+.menu-item {
+    background-color: var(--background-gray-color-248);
+    border: 1px solid var(---background-gray-color-248);
+    margin-left: 0 !important;
+}
+
 .title {
-    color: rgb(22, 24, 35);
+    color: var(--text-primary-color);
     font-size: 32px;
     margin: 16px auto;
     font-weight: bold;
@@ -87,11 +94,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgb(255, 255, 255);
+    background: var(--default-background);
     padding: 18px 30px;
-
+    a {
+        color: var(--text-primary-color);
+    }
     p {
-        color: rgba(22, 24, 35, 0.5);
+        color: var(--background-gray-color-05);
         font-size: 12px;
         line-height: 15px;
         width: 375px;
@@ -106,6 +115,7 @@
 }
 
 .close-btn {
+    color: var(--text-primary-color);
     position: absolute;
     top: 15px;
     border-radius: 50%;
@@ -119,7 +129,7 @@
     right: 15px;
     width: 40px;
     height: 40px;
-    background: rgba(22, 24, 35, 0.03);
+    background: var(--background-gray-color-03);
 
     svg {
         width: 25px;
@@ -130,7 +140,7 @@
 .footer {
     width: 100%;
     height: 64px;
-    border-top: 1px solid rgba(22, 24, 35, 0.12);
+    border-top: 1px solid var(--background-gray-color-12);
     display: flex;
     -webkit-box-pack: center;
     justify-content: center;
@@ -139,6 +149,11 @@
     font-size: 15px;
     line-height: 18px;
     font-weight: 400;
+
+    .notify {
+        color: var(--text-primary-color);
+        display: flex;
+    }
 
     p {
         color: var(--primary);
@@ -181,6 +196,7 @@
 }
 
 .type {
+    color: var(--text-primary-color);
     margin-top: 10px;
     font-size: 1.5rem;
     font-weight: 600;
@@ -197,28 +213,29 @@
     .password {
         width: 100%;
         height: 44px;
-        border: 1px solid #1618231f;
+        border: 1px solid var(--background-gray-color-12);
         margin-bottom: 10px;
 
         input {
+            color: var(--text-primary-color);
             width: 100%;
             height: 100%;
             font-size: 1.6rem;
             line-height: 100%;
             padding-inline-start: 12px;
             padding-inline-end: unset;
-            caret-color: rgb(254, 44, 85);
-            background-color: #1618230f;
+            caret-color: var(--caret-color);
+            background-color: var(--background-gray-color-06);
 
             &::placeholder {
-                color: rgb(22 24 35 / 50%);
+                color: var(--background-gray-color-05);
                 font-size: 1.4rem;
             }
         }
     }
 }
 .forgot {
-    color: rgba(22, 24, 35, 0.75);
+    color: var(--background-gray-color-75);
     font-weight: 600;
     font-size: 12px;
 }
@@ -230,6 +247,7 @@
 }
 
 .back-btn {
+    color: var(--text-primary-color);
     position: absolute;
     top: 14px;
     left: 18px;

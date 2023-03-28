@@ -80,9 +80,9 @@
 
     .tiktok-logo,
     .btn-close {
-        color: #fff;
+        color: var(--white);
         font-size: 2.5rem;
-        background-color: #54545480;
+        background-color: rgba(84, 84, 84, 0.5019607843);
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -231,7 +231,7 @@
 }
 
 .sidebar {
-    background-color: #fff;
+    background-color: var(--default-background);
     width: 40%;
     height: 100%;
     padding-top: 32px;
@@ -279,6 +279,7 @@
     padding-top: 10px;
     cursor: pointer;
     .nickname {
+        color: var(--text-primary-color);
         height: fit-content;
         font-size: 1.8rem;
         font-weight: 700;
@@ -286,6 +287,7 @@
     }
 
     .fullname {
+        color: var(--text-primary-color);
         font-size: 1.4rem;
         line-height: 20px;
     }
@@ -297,6 +299,7 @@
 .content {
     width: 100%;
     height: auto;
+    color: var(--text-primary-color);
 }
 
 .description {
@@ -316,7 +319,7 @@
     font-size: 1.6rem;
     font-weight: 700;
     line-height: 22px;
-    color: rgb(22, 24, 35);
+    color: var(--text-primary-color);
     transition: color 250ms ease 0s;
     margin: 10px 0 32px 0;
     padding-bottom: 25px;
@@ -357,7 +360,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #1618230f;
+        background-color: var(--background-gray-color-06);
         border-radius: 50%;
         margin-right: 6px;
         width: 32px;
@@ -365,7 +368,7 @@
     }
 
     .count {
-        color: #161823bf;
+        color: var(--background-gray-color-75);
         font-size: 1.2rem;
         line-height: 17px;
         text-align: center;
@@ -388,6 +391,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        button {
+            color: var(--text-primary-color);
+        }
     }
 }
 
@@ -396,7 +402,7 @@
     height: 34px;
     display: flex;
     margin-top: 16px;
-    background-color: rgba(22, 24, 35, 0.06);
+    background-color: var(--background-gray-color-06);
     border-radius: 8px;
     border: 1px solid rgba(111, 111, 114, 0.06);
 }
@@ -409,7 +415,7 @@
     padding: 7px 0px 5px 12px;
 
     font-size: 1.4rem;
-    color: #161823bf;
+    color: var(--background-gray-color-75);
     line-height: 20px;
 }
 
@@ -429,12 +435,13 @@
 .comment-container {
     width: 100%;
     height: 216px;
-    max-height: 216px;
+    min-height: 200px;
+    //max-height: 212px;
     box-sizing: border-box;
     flex-grow: 1;
-    background-color: rgb(248, 248, 248);
-    border-top: 1px solid rgba(22, 24, 35, 0.2);
-    border-bottom: 1px solid rgba(22, 24, 35, 0.2);
+    background-color: var(--background-gray-color-248);
+    border-top: 1px solid var(--background-gray-color-02);
+    border-bottom: 1px solid var(--background-gray-color-02);
     margin-top: 16px;
     padding: 24px 32px;
     overflow: hidden overlay;
@@ -456,6 +463,7 @@
     position: absolute;
     top: 3px;
     left: 52px;
+    color: var(--text-primary-color);
     strong {
         font-size: 1.8rem;
         font-weight: 700;
@@ -468,6 +476,7 @@
 }
 
 .content-comment {
+    color: var(--text-primary-color);
     margin-top: 27px;
     width: 378px;
     margin-left: 12px;
@@ -483,7 +492,7 @@
         font-size: 1.4rem;
         line-height: 20px;
 
-        color: rgba(22, 24, 35, 0.5);
+        color: var(--background-gray-color-05);
         font-weight: 400;
 
         .created-date {
@@ -502,10 +511,10 @@
     align-items: center;
     cursor: pointer;
     flex-shrink: 0;
-
+    color: var(--text-primary-color);
     .color-icon,
     .color-icon ~ .likes-count {
-        color: #16182380;
+        color: var(--background-gray-color-05);
     }
 
     .hidden {
@@ -525,17 +534,18 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #fff;
+    background-color: var(--default-background);
     flex: 0 0 auto;
     padding: 28px 0 28px 30px;
-    border-top: 1px solid rgba(22, 24, 35, 0.2);
+    border-top: 1px solid var(--background-gray-color-02);
+    z-index: 99999999;
 }
 
 .notify {
-    color: rgb(254, 44, 85);
+    color: var(--caret-color);
     font-weight: 600;
     height: 100%;
-    background: rgb(241, 241, 241);
+    background: var(--background-gray-color-241);
     border-radius: 2px;
     padding: 14px 16px;
     font-size: 16px;
@@ -554,7 +564,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: rgba(22, 24, 35, 0.06);
+    background-color: var(--background-gray-color-06);
     border: 1px solid transparent;
     border-radius: 8px;
     padding: 0px 9px;
@@ -563,7 +573,7 @@
         width: 328px;
         height: 17px;
         background-color: transparent;
-        color: #161823bf;
+        color: var(--background-gray-color-75);
         user-select: text;
         font-size: 1.4rem;
         line-height: 17px;
@@ -578,15 +588,16 @@
         background-color: transparent;
         cursor: pointer;
         border-radius: 8px;
+        color: var(--text-primary-color);
         &:hover {
-            background-color: #0000001f;
+            background-color: rgba(0, 0, 0, 0.1215686275);
         }
     }
 }
 .post-comment {
     width: 48px;
     height: 39px;
-    color: #16182357;
+    color: var(--background-gray-color-34);
     font-weight: 600;
     flex: 0 0 48px;
     font-size: 14px;
