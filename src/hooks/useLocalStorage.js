@@ -1,4 +1,4 @@
-import { DEFAULT_USER_INFO } from '~/contants/contants';
+import { DEFAULT_USER_INFO } from '~/constants/constants';
 
 function useLocalStorage() {
     const setDataLocalStorage = (key, data = {}) => {

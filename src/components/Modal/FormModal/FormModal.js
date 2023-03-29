@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect, useContext } from 'react';
 
 import { ChevronDownIcon, ChevronLeftIcon, XMarkIcon } from '~/components/Icons';
 import styles from './FormModal.module.scss';
-import { FORM_ITEMS } from '~/contants/contants';
+import { FORM_ITEMS } from '~/constants/constants';
 import Button from '~/components/Button';
 import { Link } from 'react-router-dom';
 

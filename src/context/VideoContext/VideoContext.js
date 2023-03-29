@@ -7,16 +7,14 @@ export const VideoEnviroment = createContext();
 
 function VideoContext({ children }) {
     const [changeUserID, setChangeUserID] = useState(false);
-    const [nickName, setNickName] = useState('');
+    const [isChangeState, setIsChangeState] = useState(false);
+    const [isMuted, setIsMuted] = useState(true);
+    const [isComment, setIsComment] = useState(false);
     const [videoID, setVideoID] = useState(0);
     const [positionVideo, setPositionVideo] = useState(0);
-
     const [listVideo, setListVideo] = useState([]);
-    const [isMuted, setIsMuted] = useState(true);
-    const [isChangeState, setIsChangeState] = useState(false);
-    const [isComment, setIsComment] = useState(false);
-
     const [volume, setVolume] = useState(0.6);
+    const [nickName, setNickName] = useState('');
 
     const [, showVideoPlayer, hideVideoPlayer, isVideoModalShow] = useVideoModal(VideoPlayerModal);
 
@@ -49,12 +47,21 @@ function VideoContext({ children }) {
     const handleSetVideoID = (id) => {
         setVideoID(id);
     };
+
     const handleNextVideo = () => {
-        setPositionVideo((prev) => prev + 1);
+        if (positionVideo >= listVideo.length - 1) {
+            setPositionVideo(listVideo.length - 1);
+        } else {
+            setPositionVideo((prev) => prev + 1);
+        }
     };
 
     const handleBackVideo = () => {
-        setPositionVideo((prev) => prev - 1);
+        if (positionVideo <= 0) {
+            setPositionVideo(0);
+        } else {
+            setPositionVideo((prev) => prev - 1);
+        }
     };
 
     const handleMutedVideo = () => {
@@ -80,7 +87,6 @@ function VideoContext({ children }) {
         isVideoModalShow,
         showVideoPlayer,
         hideVideoPlayer,
-
         volume,
         isMuted,
         listVideo,

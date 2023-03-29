@@ -1,5 +1,5 @@
 //Layouts
-import { HeaderOnly } from '~/layouts';
+import { DetailVideoLayout, HeaderOnly, UploadLayout } from '~/layouts';
 
 import config from '~/config';
 //Pages
@@ -10,7 +10,6 @@ import Upload from '~/pages/Upload';
 import Search from '~/pages/Search';
 import Live from '~/pages/Live';
 import DetailVideo from '~/pages/DetailVideo';
-import UploadLayout from '~/layouts/UploadLayout';
 
 const publicRoutes = [
     { path: config.routes.home, component: Home },
@@ -19,7 +18,7 @@ const publicRoutes = [
     { path: config.routes.profile, component: Profile, layout: HeaderOnly },
     { path: config.routes.upload, component: Upload, layout: UploadLayout },
     { path: config.routes.search, component: Search, layout: null },
-    { path: config.routes.detailVideo, component: DetailVideo, layout: HeaderOnly },
+    { path: config.routes.detailVideo, component: DetailVideo, layout: DetailVideoLayout },
 ];
 
 const privateRoutes = [];

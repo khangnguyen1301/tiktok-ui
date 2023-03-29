@@ -1,0 +1,64 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video {
+    position: absolute;
+    top: 0;
+    border-radius: 4px;
+    video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+}
+
+.ghim-top {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    cursor: pointer;
+}
+
+.close-sticky {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    width: 168px;
+    z-index: 9999;
+}
+
+.back-btn,
+.state-btn,
+.next-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.state-btn {
+}
+
+.next-btn {
+    transform: rotate(180deg);
+}

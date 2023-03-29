@@ -690,6 +690,24 @@ export const EmailIcon = ({ className, width = '2.6rem', height = '2.6rem' }) =>
     </svg>
 );
 
+export const ChevronUpIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 48 48"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ transform: 'rotateZ(180deg)' }}
+    >
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M21.8788 33.1213L7.58586 18.8284C7.19534 18.4379 7.19534 17.8047 7.58586 17.4142L10.4143 14.5858C10.8048 14.1953 11.438 14.1953 11.8285 14.5858L24.0001 26.7574L36.1716 14.5858C36.5622 14.1953 37.1953 14.1953 37.5859 14.5858L40.4143 17.4142C40.8048 17.8047 40.8048 18.4379 40.4143 18.8284L26.1214 33.1213C24.9498 34.2929 23.0503 34.2929 21.8788 33.1213Z"
+        ></path>
+    </svg>
+);
+
 export const ChevronDownIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
     <svg
         className={className}
@@ -1393,6 +1411,214 @@ export const LogoutIcon = ({ className, width = '2rem', height = '2rem' }) => (
             fillRule="evenodd"
             clipRule="evenodd"
             d="M24.1716 26L7 26C6.44771 26 6 25.5523 6 25L6 23C6 22.4477 6.44771 22 7 22L24.1716 22L20.2929 18.1213C19.9024 17.7308 19.9024 17.0976 20.2929 16.7071L21.7071 15.2929C22.0976 14.9024 22.7308 14.9024 23.1213 15.2929L30.4142 22.5858C31.1953 23.3668 31.1953 24.6332 30.4142 25.4142L23.1213 32.7071C22.7308 33.0976 22.0976 33.0976 21.7071 32.7071L20.2929 31.2929C19.9024 30.9024 19.9024 30.2692 20.2929 29.8787L24.1716 26ZM36 43L27 43C26.4477 43 26 42.5523 26 42L26 40C26 39.4477 26.4477 39 27 39L36 39C37.1046 39 38 38.1046 38 37L38 11C38 9.89543 37.1046 9 36 9L27 9C26.4477 9 26 8.55228 26 8L26 6C26 5.44771 26.4477 5 27 5L36 5C39.3137 5 42 7.68629 42 11L42 37C42 40.3137 39.3137 43 36 43Z"
+        ></path>
+    </svg>
+);
+
+export const LineLoading = ({ className, width = '4rem', height = '3rem' }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ margin: '0', background: 'transparent', display: 'block' }}
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid"
+    >
+        <g transform="rotate(180 50 50)">
+            <rect x="15" y="15" width="10" height="40" fill="#ffffff">
+                <animate
+                    attributeName="height"
+                    values="50;70;30;50"
+                    keyTimes="0;0.33;0.66;1"
+                    dur="0.5681818181818182s"
+                    repeatCount="indefinite"
+                    calcMode="spline"
+                    keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1"
+                    begin="-0.2272727272727273s"
+                ></animate>
+            </rect>
+            <rect x="35" y="15" width="10" height="40" fill="#ffffff">
+                <animate
+                    attributeName="height"
+                    values="50;70;30;50"
+                    keyTimes="0;0.33;0.66;1"
+                    dur="0.5681818181818182s"
+                    repeatCount="indefinite"
+                    calcMode="spline"
+                    keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1"
+                    begin="-0.11363636363636365s"
+                ></animate>
+            </rect>
+            <rect x="55" y="15" width="10" height="40" fill="#ffffff">
+                <animate
+                    attributeName="height"
+                    values="50;70;30;50"
+                    keyTimes="0;0.33;0.66;1"
+                    dur="0.5681818181818182s"
+                    repeatCount="indefinite"
+                    calcMode="spline"
+                    keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1"
+                    begin="-0.3409090909090909s"
+                ></animate>
+            </rect>
+            <rect x="75" y="15" width="10" height="40" fill="#ffffff">
+                <animate
+                    attributeName="height"
+                    values="50;70;30;50"
+                    keyTimes="0;0.33;0.66;1"
+                    dur="0.5681818181818182s"
+                    repeatCount="indefinite"
+                    calcMode="spline"
+                    keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1"
+                    begin="-0.5681818181818182s"
+                ></animate>
+            </rect>
+        </g>
+    </svg>
+);
+
+export const GhimIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        className={className}
+        width={width}
+        height={height}
+    >
+        <path
+            fill="white"
+            fillRule="evenodd"
+            d="M4.5 4H18a.5.5 0 01.5.5v6a.5.5 0 00.5.5h1a.5.5 0 00.5-.5v-6A2.5 2.5 0 0018 2H4.5A2.5 2.5 0 002 4.5V18a2.5 2.5 0 002.5 2.5h6a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-6A.5.5 0 014 18V4.5a.5.5 0 01.5-.5z"
+            clipRule="evenodd"
+        ></path>
+        <path fill="white" d="M13 15a2 2 0 012-2h5a2 2 0 012 2v5a2 2 0 01-2 2h-5a2 2 0 01-2-2v-5z"></path>
+        <path
+            fill="white"
+            fillRule="evenodd"
+            d="M6.5 11.5a1 1 0 01-1-1v-4a1 1 0 011-1h4a1 1 0 110 2h-2a1 1 0 00-1 1v2a1 1 0 01-1 1z"
+            clipRule="evenodd"
+        ></path>
+        <path
+            fill="white"
+            fillRule="evenodd"
+            d="M11.51 11.51a1 1 0 01-1.414 0L6.56 7.975A1 1 0 017.975 6.56l3.535 3.535a1 1 0 010 1.414z"
+            clipRule="evenodd"
+        ></path>
+    </svg>
+);
+
+export const CloseIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+    <svg
+        className={className}
+        width={width}
+        height={height}
+        viewBox="0 0 48 48"
+        fill="#fff"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M21.1718 23.9999L10.2931 13.1212C9.90261 12.7307 9.90261 12.0975 10.2931 11.707L11.7074 10.2928C12.0979 9.90228 12.731 9.90228 13.1216 10.2928L24.0002 21.1715L34.8789 10.2928C35.2694 9.90228 35.9026 9.90228 36.2931 10.2928L37.7073 11.707C38.0979 12.0975 38.0979 12.7307 37.7073 13.1212L26.8287 23.9999L37.7073 34.8786C38.0979 35.2691 38.0979 35.9023 37.7073 36.2928L36.2931 37.707C35.9026 38.0975 35.2694 38.0975 34.8789 37.707L24.0002 26.8283L13.1216 37.707C12.731 38.0975 12.0979 38.0975 11.7074 37.707L10.2931 36.2928C9.90261 35.9023 9.90261 35.2691 10.2931 34.8786L21.1718 23.9999Z"
+        ></path>
+    </svg>
+);
+
+export const NextIcon = ({ className, width = '3.2rem', height = '3.2rem' }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" width="32" height="32">
+        <g fill="white" filter="url(#prev_icon_svg__filter0_d_21350_134746)">
+            <path
+                fillRule="evenodd"
+                d="M27.333 7.092c0-1.369-1.426-2.211-2.542-1.5l-13.986 8.907c-1.073.684-1.073 2.318 0 3.002l13.986 8.908c1.116.71 2.542-.132 2.542-1.5V7.091z"
+                clipRule="evenodd"
+            ></path>
+            <path d="M4.667 4.75c0-.414.298-.75.666-.75H8c.368 0 .667.336.667.75v22.5c0 .414-.299.75-.667.75H5.333c-.368 0-.666-.336-.666-.75V4.75z"></path>
+        </g>
+        <defs>
+            <filter
+                id="prev_icon_svg__filter0_d_21350_134746"
+                width="34"
+                height="34"
+                x="-1"
+                y="0"
+                colorInterpolationFilters="sRGB"
+                filterUnits="userSpaceOnUse"
+            >
+                <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
+                <feColorMatrix
+                    in="SourceAlpha"
+                    result="hardAlpha"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                ></feColorMatrix>
+                <feOffset dy="1"></feOffset>
+                <feGaussianBlur stdDeviation="0.5"></feGaussianBlur>
+                <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0"></feColorMatrix>
+                <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_21350_134746"></feBlend>
+                <feBlend in="SourceGraphic" in2="effect1_dropShadow_21350_134746" result="shape"></feBlend>
+            </filter>
+        </defs>
+    </svg>
+);
+
+export const BackIcon = ({ className, width = '3.2rem', height = '3.2rem' }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 32 32"
+        className={className}
+        width={width}
+        height={height}
+    >
+        <g fill="white" filter="url(#prev_icon_svg__filter0_d_21350_134746)">
+            <path
+                fillRule="evenodd"
+                d="M27.333 7.092c0-1.369-1.426-2.211-2.542-1.5l-13.986 8.907c-1.073.684-1.073 2.318 0 3.002l13.986 8.908c1.116.71 2.542-.132 2.542-1.5V7.091z"
+                clipRule="evenodd"
+            ></path>
+            <path d="M4.667 4.75c0-.414.298-.75.666-.75H8c.368 0 .667.336.667.75v22.5c0 .414-.299.75-.667.75H5.333c-.368 0-.666-.336-.666-.75V4.75z"></path>
+        </g>
+        <defs>
+            <filter
+                id="prev_icon_svg__filter0_d_21350_134746"
+                width="34"
+                height="34"
+                x="-1"
+                y="0"
+                colorInterpolationFilters="sRGB"
+                filterUnits="userSpaceOnUse"
+            >
+                <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
+                <feColorMatrix
+                    in="SourceAlpha"
+                    result="hardAlpha"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                ></feColorMatrix>
+                <feOffset dy="1"></feOffset>
+                <feGaussianBlur stdDeviation="0.5"></feGaussianBlur>
+                <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0"></feColorMatrix>
+                <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_21350_134746"></feBlend>
+                <feBlend in="SourceGraphic" in2="effect1_dropShadow_21350_134746" result="shape"></feBlend>
+            </filter>
+        </defs>
+    </svg>
+);
+
+export const ReloadIcon = ({ className, width = '4rem', height = '4rem' }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#fff"
+        viewBox="0 0 24 24"
+        className={className}
+        width={width}
+        height={height}
+    >
+        <path
+            fill="white"
+            fillRule="evenodd"
+            d="M10.084 4.18c4.263-1.142 8.659 1.405 9.81 5.703 1.152 4.298-1.381 8.701-5.644 9.844-4.102 1.099-8.327-1.218-9.666-5.224a.525.525 0 00-.627-.35l-.966.26a.482.482 0 00-.342.608c1.625 5.065 6.94 8.025 12.119 6.637 5.339-1.43 8.493-6.938 7.058-12.293-1.435-5.355-6.92-8.548-12.26-7.117A9.925 9.925 0 004.39 5.617l-.4-2.766a.5.5 0 00-.566-.423l-.99.143a.5.5 0 00-.423.566l.806 5.58a1 1 0 001.17.84l5.38-.984a.5.5 0 00.402-.582l-.18-.984a.5.5 0 00-.581-.401l-3.322.607a7.936 7.936 0 014.398-3.033z"
+            clipRule="evenodd"
         ></path>
     </svg>
 );

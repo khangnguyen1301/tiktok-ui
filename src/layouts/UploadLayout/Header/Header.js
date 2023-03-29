@@ -26,7 +26,7 @@ import { useContext } from 'react';
 import { useLocalStorage } from '~/hooks';
 
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
-import { MENU_ITEMS_UPLOAD_LAYOUT } from '~/contants/contants';
+import { MENU_ITEMS_UPLOAD_LAYOUT } from '~/constants/constants';
 
 const cx = classNames.bind(styles);
 

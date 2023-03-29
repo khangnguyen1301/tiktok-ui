@@ -72,8 +72,8 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
         if (isVisible && !videoContext.isVideoModalShow) {
             timerID = setTimeout(() => {
                 videoRef.current.play();
+                setIsPlayed(true);
             }, 250);
-            setIsPlayed(true);
             currentElement(index);
         } else {
             if (videoRef.current.play) {
@@ -148,7 +148,6 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                 const result = await likeService.likeVideo({ videoID: videoContext.listVideo[index]?.id });
                 setIsLiked(true);
                 setLikeCount((prev) => prev + 1);
-                console.log(result);
             };
             likeVideo();
 
