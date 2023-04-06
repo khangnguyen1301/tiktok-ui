@@ -121,6 +121,7 @@ function Header({ className }) {
                         offset={[14, 8]}
                         placement="bottom-end"
                         delay={[0, 700]}
+                        zIndex="99999"
                     >
                         {stateLogin?.state ? (
                             <Image

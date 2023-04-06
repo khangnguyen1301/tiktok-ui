@@ -4,7 +4,7 @@
 }
 
 .container {
-    padding: 24px 0 0 24px;
+    padding: 24px 0 0 32px;
     display: flex;
     //flex-wrap: wrap;
 }
@@ -39,14 +39,5 @@
     flex-wrap: wrap;
     background-color: var(--default-background);
     padding: 0 24px;
-}
-
-.video-sticky {
-    width: 197px;
-    height: 350px;
-    position: fixed;
-    bottom: 35px;
-    right: 20px;
-    border-radius: 4px;
-    z-index: -9999;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }

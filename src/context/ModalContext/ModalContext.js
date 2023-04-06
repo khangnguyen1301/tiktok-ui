@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext } from 'react';
 import { FormModal, UpdateProfileModal, ConfirmModal } from '~/components/Modal';
 import { useLocalStorage, useModal } from '~/hooks';
 

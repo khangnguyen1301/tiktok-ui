@@ -37,6 +37,9 @@
     font-weight: 700;
     font-size: 1.8rem;
     line-height: 25px;
+    span {
+        color: var(--text-primary-color);
+    }
 }
 
 .fullname {
@@ -53,4 +56,8 @@
 
 .custom {
     width: 106px;
+}
+
+.follow-btn {
+    min-width: 106px;
 }

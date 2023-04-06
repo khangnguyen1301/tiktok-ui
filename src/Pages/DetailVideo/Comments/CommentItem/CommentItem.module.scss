@@ -69,6 +69,7 @@
 }
 
 .likes-comment {
+    width: 60px;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -76,6 +77,7 @@
 
 .heart-icon {
     color: var(--background-gray-color-05);
+    flex-shrink: 0;
 }
 
 .likes-count {

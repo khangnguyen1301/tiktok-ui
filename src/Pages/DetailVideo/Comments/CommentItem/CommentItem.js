@@ -10,14 +10,14 @@ const cx = classNames.bind(styles);
 function CommentItem({ data }) {
     return (
         <div className={cx('wrapper')}>
-            <AccountPreviewHome>
+            <AccountPreviewHome data={data}>
                 <div className={cx('avatar')}>
                     <Image src={data.user.avatar} alt={data.user.nickname} />
                 </div>
             </AccountPreviewHome>
 
             <div className={cx('content')}>
-                <AccountPreviewHome>
+                <AccountPreviewHome data={data}>
                     <span className={cx('full-name')}>{`${data.user.first_name} ${data.user.last_name}`}</span>
                 </AccountPreviewHome>
                 <span className={cx('comment')}>{data.comment}</span>

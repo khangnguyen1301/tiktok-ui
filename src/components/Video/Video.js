@@ -28,6 +28,7 @@ import TiktokLoading from '../Loadings/TiktokLoading';
 import { useLocalStorage } from '~/hooks';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import Likes from '../Likes';
 
 const cx = classNames.bind(styles);
 
@@ -35,8 +36,6 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
     const [isVisible, setIsVisible] = useState(false);
     const [isPlayed, setIsPlayed] = useState(true);
     const [loading, setLoading] = useState(true);
-    const [isLiked, setIsLiked] = useState(data?.is_liked);
-    const [likeCount, setLikeCount] = useState(data?.likes_count);
     const [commentCount, setCommentCount] = useState(data?.comments_count);
 
     const { getDataLocalStorage } = useLocalStorage();
@@ -87,20 +86,6 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
     }, [isVisible]);
 
     useEffect(() => {
-        if (videoContext.isVideoModalShow) {
-            if (videoContext.isChangeState && videoContext.videoID === data?.id) {
-                setIsLiked(true);
-                setLikeCount((prev) => prev + 1);
-            }
-            if (!videoContext.isChangeState) {
-                setIsLiked(false);
-                setLikeCount((prev) => prev - 1);
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [videoContext.isChangeState]);
-
-    useEffect(() => {
         if (videoContext.isComment && videoContext.isVideoModalShow)
             if (videoContext.videoID === data?.id) {
                 setCommentCount((prev) => prev + 1);
@@ -127,32 +112,6 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
         videoContext.handleGetVideoID(videoID);
         videoContext.handleSetPositionVideo(index);
         videoContext.showVideoPlayer();
-    };
-
-    const stateLikeVideo = () => {
-        if (isLiked) {
-            //unliked
-            videoContext.handleSetPositionVideo(index);
-            const unLikeVideo = async () => {
-                // eslint-disable-next-line no-unused-vars
-                const result = await likeService.unLikeVideo({ videoID: videoContext.listVideo[index]?.id });
-                setIsLiked(false);
-                setLikeCount((prev) => prev - 1);
-            };
-            unLikeVideo();
-            videoContext.handleChangeState(false);
-        } else {
-            //likeVideo
-            videoContext.handleSetPositionVideo(index);
-            const likeVideo = async () => {
-                const result = await likeService.likeVideo({ videoID: videoContext.listVideo[index]?.id });
-                setIsLiked(true);
-                setLikeCount((prev) => prev + 1);
-            };
-            likeVideo();
-
-            videoContext.handleChangeState(true);
-        }
     };
 
     return (
@@ -191,14 +150,14 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                     <ReactVisibilitySensor
                         onChange={handleVisibleVideo}
                         partialVisibility={true}
-                        offset={{ top: 350, bottom: 150 }}
+                        offset={{ top: 300, bottom: 200 }}
                     >
                         <div
                             className={cx('video')}
                             style={
                                 data?.meta?.video?.resolution_x < data?.meta?.video?.resolution_y
-                                    ? { width: '282px' }
-                                    : { width: '463px' }
+                                    ? { width: '313px', height: '553px' }
+                                    : { width: '500px', height: '313px' }
                             }
                         >
                             {loading && (
@@ -251,13 +210,10 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                                 <HeartIcon />
                             </button>
                         ) : (
-                            <button type="button" className={cx('icon-box')} onClick={() => stateLikeVideo()}>
-                                {/* icon */}
-                                {isLiked ? <HeartedIcon /> : <HeartIcon />}
-                            </button>
+                            <Likes data={data} />
                         )}
 
-                        <strong className={cx('count')}>{likeCount ?? 0}</strong>
+                        {/* <strong className={cx('count')}>{likeCount ?? 0}</strong> */}
 
                         <button type="button" className={cx('icon-box')} onClick={() => handleClickVideo()}>
                             {/* icon */}
@@ -269,7 +225,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                             placement="top-start"
                             delay={[0, 400]}
                             arrowBottom={true}
-                            zIndex={0}
+                            zIndex="9"
                         >
                             <button type="button" className={cx('icon-box')}>
                                 <div>

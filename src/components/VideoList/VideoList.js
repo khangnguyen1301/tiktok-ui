@@ -12,6 +12,7 @@ function VideoList({ data }) {
     const wrapperRef = useRef();
     const context = useContext(VideoEnviroment);
     const maxLength = data.length - 1;
+
     useLayoutEffect(() => {
         if (positionCurrentElement >= maxLength) {
             return;
@@ -35,7 +36,7 @@ function VideoList({ data }) {
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeydown);
-        return () => window.removeEventListener('keydown', handleKeydown);
+        return () => document.removeEventListener('keydown', handleKeydown);
     }, []);
 
     const handleKeydown = (e) => {

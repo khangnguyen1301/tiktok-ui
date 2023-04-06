@@ -5,8 +5,9 @@ import 'tippy.js/dist/tippy.css';
 import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faChevronDown, faChevronUp, faPlay, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from '~/components/Button/Button';
+import Likes from '~/components/Likes';
 
-import * as likeService from '~/services/likeService';
 import classNames from 'classnames/bind';
 import {
     CommentIcon,
@@ -14,8 +15,6 @@ import {
     FacebookIcon,
     GmailIcon,
     HashTagMusicIcon,
-    HeartedIcon,
-    HeartIcon,
     HeartMiniIcon,
     PaperPlaneIcon,
     ShareMiniIcon,
@@ -49,8 +48,6 @@ function VideoPlayerModal({ onHideModal }) {
     const [isPlayed, setIsPlayed] = useState(true);
     const [contentComment, setContentComment] = useState('');
     const [commentCount, setCommentCount] = useState(0);
-    const [isLiked, setIsLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(0);
 
     const videoRef = useRef();
     const selectorRef = useRef();
@@ -64,7 +61,6 @@ function VideoPlayerModal({ onHideModal }) {
     const { getDataLocalStorage } = useLocalStorage();
 
     const stateLogin = getDataLocalStorage('user-login');
-    // const userInfo = getDataLocalStorage('user-info');
 
     useLayoutEffect(() => {
         videoRef.current.volume = context.isMuted ? 0 : context.volume;
@@ -104,8 +100,6 @@ function VideoPlayerModal({ onHideModal }) {
         const result = await videoService.getVideo(context.videoID);
         setVideo(result);
         setCommentCount(result?.comments_count);
-        setIsLiked(result?.is_liked);
-        setLikeCount(result?.likes_count);
         setIsPlayed(true);
     };
 
@@ -145,30 +139,6 @@ function VideoPlayerModal({ onHideModal }) {
         postButtonRef.current.style.color = e.target.value ? '#fe2c55' : 'var(--background-gray-color-34)';
         postButtonRef.current.style.cursor = 'pointer';
         setContentComment(e.target.value);
-    };
-
-    const stateLikeVideo = () => {
-        if (isLiked) {
-            //unliked
-            const unLikeVideo = async () => {
-                // eslint-disable-next-line no-unused-vars
-                const result = await likeService.unLikeVideo({ videoID: context.videoID });
-                setIsLiked(false);
-                setLikeCount((prev) => prev - 1);
-            };
-            unLikeVideo();
-            context.handleChangeState(false);
-        } else {
-            //likeVideo
-            const likeVideo = async () => {
-                // eslint-disable-next-line no-unused-vars
-                const result = await likeService.likeVideo({ videoID: context.videoID });
-                setIsLiked(true);
-                setLikeCount((prev) => prev + 1);
-            };
-            likeVideo();
-            context.handleChangeState(true);
-        }
     };
 
     return (
@@ -273,11 +243,23 @@ function VideoPlayerModal({ onHideModal }) {
                                 </Link>
                             </AccountPreviewHome>
 
-                            <Follow
-                                className={cx('custom-btn')}
-                                userID={video?.user?.id}
-                                isFollow={video?.user?.is_followed}
-                            />
+                            {!stateLogin.state ? (
+                                <Button
+                                    small
+                                    primary={false}
+                                    outline={true}
+                                    className={cx('follow-btn')}
+                                    onClick={showLoginModal}
+                                >
+                                    Follow
+                                </Button>
+                            ) : (
+                                <Follow
+                                    className={cx('custom-btn')}
+                                    userID={video?.user?.id}
+                                    isFollow={video?.user?.is_followed}
+                                />
+                            )}
                         </div>
                     )}
 
@@ -293,14 +275,7 @@ function VideoPlayerModal({ onHideModal }) {
                         <div className={cx('interactive')}>
                             <div className={cx('internal-icon')}>
                                 <div className={cx('icon-box')}>
-                                    <div className={cx('icon')} onClick={() => stateLikeVideo()}>
-                                        {isLiked ? (
-                                            <HeartedIcon width="2rem" height="2rem" />
-                                        ) : (
-                                            <HeartIcon width="2rem" height="2rem" />
-                                        )}
-                                    </div>
-                                    <strong className={cx('count')}>{likeCount ?? 0}</strong>
+                                    <Likes data={video} width="2rem" height="2rem" horizontal />
                                 </div>
                                 <div className={cx('icon-box')}>
                                     <div className={cx('icon')}>

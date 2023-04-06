@@ -115,7 +115,7 @@ function Upload() {
     const handleNameSlice = () => {
         setNameSlice([]);
     };
-    console.log(nameSlice);
+
     return (
         <div className={cx('wrapper')}>
             {!detailUpload ? (

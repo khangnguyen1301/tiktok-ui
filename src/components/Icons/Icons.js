@@ -1131,10 +1131,11 @@ export const BottomArrowIcon = ({ className, width = '1.4rem', height = '1.4rem'
     </svg>
 );
 
-export const CheckIcon = ({ className, width = '1.4rem', height = '1.4rem' }) => (
+export const CheckIcon = ({ className, width = '1.2rem', height = '1rem' }) => (
     <svg
-        width="12"
-        height="9.600000000000001"
+        className={className}
+        width={width}
+        height={height}
         viewBox="0 0 10 8"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"

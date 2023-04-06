@@ -8,10 +8,6 @@
 .content {
     position: relative;
     width: 100%;
-
-    &:hover > .video {
-        z-index: 3;
-    }
 }
 
 .playing-mask {
@@ -57,8 +53,12 @@
     }
 }
 
+.showVideo {
+    z-index: 3;
+}
+
 .active {
-    z-index: 2;
+    z-index: 5;
 }
 
 .time-video {
@@ -70,6 +70,7 @@
     padding: 2px;
     font-size: 1.2rem;
     color: rgb(255, 255, 255);
+    z-index: 6;
 }
 
 .caption {
