@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 
@@ -23,7 +24,6 @@ import {
 } from '~/components/Icons';
 import Search from '../Search';
 import { useContext } from 'react';
-import { useLocalStorage } from '~/hooks';
 
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import { MENU_ITEMS_UPLOAD_LAYOUT } from '~/constants/constants';
@@ -33,16 +33,14 @@ const cx = classNames.bind(styles);
 function Header({ className }) {
     const { showLoginModal } = useContext(ModalEnviroment);
 
-    const { getDataLocalStorage } = useLocalStorage();
-
-    const userInfo = getDataLocalStorage('user-info');
-    const stateLogin = getDataLocalStorage('user-login');
+    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
 
     const userMenu = [
         {
             icon: <UserMenuIcon />,
             title: 'View profile',
-            to: `/@${userInfo.data.nickName}`,
+            to: `/@${userInfo.nickname}`,
         },
         {
             icon: <GetCoinsIcon />,
@@ -82,7 +80,7 @@ function Header({ className }) {
                 {/* Search */}
                 <Search />
                 <div className={cx('actions')}>
-                    {stateLogin?.state ? (
+                    {isLogin ? (
                         <>
                             <Button
                                 outline
@@ -118,7 +116,7 @@ function Header({ className }) {
                         </>
                     )}
                     <Menu
-                        items={stateLogin?.state ? userMenu : MENU_ITEMS_UPLOAD_LAYOUT}
+                        items={isLogin ? userMenu : MENU_ITEMS_UPLOAD_LAYOUT}
                         onChange={handleMenuChange}
                         offset={[14, 8]}
                         placement="bottom-end"
@@ -126,12 +124,8 @@ function Header({ className }) {
                         className={cx('upload-layout')}
                         uploadLayout
                     >
-                        {stateLogin?.state ? (
-                            <Image
-                                className={cx('user-avatar')}
-                                src={userInfo.data?.avatar}
-                                alt={userInfo.data?.nickName}
-                            />
+                        {isLogin ? (
+                            <Image className={cx('user-avatar')} src={userInfo?.avatar} alt={userInfo?.nickName} />
                         ) : (
                             <button className={cx('more-btn')}>
                                 <FontAwesomeIcon icon={faEllipsisVertical} />

@@ -17,6 +17,7 @@ function Button({
     large = false,
     custom = false,
     shareButton = false,
+    submit,
     children,
     className,
     leftIcon,

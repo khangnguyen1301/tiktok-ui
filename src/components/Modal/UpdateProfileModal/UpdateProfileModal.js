@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { useLocalStorage } from '~/hooks';
 import { EditAvatarIcon } from '~/components/Icons';
-import * as userService from '~/services/userService';
+
 import Button from '~/components/Button';
 import Image from '~/components/Image';
 
 import styles from './UpdateProfileModal.module.scss';
+
+import { updateUser } from '~/redux/apiRequest';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -22,11 +25,12 @@ function UpdateProFileModal({ onHideModal }) {
     const [birthDay, setBirthDay] = useState('');
     const [bio, setBio] = useState('');
     const [isReady, setIsReady] = useState(false);
-    const { setDataLocalStorage, getDataLocalStorage } = useLocalStorage();
 
-    const userInfo = getDataLocalStorage('user-info').data;
+    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
 
     const avatarRef = useRef();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (firstName && lastName && birthDay && bio) {
@@ -36,7 +40,8 @@ function UpdateProFileModal({ onHideModal }) {
         }
     }, [firstName, lastName, birthDay, bio]);
 
-    const updateProFile = async () => {
+    const updateProFile = async (e) => {
+        e.preventDefault();
         let formData = new FormData();
         if (avatar) {
             formData.append('avatar', avatar);
@@ -45,13 +50,7 @@ function UpdateProFileModal({ onHideModal }) {
         formData.append('last_name', lastName);
         formData.append('date_of_birth', birthDay);
         formData.append('bio', bio);
-        const result = await userService.userUpdateInfo(formData);
-        setDataLocalStorage('user-info', {
-            data: {
-                ...userInfo,
-                avatar: result.avatar,
-            },
-        });
+        await updateUser(formData, dispatch, navigate);
         window.location.reload();
     };
 
@@ -88,7 +87,7 @@ function UpdateProFileModal({ onHideModal }) {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('update-wrapper')}>
+            <form className={cx('update-wrapper')} onSubmit={updateProFile}>
                 <div className={cx('update-container')}>
                     <div className={cx('header-bar')}>
                         <div className={cx('title')}>
@@ -109,7 +108,7 @@ function UpdateProFileModal({ onHideModal }) {
                                 </label>
                                 <Image
                                     src={avatarPreview || userInfo.avatar}
-                                    alt={userInfo.nickName}
+                                    alt={userInfo.nickname}
                                     className={cx('avatar-preview')}
                                 />
                                 <div className={cx('edit-icon')}>
@@ -121,7 +120,7 @@ function UpdateProFileModal({ onHideModal }) {
                             <span>First name</span>
                             <div className={cx('content-edit')}>
                                 <input type="text" placeholder="First name" onChange={(e) => handleFirstName(e)} />
-                                <p>{`www.tiktok.com/@${userInfo.nickName}`}</p>
+                                <p>{`www.tiktok.com/@${userInfo.nickname}`}</p>
                                 <p>
                                     Usernames can only contain letters, numbers, underscores, and periods. Changing your
                                     username will also change your profile link
@@ -161,18 +160,13 @@ function UpdateProFileModal({ onHideModal }) {
                             </Button>
                         </div>
                         <div className={cx('save-container')}>
-                            <Button
-                                disabled={!isReady}
-                                custom
-                                className={cx('save-btn', { submit: isReady })}
-                                onClick={() => updateProFile()}
-                            >
+                            <button disabled={!isReady} className={cx('save-btn', { submit: isReady })} type="submit">
                                 Save
-                            </Button>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     );
 }

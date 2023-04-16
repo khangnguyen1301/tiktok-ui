@@ -46,7 +46,7 @@ export const userUpdateInfo = async (formData) => {
                 _method: 'PATCH',
             },
         });
-        return res.data;
+        return res;
     } catch (error) {
         console.log(error);
     }

@@ -10,7 +10,6 @@ import images from '~/assets/images';
 import {
     ChevronDownIcon,
     ChevronUpIcon,
-    HeartIcon,
     ShareIcon,
     CommentIcon,
     VolumeIcon,
@@ -63,15 +62,15 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
     const [isTurnAround, setIsTurnAround] = useState(false);
     const [isPlayed, setIsPlayed] = useState(true);
     const [isEnded, setIsEnded] = useState(false);
-    const [isMuted, setIsMuted] = useState(false);
+    const [isMuted, setIsMuted] = useState(true);
     const [reload, setReload] = useState(false);
     const [visibleVolume, setVisibleVolume] = useState(false);
     const [holdVolumeBar, setHoldVolumeBar] = useState(false);
     const [isChangeVideo, setIsChangeVideo] = useState(false);
-    const [currentVolume, setCurrentVolume] = useState(0.6);
+    const [currentVolume, setCurrentVolume] = useState(0);
     const [defaultSpeed, setDefaultSpeed] = useState(1);
     const [currentTime, setCurrentTime] = useState(0);
-    const [prevVolume, setPrevVolume] = useState(currentVolume);
+    const [prevVolume, setPrevVolume] = useState(0.6);
     const [speedItem, setSpeedItem] = useState(SPEED_ITEM);
     const videoRef = useRef();
     const selectorRef = useRef();
@@ -106,7 +105,9 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
     useEffect(() => {
         const synchronized = stickyPlayed === isPlayed;
         if ((isPlayed && stickyPlayed) || synchronized || reload || stickyLoaded) {
-            videoRef.current.play();
+            setTimeout(() => {
+                videoRef.current.play();
+            }, 150);
             setIsEnded(false);
             setReload(false);
             onLoad(false);
@@ -382,7 +383,7 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
 
                             <div className={cx('time-item')}>
                                 {`${durationMinutes < 10 ? '0' + durationMinutes ?? 0 : durationMinutes ?? 0}:${
-                                    durationSeconds < 10 ? '0' + durationSeconds ?? 0 : durationSeconds ?? 0
+                                    durationSeconds < 10 ? '0' + durationSeconds ?? 0 : durationSeconds ?? '00'
                                 }`}
                             </div>
                         </div>

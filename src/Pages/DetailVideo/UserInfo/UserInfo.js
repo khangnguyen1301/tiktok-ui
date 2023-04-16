@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import Follow from '~/components/Follow';
 
@@ -6,18 +8,15 @@ import AccountPreviewHome from '~/components/Video/AccountPreviewHome';
 import Button from '~/components/Button/Button';
 import styles from './UserInfo.module.scss';
 import { Link } from 'react-router-dom';
-import { useLocalStorage } from '~/hooks';
-import { useContext } from 'react';
+
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 
 function UserInfo({ data }) {
-    const { getDataLocalStorage } = useLocalStorage();
-
     const { showLoginModal } = useContext(ModalEnviroment);
 
-    const stateLogin = getDataLocalStorage('user-login').state;
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
 
     return (
         <div className={cx('userinfo-wrapper')}>
@@ -46,7 +45,7 @@ function UserInfo({ data }) {
                     </div>
                 </AccountPreviewHome>
                 <div className={cx('follow')}>
-                    {!stateLogin ? (
+                    {!isLogin ? (
                         <Button
                             small
                             primary={false}

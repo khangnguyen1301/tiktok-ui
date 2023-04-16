@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 
@@ -22,8 +24,6 @@ import {
     UserMenuIcon,
 } from '~/components/Icons';
 import Search from '../Search';
-import { useContext } from 'react';
-import { useLocalStorage } from '~/hooks';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import { MENU_ITEMS } from '~/constants/constants';
 
@@ -32,16 +32,13 @@ const cx = classNames.bind(styles);
 function Header({ className }) {
     const { showLoginModal } = useContext(ModalEnviroment);
 
-    const { getDataLocalStorage } = useLocalStorage();
-
-    const userInfo = getDataLocalStorage('user-info');
-    const stateLogin = getDataLocalStorage('user-login');
-
+    const user = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
     const userMenu = [
         {
             icon: <UserMenuIcon />,
             title: 'View profile',
-            to: `/@${userInfo.data.nickName}`,
+            to: `/@${user.nickname}`,
         },
         {
             icon: <GetCoinsIcon />,
@@ -81,7 +78,7 @@ function Header({ className }) {
                 {/* Search */}
                 <Search />
                 <div className={cx('actions')}>
-                    {stateLogin?.state ? (
+                    {isLogin ? (
                         <>
                             <Button
                                 outline
@@ -116,19 +113,15 @@ function Header({ className }) {
                         </>
                     )}
                     <Menu
-                        items={stateLogin?.state ? userMenu : MENU_ITEMS}
+                        items={isLogin ? userMenu : MENU_ITEMS}
                         onChange={handleMenuChange}
                         offset={[14, 8]}
                         placement="bottom-end"
                         delay={[0, 700]}
                         zIndex="99999"
                     >
-                        {stateLogin?.state ? (
-                            <Image
-                                className={cx('user-avatar')}
-                                src={userInfo.data?.avatar}
-                                alt={userInfo.data?.nickName}
-                            />
+                        {isLogin ? (
+                            <Image className={cx('user-avatar')} src={user.avatar} alt={user.nickName} />
                         ) : (
                             <button className={cx('more-btn')}>
                                 <FontAwesomeIcon icon={faEllipsisVertical} />

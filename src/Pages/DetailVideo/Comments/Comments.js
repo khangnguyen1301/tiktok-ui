@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react';
 
@@ -6,7 +7,7 @@ import styles from './Comments.module.scss';
 import Image from '~/components/Image';
 import { GmailIcon, SmileIcon } from '~/components/Icons';
 import CommentItem from './CommentItem';
-import { useLocalStorage } from '~/hooks';
+
 import * as commentService from '~/services/commentService';
 const cx = classNames.bind(styles);
 
@@ -14,14 +15,14 @@ function Comments({ videoID }) {
     const [comments, setComments] = useState([]);
     const [contentComment, setContentComment] = useState('');
 
-    const { getDataLocalStorage } = useLocalStorage();
     const postRef = useRef();
     const inputRef = useRef();
 
-    const userInfo = getDataLocalStorage('user-info').data;
+    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
 
     useEffect(() => {
         videoID && getComment();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoID]);
 
     useEffect(() => {
@@ -36,7 +37,7 @@ function Comments({ videoID }) {
     const postComment = async () => {
         // eslint-disable-next-line no-unused-vars
         if (contentComment) {
-            const result = await commentService.postComment({ videoID: videoID, comment: contentComment });
+            await commentService.postComment({ videoID: videoID, comment: contentComment });
             getComment();
             inputRef.current.value = '';
         }
@@ -47,7 +48,7 @@ function Comments({ videoID }) {
             <h3 className={cx('title')}>{`${comments.length} comment`}</h3>
             <div className={cx('comments-container')}>
                 <div className={cx('avatar')}>
-                    <Image src={userInfo.avatar} alt={userInfo.nickName} />
+                    <Image src={userInfo.avatar} alt={userInfo.nickname} />
                 </div>
                 <div className={cx('comments-bar')}>
                     <div className={cx('comments-enter')}>

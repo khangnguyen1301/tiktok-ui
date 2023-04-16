@@ -10,6 +10,8 @@ import Header from './Header';
 import { ChevronDownIcon } from '~/components/Icons';
 
 import { useLocalStorage } from '~/hooks';
+import { useDispatch } from 'react-redux';
+import { logout } from '~/redux/authSlice';
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
 
@@ -39,6 +41,8 @@ function Menu({
     const { setDataLocalStorage } = useLocalStorage();
 
     const current = history[history.length - 1];
+
+    const dispatch = useDispatch();
 
     useLayoutEffect(() => {
         setHistory([{ data: items }]);
@@ -70,7 +74,8 @@ function Menu({
     };
 
     const handleUserLogOut = () => {
-        setDataLocalStorage('user-login', { state: false });
+        //setDataLocalStorage('user-login', { state: false });
+        dispatch(logout());
         window.location.reload();
     };
 

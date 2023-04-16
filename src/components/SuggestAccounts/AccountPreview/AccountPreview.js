@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 
 import styles from './AccountPreview.module.scss';
@@ -10,15 +10,13 @@ import { Link } from 'react-router-dom';
 import Image from '~/components/Image';
 import { useContext } from 'react';
 import Follow from '~/components/Follow';
-import { useLocalStorage } from '~/hooks';
+
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 function AccountPreview({ data, outlineButton = false, bioDescription = false }) {
-    const { getDataLocalStorage } = useLocalStorage();
-
-    const stateLogin = getDataLocalStorage('user-login');
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
 
     const { showLoginModal } = useContext(ModalEnviroment);
 
@@ -29,7 +27,7 @@ function AccountPreview({ data, outlineButton = false, bioDescription = false })
                 <Link className={cx('link')} to={`/@${data?.nickname}`} onClick={() => context.hideVideoPlayer()}>
                     <Image className={cx('avatar')} src={data?.avatar} alt={data?.nickname} />
                 </Link>
-                {!stateLogin.state ? (
+                {!isLogin ? (
                     <Button
                         small
                         primary={!outlineButton}

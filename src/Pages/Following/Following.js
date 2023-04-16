@@ -5,10 +5,10 @@ import styles from './Following.module.scss';
 import * as userService from '~/services/userService';
 import * as videoService from '~/services/videoService';
 
-import { useLocalStorage } from '~/hooks';
 import VideoList from '~/components/VideoList';
 import { useLocation } from 'react-router-dom';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+import { useSelector } from 'react-redux';
 
 const DEFAULT_PERPAGE = 15;
 
@@ -20,9 +20,7 @@ function Following() {
     const [positionPlay, setPositionPlay] = useState(0);
     const [page, setPage] = useState(1);
 
-    const { getDataLocalStorage } = useLocalStorage();
-
-    const stateLogin = getDataLocalStorage('user-login');
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
 
     const context = useContext(VideoEnviroment);
     const location = useLocation();
@@ -33,7 +31,7 @@ function Following() {
     }, [location.pathname]);
 
     useLayoutEffect(() => {
-        if (stateLogin?.state) {
+        if (isLogin) {
             const getFollowing = async () => {
                 const followVideoList = await videoService.getVideoListFollowing({ page: page });
                 setFollowList((prev) => [...prev, ...followVideoList]);
@@ -46,7 +44,7 @@ function Following() {
             setSuggestAccount(data);
         }
         getSuggestAccount();
-    }, [stateLogin.state, page]);
+    }, [isLogin, page]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
@@ -65,7 +63,7 @@ function Following() {
 
     return (
         <>
-            {!stateLogin?.state ? (
+            {!isLogin ? (
                 <div className={cx('wrapper')}>
                     {suggestAccount.map((res, index) => (
                         <VideoPreview
@@ -77,7 +75,7 @@ function Following() {
                         />
                     ))}
                 </div>
-            ) : followList.length > 0 || stateLogin?.state ? (
+            ) : followList.length > 0 || isLogin ? (
                 <div>
                     <VideoList data={followList} />
                 </div>

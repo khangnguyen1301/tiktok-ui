@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useContext, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +10,7 @@ import Image from '../Image';
 import Button from '../Button';
 import { PlayIcon } from '../Icons';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+import Follow from '../Follow/Follow';
 const cx = classNames.bind(styles);
 
 function VideoPreview({ data, index, handleMouseMove, videoID, play = false, profile = false }) {
@@ -42,9 +44,16 @@ function VideoPreview({ data, index, handleMouseMove, videoID, play = false, pro
                                     {data.tick && <FontAwesomeIcon icon={faCheckCircle} />}
                                 </span>
                             </div>
-                            <Button primary className={cx('follow-btn')}>
+                            {/* <Button primary className={cx('follow-btn')}>
                                 Follow
-                            </Button>
+                            </Button> */}
+                            <Follow
+                                className={cx('follow-btn')}
+                                primary={true}
+                                outline={false}
+                                userID={data?.id}
+                                isFollow={data?.is_followed}
+                            />
                         </div>
                     </Link>
                 ) : (
@@ -71,5 +80,14 @@ function VideoPreview({ data, index, handleMouseMove, videoID, play = false, pro
         </div>
     );
 }
+
+VideoPreview.propTypes = {
+    data: PropTypes.object.isRequired,
+    index: PropTypes.number,
+    handleMouseMove: PropTypes.func,
+    videoID: PropTypes.number,
+    play: PropTypes.bool,
+    profile: PropTypes.bool,
+};
 
 export default VideoPreview;

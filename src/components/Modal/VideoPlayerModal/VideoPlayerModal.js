@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState, useLayoutEffect, memo } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -34,7 +35,7 @@ import * as commentService from '~/services/commentService';
 
 import ShareAction from '~/components/ShareAction';
 import Follow from '~/components/Follow';
-import { useLocalStorage } from '~/hooks';
+
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import LineLoading from '~/components/Loadings/LineLoading';
@@ -58,9 +59,9 @@ function VideoPlayerModal({ onHideModal }) {
 
     const context = useContext(VideoEnviroment);
     const { showLoginModal, isFormModalShow } = useContext(ModalEnviroment);
-    const { getDataLocalStorage } = useLocalStorage();
 
-    const stateLogin = getDataLocalStorage('user-login');
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
+    const token = useSelector((state) => state.auth.login?.currentUser?.meta?.token);
 
     useLayoutEffect(() => {
         videoRef.current.volume = context.isMuted ? 0 : context.volume;
@@ -104,13 +105,17 @@ function VideoPlayerModal({ onHideModal }) {
     };
 
     const getComment = async () => {
-        const result = await commentService.getComment({ videoID: context.videoID });
+        const result = await commentService.getComment({ videoID: context.videoID, token: token });
         setComments(result);
     };
 
     const postComment = async () => {
         // eslint-disable-next-line no-unused-vars
-        const result = await commentService.postComment({ videoID: context.videoID, comment: contentComment });
+        const result = await commentService.postComment({
+            videoID: context.videoID,
+            comment: contentComment,
+            token: token,
+        });
         getComment();
         getVideoInfo();
         context.handleStateComment(true);
@@ -243,7 +248,7 @@ function VideoPlayerModal({ onHideModal }) {
                                 </Link>
                             </AccountPreviewHome>
 
-                            {!stateLogin.state ? (
+                            {!isLogin ? (
                                 <Button
                                     small
                                     primary={false}
@@ -389,7 +394,7 @@ function VideoPlayerModal({ onHideModal }) {
                     </div>
                 )}
                 <div className={cx('footer-comment')}>
-                    {!stateLogin.state ? (
+                    {!isLogin ? (
                         <div className={cx('notify')} onClick={showLoginModal}>
                             Log in to comment
                         </div>

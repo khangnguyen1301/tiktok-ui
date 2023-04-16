@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useContext, useLayoutEffect } from 'react';
+import { useSelector } from 'react-redux';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 import { memo } from 'react';
 import classNames from 'classnames/bind';
@@ -6,26 +7,16 @@ import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 
-import * as likeService from '~/services/likeService';
 import Image from '~/components/Image';
 import Button from '~/components/Button';
 import styles from './Video.module.scss';
 import AccountPreviewHome from '~/components/Video/AccountPreviewHome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    CommentIcon,
-    HashTagMusicIcon,
-    HeartedIcon,
-    HeartIcon,
-    ShareIcon,
-    VolumeIcon,
-    VolumeMutedIcon,
-} from '../Icons';
+import { CommentIcon, HashTagMusicIcon, HeartIcon, ShareIcon, VolumeIcon, VolumeMutedIcon } from '../Icons';
 
 import ShareAction from '../ShareAction';
 import Follow from '../Follow';
 import TiktokLoading from '../Loadings/TiktokLoading';
-import { useLocalStorage } from '~/hooks';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import Likes from '../Likes';
@@ -38,9 +29,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
     const [loading, setLoading] = useState(true);
     const [commentCount, setCommentCount] = useState(data?.comments_count);
 
-    const { getDataLocalStorage } = useLocalStorage();
-
-    const stateLogin = getDataLocalStorage('user-login');
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
 
     const { showLoginModal } = useContext(ModalEnviroment);
     const videoContext = useContext(VideoEnviroment);
@@ -205,7 +194,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                     </ReactVisibilitySensor>
 
                     <div className={cx('interactive')}>
-                        {!stateLogin.state ? (
+                        {!isLogin ? (
                             <button type="button" className={cx('icon-box')} onClick={showLoginModal}>
                                 <HeartIcon />
                             </button>
@@ -237,7 +226,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                     </div>
                 </div>
 
-                {!stateLogin.state ? (
+                {!isLogin ? (
                     <Button small outline className={cx('follow-btn')} onClick={() => videoContext.handleShowModal()}>
                         Follow
                     </Button>

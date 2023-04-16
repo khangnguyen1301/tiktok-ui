@@ -44,9 +44,6 @@
     border-bottom: 0.5px solid var(--background-gray-color-02);
 }
 
-.title {
-}
-
 .close-btn {
     color: var(--background-gray-color-75);
     cursor: pointer;
@@ -192,8 +189,14 @@
 
     .save-btn {
         background-color: var(--background-gray-color-06);
-        color: var(----background-gray-color-34);
+        color: var(--background-gray-color-34);
         border: none;
+        height: 36px;
+        border-radius: 4px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        font-family: 'ProximaNova', sans-serif;
+        padding-bottom: 2px;
     }
 
     .submit {

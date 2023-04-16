@@ -1,9 +1,8 @@
 import classNames from 'classnames/bind';
 import { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import * as videoService from '~/services/videoService';
-import * as commentService from '~/services/commentService';
+
 import Comments from './Comments';
 
 import styles from './DetailVideo.module.scss';
@@ -51,15 +50,10 @@ function DetailVideo() {
     useEffect(() => {
         const getVideo = async () => {
             const result = await videoService.getVideo(videoID);
-            if (isFirstVideo) {
-                setFirstVideo(result);
-            }
+            isFirstVideo && setFirstVideo(result);
             setVideo(result);
         };
-
-        if (videoID) {
-            getVideo();
-        }
+        videoID && getVideo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoID]);
 
@@ -83,11 +77,7 @@ function DetailVideo() {
     }, []);
 
     const handleStickyVideo = () => {
-        if (window.scrollY > 500) {
-            setActiveSticky(true);
-        } else {
-            setActiveSticky(false);
-        }
+        setActiveSticky(window.scrollY > 500);
     };
 
     const handleSetCurrentTime = (current) => {

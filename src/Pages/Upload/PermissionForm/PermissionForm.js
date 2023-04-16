@@ -88,12 +88,12 @@ function PermissionForm({
         onCaption(e.target.value);
         setCaption(e.target.value);
     };
-    console.log(snapshots.length);
+
     return (
         <div className={cx('form')}>
             <div className={cx('caption')}>
                 <span className={cx('title-caption')}>Caption</span>
-                <span className={cx('count-char')}>{`${caption.length}/150`}</span>
+                <span className={cx('count-char')}>{`${caption.length}/2200`}</span>
             </div>
 
             <div className={cx('caption-content')}>

@@ -1,14 +1,15 @@
 import classNames from 'classnames/bind';
 import { useState, useMemo, useEffect, useContext } from 'react';
-
+import { useDispatch } from 'react-redux';
 import { ChevronDownIcon, ChevronLeftIcon, XMarkIcon } from '~/components/Icons';
 import styles from './FormModal.module.scss';
 import { FORM_ITEMS } from '~/constants/constants';
 import Button from '~/components/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import * as userService from '~/services/userService';
+import { loginUser } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -20,13 +21,18 @@ function FormModal({ onHideModal }) {
     const [password, setPassword] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
 
-    const { handleSetUserData, handleUserLogIn } = useContext(ModalEnviroment);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const loginRegisterForm = useMemo(() => FORM_ITEMS, []);
 
-    const handleLogin = async () => {
-        const result = await userService.userLogin({ email: email, password: password });
-        handleSetUserData(result);
-        handleUserLogIn();
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const user = {
+            email,
+            password,
+        };
+        await loginUser(user, dispatch, navigate);
         window.location.reload();
     };
 
@@ -98,7 +104,7 @@ function FormModal({ onHideModal }) {
                             </div>
                         </div>
                     ) : (
-                        <form className={cx('wrapper-login')}>
+                        <form className={cx('wrapper-login')} onSubmit={handleLogin}>
                             <div className={cx('back-btn')} onClick={handleBack}>
                                 <ChevronLeftIcon />
                             </div>
@@ -122,17 +128,9 @@ function FormModal({ onHideModal }) {
                             </div>
                             <p className={cx('forgot')}>Forgot password</p>
                             <div>
-                                <Button
-                                    disabled={!isSubmit}
-                                    primary
-                                    className={cx('custom-btn')}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleLogin();
-                                    }}
-                                >
+                                <button disabled={!isSubmit} className={cx('custom-btn')} type="submit">
                                     Log in
-                                </Button>
+                                </button>
                             </div>
                         </form>
                     )}

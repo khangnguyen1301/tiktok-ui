@@ -2,6 +2,8 @@ import classNames from 'classnames/bind';
 
 import { useEffect, useRef, useState, useContext } from 'react';
 
+import { useSelector } from 'react-redux';
+
 import * as upLoadService from '~/services/uploadService';
 
 import styles from './Upload.module.scss';
@@ -29,44 +31,35 @@ function Upload() {
     const [caption, setCaption] = useState('');
     const [nameSlice, setNameSlice] = useState([]);
     const [detailUpload, setDetailUpload] = useState(false);
-    const [listChecked, setListChecked] = useState(initialChecked);
+    const [permissionVideo, setPermissionVideo] = useState(initialChecked);
     const [permissionViewer, setPermissionViewer] = useState('Public');
     const [miniSnapshotRef, setMiniSnapShotRef] = useState();
 
     const { showConFirmModal, isChangeFile } = useContext(ModalEnviroment);
 
-    const { getDataLocalStorage } = useLocalStorage();
-
     const thumbnailRef = useRef();
 
-    const userInfo = getDataLocalStorage('user-info');
+    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
 
     const upLoadVideo = async () => {
         let formdata = new FormData();
         formdata.append('description', caption);
         formdata.append('upload_file', videoFile);
         formdata.append('thumbnail_time', thumbnailRef.current.currentTime.toFixed(0));
-        formdata.append('music', `Orginal sound - ${userInfo.data.nickName}`);
+        formdata.append('music', `Orginal sound - ${userInfo.data.nickname}`);
         formdata.append('viewable', permissionViewer.toLowerCase());
 
         // eslint-disable-next-line array-callback-return
-        Object.entries(listChecked).map((res) => {
-            const [key, value] = res;
+        Object.entries(permissionVideo).map((item) => {
+            const [type, value] = item;
             if (value === true) {
-                formdata.append('allows[]', key);
+                formdata.append('allows[]', type);
             }
         });
         // eslint-disable-next-line no-unused-vars
         const result = await upLoadService.upLoadVideo(formdata);
         window.location.reload();
     };
-
-    // useEffect(() => {
-    //     if (isChangeFile) {
-    //         setSrcVideo(URL.createObjectURL(videoFile));
-    //         setCaption(nameSlice.join(''));
-    //     }
-    // }, [isChangeFile, videoFile]);
 
     useEffect(() => {
         if (nameSlice.length > 0) {
@@ -89,7 +82,7 @@ function Upload() {
     };
 
     const handleListChecked = (list) => {
-        setListChecked(list);
+        setPermissionVideo(list);
     };
 
     const handlePermissionViewer = (permission) => {
@@ -155,7 +148,7 @@ function Upload() {
                                     miniSnapshotRef={miniSnapshotRef}
                                     srcVideo={srcVideo}
                                     nameSliced={caption}
-                                    initialList={listChecked}
+                                    initialList={permissionVideo}
                                     upLoadVideo={upLoadVideo}
                                     onPermission={handlePermissionViewer}
                                     onListChecked={handleListChecked}

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState, useLayoutEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -26,7 +27,7 @@ import VideoPreview from '~/components/VideoPreview';
 import Menu from '~/components/Popper/Menu';
 import ShareAction from '~/components/ShareAction';
 import Follow from '~/components/Follow';
-import { useLocalStorage } from '~/hooks';
+
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import AvatarLoading from '~/components/Loadings/AvatarLoading';
@@ -61,9 +62,9 @@ function Profile() {
     const [selectTab, setSelectTab] = useState(VIDEO_TAB);
     const [activeBar, setActiveBar] = useState(VIDEO_TAB);
     const [positionPlay, setPositionPlay] = useState(0);
-    const { getDataLocalStorage } = useLocalStorage();
-    const stateLogin = getDataLocalStorage('user-login');
-    const userInfo = getDataLocalStorage('user-info');
+
+    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
 
     const userID = useLocation();
     const { showLoginModal, showUpdateModal } = useContext(ModalEnviroment);
@@ -137,11 +138,11 @@ function Profile() {
 
                                 <h1 className={cx('full-name')}>{`${user?.first_name} ${user?.last_name}`}</h1>
 
-                                {!stateLogin?.state ? (
+                                {!isLogin ? (
                                     <Button small primary className={cx('custom-btn')} onClick={showLoginModal}>
                                         Follow
                                     </Button>
-                                ) : userID.pathname.includes(userInfo.data.nickName) ? (
+                                ) : userID.pathname.includes(userInfo.nickname) ? (
                                     <Button
                                         leftIcon={<EditIcon />}
                                         custom

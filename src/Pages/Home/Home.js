@@ -1,19 +1,24 @@
 import { useContext, useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
 import { useLocation } from 'react-router-dom';
 import * as videoService from '~/services/videoService';
 
 import VideoList from '~/components/VideoList';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 
+import styles from './Home.module.scss';
+
+const cx = classNames.bind(styles);
+
 function Home() {
     const randomPage = Math.floor(Math.random() * 10 + 1);
     const [videoForYou, setVideoForYou] = useState([]);
     const [page, setPage] = useState(randomPage);
-    const context = useContext(VideoEnviroment);
+    const videoContext = useContext(VideoEnviroment);
     const location = useLocation();
 
     useEffect(() => {
-        context.handleSetListVideo([]);
+        videoContext.handleSetListVideo([]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
@@ -21,7 +26,7 @@ function Home() {
         const fetchApi = async () => {
             const result = await videoService.getVideoListForYou({ page: page });
             setVideoForYou((prev) => [...prev, ...result]);
-            context.handleSetListVideo((prev) => [...prev, ...result]);
+            videoContext.handleSetListVideo((prev) => [...prev, ...result]);
         };
         fetchApi();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,7 +44,7 @@ function Home() {
     };
 
     return (
-        <div>
+        <div className={cx('wrapper')}>
             <VideoList data={videoForYou} />
         </div>
     );

@@ -19,9 +19,9 @@ import SuggestAccounts from '~/components/SuggestAccounts';
 import * as userService from '~/services/userService';
 import Button from '~/components/Button';
 import images from '~/assets/images';
-import { useLocalStorage } from '~/hooks';
 
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import { useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 const DEFAULT_PERPAGE = 15;
@@ -74,13 +74,13 @@ function Sidebar({ className }) {
     const [suggestedUsers, setSuggestedUsers] = useState([]);
     const [followingAccount, setFollowingAccount] = useState([]);
     const { showLoginModal } = useContext(ModalEnviroment);
-    const { getDataLocalStorage } = useLocalStorage();
 
     const sideBarRef = useRef();
 
-    const stateLogin = getDataLocalStorage('user-login');
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
+
     useEffect(() => {
-        if (stateLogin.state) {
+        if (isLogin) {
             const getFollowAccount = async () => {
                 const result = await userService.getFollowingList({ page: 1 });
                 setFollowingAccount(result);
@@ -92,7 +92,7 @@ function Sidebar({ className }) {
             setSuggestedUsers(data);
         };
         getSuggestAccount();
-    }, [stateLogin.state]);
+    }, [isLogin]);
     return (
         <aside className={cx('wrapper', className)} ref={sideBarRef}>
             <Menu>
@@ -105,7 +105,7 @@ function Sidebar({ className }) {
                 />
                 <MenuItem title="LIVE" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
             </Menu>
-            {!stateLogin.state && (
+            {!isLogin && (
                 <div className={cx('log-in')}>
                     <p className={cx('title')}>Log in to follow creators, like videos, and view comments.</p>
                     <Button large outline className={cx('custom-btn')} onClick={showLoginModal}>
@@ -114,7 +114,7 @@ function Sidebar({ className }) {
                 </div>
             )}
             <SuggestAccounts title="Suggested accounts" data={suggestedUsers} sideBarRef={sideBarRef} />
-            {stateLogin.state && (
+            {isLogin && (
                 <SuggestAccounts
                     title="Following accounts"
                     data={followingAccount}

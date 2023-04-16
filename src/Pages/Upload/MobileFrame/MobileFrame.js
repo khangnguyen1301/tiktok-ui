@@ -78,12 +78,12 @@ function MobileFrame({ userInfo, nameSlice, srcVideo }) {
         <div className={cx('mobile-frame')}>
             <img src={images.mobileFrame} alt="" className={cx('frame')} />
             <div className={cx('meta-data')}>
-                <div className={cx('nickname')}>{userInfo.data.nickName}</div>
+                <div className={cx('nickname')}>{userInfo.nickname}</div>
                 <div className={cx('name-video')}>{nameSlice.join('')}</div>
                 <div className={cx('music')}>
                     <HashTagMusicIcon />
                     <div className={cx('music-running')}>
-                        <span>{`Orginal sound - ${userInfo.data.nickName}`}</span>
+                        <span>{`Orginal sound - ${userInfo.nickname}`}</span>
                     </div>
                 </div>
             </div>
@@ -97,10 +97,10 @@ function MobileFrame({ userInfo, nameSlice, srcVideo }) {
                 <img src={images.search} alt="" />
             </div>
             <div className={cx('icon-frame')}>
-                <Image src={userInfo.data.avatar} alt={userInfo.data.nickName} className={cx('avatar')} />
+                <Image src={userInfo.avatar} alt={userInfo.nickname} className={cx('avatar')} />
                 <img src={images.iconFrame} alt="" />
                 <div className={cx('avatar-rotate-container')} ref={avatarRotateRef}>
-                    <Image src={userInfo.data.avatar} alt={userInfo.data.nickName} className={cx('avatar-rotate')} />
+                    <Image src={userInfo.avatar} alt={userInfo.nickname} className={cx('avatar-rotate')} />
                 </div>
             </div>
             <video
