@@ -5,11 +5,11 @@ export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
         const result = await userService.userLogin(user);
-        dispatch(loginSuccess(result.data));
         let now = new Date();
         now.setMonth(now.getMonth() + 1);
         document.cookie = 'token=' + result.meta.token + ';';
         document.cookie = 'expires=' + now.toUTCString() + ';';
+        dispatch(loginSuccess(result.data));
         navigate('/');
     } catch (e) {
         dispatch(loginFailed());

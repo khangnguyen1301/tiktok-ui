@@ -33,7 +33,7 @@ function SuggestAccounts({ title, data, sideBarRef, noneFollow = false, follow =
     return (
         <div>
             <div className={cx('wrapper')}>
-                {data.length === 0 && !noneFollow ? (
+                {data?.length === 0 && !noneFollow ? (
                     <div className={classes}>
                         <p className={cx('title')}> {title} </p>
                         {[...Array(8)].map((res, index) => (
@@ -43,7 +43,7 @@ function SuggestAccounts({ title, data, sideBarRef, noneFollow = false, follow =
                 ) : (
                     <div className={classes}>
                         <p className={cx('title')}> {title} </p>
-                        {data.length > 0 ? (
+                        {data?.length > 0 ? (
                             data?.map((res) => <AccountItem data={res} key={res.id} />)
                         ) : (
                             <div className={cx('none-following')}>

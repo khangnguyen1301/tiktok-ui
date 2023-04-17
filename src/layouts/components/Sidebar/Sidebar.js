@@ -119,7 +119,7 @@ function Sidebar({ className }) {
                     title="Following accounts"
                     data={followingAccount}
                     sideBarRef={sideBarRef}
-                    noneFollow={followingAccount.length === 0}
+                    noneFollow={followingAccount?.length === 0}
                     follow={true}
                 />
             )}

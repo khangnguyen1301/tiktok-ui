@@ -1,9 +1,9 @@
 import axios from 'axios';
+import { FAKE_TOKEN } from '~/constants/constants';
 
-const allCookies = document.cookie;
-const rawToken = allCookies.split(';')[0].slice(6);
+const rawToken = document.cookie.split(';')[0].slice(6);
 
-const TOKEN = `Bearer ${rawToken}` ?? '';
+const TOKEN = `Bearer ${rawToken || FAKE_TOKEN}`;
 axios.defaults.headers.common['Authorization'] = TOKEN;
 
 const httpRequest = axios.create({

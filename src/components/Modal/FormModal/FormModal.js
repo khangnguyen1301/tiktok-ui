@@ -31,7 +31,9 @@ function FormModal({ onHideModal }) {
             password,
         };
         await loginUser(user, dispatch, navigate);
-        window.location.reload();
+        setTimeout(() => {
+            window.location.reload();
+        }, 300);
     };
 
     const handleRegister = async (e) => {
