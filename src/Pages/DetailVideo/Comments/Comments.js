@@ -18,7 +18,7 @@ function Comments({ videoID }) {
     const postRef = useRef();
     const inputRef = useRef();
 
-    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
+    const userInfo = useSelector((state) => state.auth.login?.currentUser) ?? {};
 
     useEffect(() => {
         videoID && getComment();

@@ -9,7 +9,7 @@ import LineLoading from '../Loadings/LineLoading';
 
 const cx = classNames.bind(styles);
 
-function SuggestAccounts({ title, data, sideBarRef, noneFollow = false }) {
+function SuggestAccounts({ title, data, sideBarRef, noneFollow = false, follow = false }) {
     const [seeMore, setSeeMore] = useState(false);
 
     const scrollTop = () => {
@@ -27,11 +27,13 @@ function SuggestAccounts({ title, data, sideBarRef, noneFollow = false }) {
     let classes = cx('wrapper-content', {
         more: seeMore,
         noneFollow,
+        follow,
     });
+
     return (
         <div>
             <div className={cx('wrapper')}>
-                {data.length === 0 ? (
+                {data.length === 0 && !noneFollow ? (
                     <div className={classes}>
                         <p className={cx('title')}> {title} </p>
                         {[...Array(8)].map((res, index) => (

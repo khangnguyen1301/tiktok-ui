@@ -201,9 +201,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                         ) : (
                             <Likes data={data} />
                         )}
-
-                        {/* <strong className={cx('count')}>{likeCount ?? 0}</strong> */}
-
+                        {!isLogin && <strong className={cx('count')}>{data?.likes_count ?? 0}</strong>}
                         <button type="button" className={cx('icon-box')} onClick={() => handleClickVideo()}>
                             {/* icon */}
                             <CommentIcon />

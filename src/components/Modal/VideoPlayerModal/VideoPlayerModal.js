@@ -61,7 +61,6 @@ function VideoPlayerModal({ onHideModal }) {
     const { showLoginModal, isFormModalShow } = useContext(ModalEnviroment);
 
     const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
-    const token = useSelector((state) => state.auth.login?.currentUser?.meta?.token);
 
     useLayoutEffect(() => {
         videoRef.current.volume = context.isMuted ? 0 : context.volume;
@@ -105,7 +104,7 @@ function VideoPlayerModal({ onHideModal }) {
     };
 
     const getComment = async () => {
-        const result = await commentService.getComment({ videoID: context.videoID, token: token });
+        const result = await commentService.getComment({ videoID: context.videoID });
         setComments(result);
     };
 
@@ -114,7 +113,6 @@ function VideoPlayerModal({ onHideModal }) {
         const result = await commentService.postComment({
             videoID: context.videoID,
             comment: contentComment,
-            token: token,
         });
         getComment();
         getVideoInfo();

@@ -26,7 +26,7 @@ function UpdateProFileModal({ onHideModal }) {
     const [bio, setBio] = useState('');
     const [isReady, setIsReady] = useState(false);
 
-    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
+    const userInfo = useSelector((state) => state.auth.login?.currentUser) ?? {};
 
     const avatarRef = useRef();
     const dispatch = useDispatch();

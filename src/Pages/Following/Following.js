@@ -9,6 +9,7 @@ import VideoList from '~/components/VideoList';
 import { useLocation } from 'react-router-dom';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { useSelector } from 'react-redux';
+import HomeAccountLoading from '~/components/Loadings/HomeAccountLoading/HomeAccountLoading';
 
 const DEFAULT_PERPAGE = 15;
 
@@ -20,7 +21,7 @@ function Following() {
     const [positionPlay, setPositionPlay] = useState(0);
     const [page, setPage] = useState(1);
 
-    const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
+    const isLogin = useSelector((state) => state.auth.login?.isLogin);
 
     const context = useContext(VideoEnviroment);
     const location = useLocation();
@@ -30,7 +31,7 @@ function Following() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (isLogin) {
             const getFollowing = async () => {
                 const followVideoList = await videoService.getVideoListFollowing({ page: page });
@@ -63,7 +64,9 @@ function Following() {
 
     return (
         <>
-            {!isLogin ? (
+            {suggestAccount.length === 0 && isLogin ? (
+                <HomeAccountLoading />
+            ) : !isLogin || (isLogin && followList.length === 0) ? (
                 <div className={cx('wrapper')}>
                     {suggestAccount.map((res, index) => (
                         <VideoPreview
@@ -74,22 +77,10 @@ function Following() {
                             play={index === positionPlay}
                         />
                     ))}
-                </div>
-            ) : followList.length > 0 || isLogin ? (
-                <div>
-                    <VideoList data={followList} />
                 </div>
             ) : (
-                <div className={cx('wrapper')}>
-                    {suggestAccount.map((res, index) => (
-                        <VideoPreview
-                            data={res}
-                            key={res?.id}
-                            index={index}
-                            handleMouseMove={handleMouseMove}
-                            play={index === positionPlay}
-                        />
-                    ))}
+                <div>
+                    <VideoList data={followList} />
                 </div>
             )}
         </>

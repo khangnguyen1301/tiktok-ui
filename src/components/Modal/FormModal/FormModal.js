@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState, useMemo, useEffect, useContext } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { ChevronDownIcon, ChevronLeftIcon, XMarkIcon } from '~/components/Icons';
 import styles from './FormModal.module.scss';
@@ -7,9 +7,7 @@ import { FORM_ITEMS } from '~/constants/constants';
 import Button from '~/components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
-import * as userService from '~/services/userService';
-import { loginUser } from '~/redux/apiRequest';
+import { loginUser, registerUser } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -36,6 +34,16 @@ function FormModal({ onHideModal }) {
         window.location.reload();
     };
 
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        const user = {
+            email,
+            password,
+        };
+        await registerUser(user, dispatch);
+        handleBack();
+    };
+
     const resetMenu = () => {
         const newForm = loginRegisterForm.find((form) => form.type === formLoginState);
         setFilteredForm(newForm);
@@ -51,7 +59,7 @@ function FormModal({ onHideModal }) {
 
     useEffect(() => {
         resetMenu();
-    }, [loginRegisterForm, formLoginState]);
+    }, [formLoginState]);
 
     const handleMenu = (position) => {
         const nextForm = [...loginRegisterForm.find((form) => form.type === formLoginState).contents];
@@ -104,7 +112,10 @@ function FormModal({ onHideModal }) {
                             </div>
                         </div>
                     ) : (
-                        <form className={cx('wrapper-login')} onSubmit={handleLogin}>
+                        <form
+                            className={cx('wrapper-login')}
+                            onSubmit={filteredForm.title.toLowerCase() === 'log in' ? handleLogin : handleRegister}
+                        >
                             <div className={cx('back-btn')} onClick={handleBack}>
                                 <ChevronLeftIcon />
                             </div>
@@ -129,7 +140,7 @@ function FormModal({ onHideModal }) {
                             <p className={cx('forgot')}>Forgot password</p>
                             <div>
                                 <button disabled={!isSubmit} className={cx('custom-btn')} type="submit">
-                                    Log in
+                                    {filteredForm.title}
                                 </button>
                             </div>
                         </form>

@@ -63,7 +63,7 @@ function Profile() {
     const [activeBar, setActiveBar] = useState(VIDEO_TAB);
     const [positionPlay, setPositionPlay] = useState(0);
 
-    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
+    const userInfo = useSelector((state) => state.auth.login?.currentUser) ?? {};
     const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
 
     const userID = useLocation();

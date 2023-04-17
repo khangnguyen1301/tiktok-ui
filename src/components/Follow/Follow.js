@@ -17,7 +17,7 @@ function Follow({
     index,
     isFollow,
     updateFollow,
-    handleFollow,
+    handleFollow = () => {},
     isUpdateFollow,
 }) {
     const [isFollowed, setIsFollowed] = useState(false);

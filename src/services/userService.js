@@ -39,6 +39,19 @@ export const userLogin = async ({ email, password }) => {
     }
 };
 
+export const userRegister = async ({ email, password }) => {
+    try {
+        const res = await httpRequest.post('auth/register', {
+            type: 'email',
+            email,
+            password,
+        });
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const userUpdateInfo = async (formData) => {
     try {
         const res = await httpRequest.post('auth/me', formData, {

@@ -39,14 +39,14 @@ function Upload() {
 
     const thumbnailRef = useRef();
 
-    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
+    const userInfo = useSelector((state) => state.auth.login?.currentUser) ?? {};
 
     const upLoadVideo = async () => {
         let formdata = new FormData();
         formdata.append('description', caption);
         formdata.append('upload_file', videoFile);
         formdata.append('thumbnail_time', thumbnailRef.current.currentTime.toFixed(0));
-        formdata.append('music', `Orginal sound - ${userInfo.data.nickname}`);
+        formdata.append('music', `Orginal sound - ${userInfo.nickname}`);
         formdata.append('viewable', permissionViewer.toLowerCase());
 
         // eslint-disable-next-line array-callback-return

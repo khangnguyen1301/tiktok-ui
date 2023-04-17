@@ -33,7 +33,7 @@ const cx = classNames.bind(styles);
 function Header({ className }) {
     const { showLoginModal } = useContext(ModalEnviroment);
 
-    const userInfo = useSelector((state) => state.auth.login?.currentUser?.data) ?? {};
+    const userInfo = useSelector((state) => state.auth.login?.currentUser) ?? {};
     const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
 
     const userMenu = [

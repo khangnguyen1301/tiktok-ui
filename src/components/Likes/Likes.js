@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import * as likeService from '~/services/likeService';
 import { HeartedIcon, HeartIcon } from '../Icons';
 import styles from './Likes.module.scss';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
@@ -13,10 +14,12 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
     const [likeCounts, setLikeCounts] = useState(data?.likes_count);
     const [videoID, setVideoID] = useState(data?.id);
 
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
+
     useEffect(() => {
-        setVideoID(data.id);
-        setIsLiked(data.is_liked);
-        setLikeCounts(data.likes_count);
+        setVideoID(data?.id);
+        setIsLiked(data?.is_liked);
+        setLikeCounts(data?.likes_count);
     }, [data]);
 
     const stateLikeVideo = () => {
@@ -39,7 +42,6 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
             likeVideo();
         }
     };
-
     return (
         <div className={cx('wrapper', { horizontal })}>
             <button
@@ -48,7 +50,11 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
                 onClick={() => stateLikeVideo()}
             >
                 {/* icon */}
-                {isLiked ? <HeartedIcon width={width} height={height} /> : <HeartIcon width={width} height={height} />}
+                {isLiked && isLogin ? (
+                    <HeartedIcon width={width} height={height} />
+                ) : (
+                    <HeartIcon width={width} height={height} />
+                )}
             </button>
             <strong className={cx('count')}>{likeCounts ?? 0}</strong>
         </div>

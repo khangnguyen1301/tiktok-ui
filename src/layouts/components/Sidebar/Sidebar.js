@@ -120,6 +120,7 @@ function Sidebar({ className }) {
                     data={followingAccount}
                     sideBarRef={sideBarRef}
                     noneFollow={followingAccount.length === 0}
+                    follow={true}
                 />
             )}
             <div className={cx('hashtag')}>

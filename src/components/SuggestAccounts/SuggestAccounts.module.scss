@@ -16,7 +16,11 @@
 }
 
 .noneFollow {
-    height: auto;
+    height: auto !important;
+}
+
+.follow {
+    height: auto !important;
 }
 
 .more {

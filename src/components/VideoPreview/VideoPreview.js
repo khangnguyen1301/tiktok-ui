@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import styles from './VideoPreview.module.scss';
 import Image from '../Image';
-import Button from '../Button';
 import { PlayIcon } from '../Icons';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import Follow from '../Follow/Follow';
@@ -17,7 +16,11 @@ function VideoPreview({ data, index, handleMouseMove, videoID, play = false, pro
     const videoRef = useRef();
     const context = useContext(VideoEnviroment);
     useEffect(() => {
-        play ? videoRef.current.play() : videoRef.current.load();
+        play
+            ? setTimeout(() => {
+                  videoRef.current.play();
+              }, 150)
+            : videoRef.current.load();
     }, [play]);
 
     const handleSetPosition = () => {
@@ -44,9 +47,7 @@ function VideoPreview({ data, index, handleMouseMove, videoID, play = false, pro
                                     {data.tick && <FontAwesomeIcon icon={faCheckCircle} />}
                                 </span>
                             </div>
-                            {/* <Button primary className={cx('follow-btn')}>
-                                Follow
-                            </Button> */}
+
                             <Follow
                                 className={cx('follow-btn')}
                                 primary={true}
