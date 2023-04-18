@@ -99,3 +99,23 @@
     cursor: pointer;
     user-select: none;
 }
+
+@media (max-width: 1071px) {
+    .wrapper {
+        border: none;
+    }
+
+    .none-following,
+    .more-btn,
+    .title,
+    .content-container {
+        display: none;
+    }
+
+    .logo {
+        width: 32px !important;
+    }
+    .container {
+        justify-content: center;
+    }
+}

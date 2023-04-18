@@ -1,6 +1,8 @@
 .wrapper {
-    width: 100%;
+    width: 202px;
     height: 302px;
+    margin-right: 12px;
+    margin-bottom: 12px;
     border-radius: 8px;
     background-color: rgb(221, 230, 226);
 }
@@ -101,4 +103,26 @@ h5 {
     margin-top: 10px;
     font-size: 1.8rem;
     font-weight: 600;
+}
+
+@media (max-width: 1160px) {
+    .wrapper {
+        width: 180px;
+        flex-basis: 23%;
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        width: 180px;
+        flex-basis: auto;
+    }
+}
+
+@media (max-width: 703px) {
+    .wrapper {
+        width: 180px;
+        height: 350px;
+        flex-basis: 45%;
+    }
 }

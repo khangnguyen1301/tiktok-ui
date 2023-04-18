@@ -6,9 +6,9 @@ export const loginUser = async (user, dispatch, navigate) => {
     try {
         const result = await userService.userLogin(user);
         let now = new Date();
-        now.setMonth(now.getMonth() + 1);
-        document.cookie = 'token=' + result.meta.token + ';';
-        document.cookie = 'expires=' + now.toUTCString() + ';';
+        now.setTime(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+        let expires = 'expires=' + now.toUTCString();
+        document.cookie = 'token=' + result.meta.token + ';' + expires;
         dispatch(loginSuccess(result.data));
         navigate('/');
     } catch (e) {

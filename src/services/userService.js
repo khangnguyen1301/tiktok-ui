@@ -35,7 +35,7 @@ export const userLogin = async ({ email, password }) => {
         });
         return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 

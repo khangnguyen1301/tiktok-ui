@@ -297,3 +297,19 @@
         opacity: 1;
     }
 }
+
+@media (max-width: 1071px) {
+    .wrapper {
+        max-width: fit-content;
+    }
+    .body {
+        width: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .video {
+        width: 250px !important;
+        height: 450px !important;
+    }
+}

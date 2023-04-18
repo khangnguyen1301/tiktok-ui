@@ -66,7 +66,6 @@
 }
 
 .video {
-    width: 43%;
     height: 100%;
     object-fit: cover;
 }
@@ -609,4 +608,20 @@
     text-align: right;
     margin-right: 4px;
     cursor: default;
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .video-container {
+        width: 100%;
+    }
+
+    .sidebar {
+        display: none;
+    }
 }

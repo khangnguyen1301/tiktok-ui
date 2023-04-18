@@ -111,3 +111,9 @@
         background-color: rgba(22, 24, 35, 0.03) !important;
     }
 }
+
+@media (max-width: 767px) {
+    .search {
+        display: none;
+    }
+}

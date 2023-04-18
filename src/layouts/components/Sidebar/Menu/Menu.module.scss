@@ -23,3 +23,15 @@
 .title {
     padding-left: 8px;
 }
+
+@media (max-width: 1071px) {
+    .icon {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .title {
+        display: none;
+    }
+}

@@ -2,7 +2,7 @@
     position: fixed;
     width: 356px;
     height: 695px;
-    max-height: 100%;
+    //max-height: 100%;
     padding: 20px 0 65px 8px;
     overflow-y: overlay;
     transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
@@ -194,4 +194,26 @@
     line-height: 17px;
     padding: 0 40px 0 8px;
     margin-bottom: 25px;
+}
+
+@media (max-width: 1071px) {
+    .wrapper {
+        width: 71px !important;
+        overflow-y: hidden;
+        border-right: 1px solid var(--background-gray-color-12);
+        box-shadow: var(--box-shadow-header);
+        padding-right: 8px;
+    }
+    .title {
+        display: none;
+    }
+
+    .discover,
+    .hashtag,
+    .effect,
+    .link,
+    .tiktok,
+    .log-in {
+        display: none;
+    }
 }

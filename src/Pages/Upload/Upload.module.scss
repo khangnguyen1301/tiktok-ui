@@ -100,3 +100,14 @@
         }
     }
 }
+
+@media (max-width: 1100px) {
+    .video-file {
+        width: 100%;
+    }
+
+    .upload-container-v2,
+    .container {
+        width: 100%;
+    }
+}

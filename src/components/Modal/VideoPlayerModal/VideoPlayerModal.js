@@ -57,36 +57,36 @@ function VideoPlayerModal({ onHideModal }) {
     const postButtonRef = useRef();
     const contentRef = useRef();
 
-    const context = useContext(VideoEnviroment);
+    const videoContext = useContext(VideoEnviroment);
     const { showLoginModal, isFormModalShow } = useContext(ModalEnviroment);
 
     const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
 
     useLayoutEffect(() => {
-        videoRef.current.volume = context.isMuted ? 0 : context.volume;
-        selectorRef.current.style.width = `${context.isMuted ? 0 : context.volume * 100}%`;
+        videoRef.current.volume = videoContext.isMuted ? 0 : videoContext.volume;
+        selectorRef.current.style.width = `${videoContext.isMuted ? 0 : videoContext.volume * 100}%`;
     });
 
     useEffect(() => {
         getComment();
         getVideoInfo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [context.videoID]);
+    }, [videoContext.videoID]);
 
     useEffect(() => {
-        const nickName = window.location.pathname.includes('/me') ? 'me' : `/@${context.nickName}`;
-        window.history.replaceState(null, '', `${nickName ?? ''}/video/${context.videoID}`);
+        const nickName = window.location.pathname.includes('/me') ? 'me' : `/@${videoContext.nickName}`;
+        window.history.replaceState(null, '', `${nickName ?? ''}/video/${videoContext.videoID}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [context.videoID, context.nickName]);
+    }, [videoContext.videoID, videoContext.nickName]);
 
     useEffect(() => {
-        if (context.isMuted) {
+        if (videoContext.isMuted) {
             videoRef.current.volume = 0;
         } else {
-            videoRef.current.volume = context.volume;
+            videoRef.current.volume = videoContext.volume;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [context.isMuted]);
+    }, [videoContext.isMuted]);
 
     useEffect(() => {
         isPlayed ? videoRef.current.play() : videoRef.current.pause();
@@ -97,26 +97,26 @@ function VideoPlayerModal({ onHideModal }) {
     }, [isFormModalShow]);
 
     const getVideoInfo = async () => {
-        const result = await videoService.getVideo(context.videoID);
+        const result = await videoService.getVideo(videoContext.videoID);
         setVideo(result);
         setCommentCount(result?.comments_count);
         setIsPlayed(true);
     };
 
     const getComment = async () => {
-        const result = await commentService.getComment({ videoID: context.videoID });
+        const result = await commentService.getComment({ videoID: videoContext.videoID });
         setComments(result);
     };
 
     const postComment = async () => {
         // eslint-disable-next-line no-unused-vars
         const result = await commentService.postComment({
-            videoID: context.videoID,
+            videoID: videoContext.videoID,
             comment: contentComment,
         });
         getComment();
         getVideoInfo();
-        context.handleStateComment(true);
+        videoContext.handleStateComment(true);
         contentRef.current.value = '';
         contentRef.current.blur();
         postButtonRef.current.style.color = 'var(--background-gray-color-34)';
@@ -142,6 +142,11 @@ function VideoPlayerModal({ onHideModal }) {
         postButtonRef.current.style.color = e.target.value ? '#fe2c55' : 'var(--background-gray-color-34)';
         postButtonRef.current.style.cursor = 'pointer';
         setContentComment(e.target.value);
+    };
+
+    const handleHideModal = () => {
+        window.history.replaceState(null, '', `/@`);
+        onHideModal();
     };
 
     return (
@@ -177,17 +182,17 @@ function VideoPlayerModal({ onHideModal }) {
                 </div>
 
                 <div
-                    className={cx('btn-back', { hide: context.positionVideo === 0 })}
-                    onClick={() => context.handleBackVideo()}
+                    className={cx('btn-back', { hide: videoContext.positionVideo === 0 })}
+                    onClick={() => videoContext.handleBackVideo()}
                 >
                     <FontAwesomeIcon icon={faChevronUp} />
                 </div>
-                <div className={cx('btn-next')} onClick={() => context.handleNextVideo()}>
+                <div className={cx('btn-next')} onClick={() => videoContext.handleNextVideo()}>
                     <FontAwesomeIcon icon={faChevronDown} />
                 </div>
 
-                <div className={cx('button')} onClick={() => context.handleMutedVideo()}>
-                    {context.isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}
+                <div className={cx('button')} onClick={() => videoContext.handleMutedVideo()}>
+                    {videoContext.isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}
                 </div>
                 <div className={cx('adjust-volume')}>
                     <div className={cx('volume-bar')}>
@@ -197,8 +202,8 @@ function VideoPlayerModal({ onHideModal }) {
                             min="0"
                             max="100"
                             step="1"
-                            value={context.isMuted ? 0 : context.volume * 100}
-                            onChange={context.handleAdjustVolume}
+                            value={videoContext.isMuted ? 0 : videoContext.volume * 100}
+                            onChange={videoContext.handleAdjustVolume}
                         />
                         <div className={cx('selector')} ref={selectorRef}></div>
                     </div>
@@ -215,11 +220,9 @@ function VideoPlayerModal({ onHideModal }) {
                                 </div>
                                 <div className={cx('name')}>
                                     <div className={cx('nickname')}>
-                                        {' '}
                                         <LineLoading />
                                     </div>
                                     <div className={cx('fullname')}>
-                                        {' '}
                                         <LineLoading />
                                     </div>
                                 </div>
@@ -228,7 +231,7 @@ function VideoPlayerModal({ onHideModal }) {
                     ) : (
                         <div className={cx('info')}>
                             <AccountPreviewHome data={video}>
-                                <Link to={`/@${video?.user?.nickname}`} onClick={context.handleHidePlayer}>
+                                <Link to={`/@${video?.user?.nickname}`} onClick={handleHideModal}>
                                     <div className={cx('name-container')}>
                                         <Image src={video?.user?.avatar} className={cx('avatar')} />
 

@@ -18,9 +18,9 @@ function VideoPreview({ data, index, handleMouseMove, videoID, play = false, pro
     useEffect(() => {
         play
             ? setTimeout(() => {
-                  videoRef.current.play();
+                  videoRef.current?.play();
               }, 150)
-            : videoRef.current.load();
+            : videoRef.current?.load();
     }, [play]);
 
     const handleSetPosition = () => {

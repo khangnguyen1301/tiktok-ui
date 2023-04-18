@@ -26,6 +26,36 @@
     animation: showLoginForm 0.33s linear, hidden 0.23s linear;
 }
 
+.notify-success {
+    position: fixed;
+    top: 10px;
+    margin: auto;
+    width: 700px;
+    height: 40px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    font-weight: 700;
+    opacity: 0;
+    background-color: rgb(56, 55, 55);
+}
+
+.show {
+    animation: hide 6s;
+}
+
+@keyframes hide {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
 .container {
     width: 483px;
     height: 100%;
@@ -244,6 +274,15 @@
     width: 100%;
     height: 44px !important;
     margin-top: 22px;
+    color: var(--background-gray-color-75);
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+.submit {
+    background-color: var(--primary);
+    color: var(--text-primary-color);
 }
 
 .back-btn {
@@ -252,4 +291,19 @@
     top: 14px;
     left: 18px;
     cursor: pointer;
+}
+
+.loading {
+    color: var(--text-primary-color);
+    font-size: 1.6rem;
+    animation: spinner 2s infinite;
+}
+
+@keyframes spinner {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

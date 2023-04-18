@@ -515,3 +515,14 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .video-card {
+        flex-basis: 50%;
+        height: 200px !important;
+        margin: 0 10px;
+    }
+    .controls-item {
+        width: 100%;
+    }
+}

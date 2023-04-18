@@ -9,7 +9,7 @@ import * as upLoadService from '~/services/uploadService';
 import styles from './Upload.module.scss';
 
 import PermissionForm from './PermissionForm';
-import { useLocalStorage } from '~/hooks';
+
 import MobileFrame from './MobileFrame';
 import HeaderUpload from './HeaderUpload';
 import Footer from './Footer';

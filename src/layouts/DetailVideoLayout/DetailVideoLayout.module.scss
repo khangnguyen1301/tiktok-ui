@@ -18,3 +18,9 @@
     margin-left: 232px;
     transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
+
+@media (max-width: 1024px) {
+    .content {
+        margin-left: 80px;
+    }
+}

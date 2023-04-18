@@ -7,6 +7,8 @@ import VideoList from '~/components/VideoList';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 
 import styles from './Home.module.scss';
+import { useDispatch } from 'react-redux';
+import { logout } from '~/redux/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -16,9 +18,12 @@ function Home() {
     const [page, setPage] = useState(randomPage);
     const videoContext = useContext(VideoEnviroment);
     const location = useLocation();
-
+    const dispatch = useDispatch();
+    const TTL_COOKIES = document.cookie.split(';')[0].slice(6);
+    !TTL_COOKIES && dispatch(logout());
     useEffect(() => {
         videoContext.handleSetListVideo([]);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 

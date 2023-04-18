@@ -195,13 +195,11 @@
 
 .video-item {
     width: 100%;
-    display: grid;
+    display: flex;
     flex-wrap: wrap;
     padding-top: 20px;
-    grid-template-columns: repeat(5, 202px);
-    grid-column-gap: 10px;
-    grid-row-gap: 25px;
     border-radius: 10px;
+    overflow-x: visible;
 }
 
 .none-item {
@@ -227,4 +225,13 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+}
+
+@media (max-width: 1071px) {
+    .profile {
+        margin-left: 80px;
+    }
+    .video-item {
+        flex-wrap: wrap;
+    }
 }

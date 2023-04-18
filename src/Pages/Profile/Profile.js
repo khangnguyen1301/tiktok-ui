@@ -235,8 +235,8 @@ function Profile() {
                                 )}
                             </div>
                         )}
-                        {selectTab === VIDEO_TAB ? (
-                            user === null ? (
+                        {selectTab === VIDEO_TAB &&
+                            (user === null ? (
                                 <div className={cx('video-item')}>
                                     <VideoLoading />
                                 </div>
@@ -254,13 +254,7 @@ function Profile() {
                                         />
                                     ))}
                                 </div>
-                            )
-                        ) : (
-                            <div className={cx('none-item')}>
-                                <ProfileIcon />
-                                <p> No liked videos yet</p>
-                            </div>
-                        )}
+                            ))}
                     </div>
                 </div>
             )}

@@ -9,7 +9,6 @@ import MenuItem from './MenuItem';
 import Header from './Header';
 import { ChevronDownIcon } from '~/components/Icons';
 
-import { useLocalStorage } from '~/hooks';
 import { useDispatch } from 'react-redux';
 import { logout } from '~/redux/authSlice';
 const cx = classNames.bind(styles);
@@ -37,8 +36,6 @@ function Menu({
     shareActive = false,
 }) {
     const [history, setHistory] = useState([{ data: items }]);
-
-    const { setDataLocalStorage } = useLocalStorage();
 
     const current = history[history.length - 1];
 

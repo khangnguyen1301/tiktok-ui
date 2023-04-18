@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 
 function Following() {
     const [followList, setFollowList] = useState([]);
-    const [suggestAccount, setSuggestAccount] = useState([]);
+    const [suggestAccounts, setSuggestAccounts] = useState([]);
     const [positionPlay, setPositionPlay] = useState(0);
     const [page, setPage] = useState(1);
 
@@ -31,26 +31,34 @@ function Following() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
-    useEffect(() => {
-        if (isLogin) {
-            const getFollowing = async () => {
-                const followVideoList = await videoService.getVideoListFollowing({ page: page });
-                setFollowList((prev) => [...prev, ...followVideoList]);
-                context.handleSetListVideo((prev) => [...prev, ...followVideoList]);
-            };
-            getFollowing();
-        }
-        async function getSuggestAccount() {
-            const data = await userService.getSuggested({ page: 9, perPage: DEFAULT_PERPAGE });
-            setSuggestAccount(data);
-        }
-        getSuggestAccount();
+    useLayoutEffect(() => {
+        const getSuggestAccount = async () => {
+            const suggestAccountsList = await userService.getSuggested({ page: 9, perPage: DEFAULT_PERPAGE });
+            handleSetSuggestList(suggestAccountsList);
+        };
+        const getFollowing = async () => {
+            const followVideoList = await videoService.getVideoListFollowing({ page: page });
+            handleSetFollowList((prev) => [...prev, ...followVideoList]);
+            context.handleSetListVideo((prev) => [...prev, ...followVideoList]);
+            getSuggestAccount();
+        };
+        isLogin ? getFollowing() : getSuggestAccount();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLogin, page]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const handleSetFollowList = async (list) => {
+        await setFollowList(list);
+    };
+
+    const handleSetSuggestList = async (list) => {
+        await setSuggestAccounts(list);
+    };
 
     const handleScroll = () => {
         if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
@@ -64,11 +72,11 @@ function Following() {
 
     return (
         <>
-            {suggestAccount.length === 0 && isLogin ? (
+            {isLogin && suggestAccounts.length === 0 ? (
                 <HomeAccountLoading />
             ) : !isLogin || (isLogin && followList.length === 0) ? (
                 <div className={cx('wrapper')}>
-                    {suggestAccount.map((res, index) => (
+                    {suggestAccounts.map((res, index) => (
                         <VideoPreview
                             data={res}
                             key={res?.id}
