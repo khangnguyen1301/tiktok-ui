@@ -195,13 +195,15 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
 
                     <div className={cx('interactive')}>
                         {!isLogin ? (
-                            <button type="button" className={cx('icon-box')} onClick={showLoginModal}>
-                                <HeartIcon />
-                            </button>
+                            <div className={cx('likes-box')}>
+                                <button type="button" className={cx('icon-box')} onClick={showLoginModal}>
+                                    <HeartIcon />
+                                </button>
+                                {!isLogin && <strong className={cx('count')}>{data?.likes_count ?? 0}</strong>}
+                            </div>
                         ) : (
                             <Likes data={data} />
                         )}
-                        {!isLogin && <strong className={cx('count')}>{data?.likes_count ?? 0}</strong>}
                         <button type="button" className={cx('icon-box')} onClick={() => handleClickVideo()}>
                             {/* icon */}
                             <CommentIcon />

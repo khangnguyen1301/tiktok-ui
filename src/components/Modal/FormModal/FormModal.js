@@ -36,8 +36,8 @@ function FormModal({ onHideModal }) {
         let timerID;
         if (!isError && isLogin) {
             timerID = setTimeout(() => {
-                window.location.reload();
-            }, 1000);
+                onHideModal();
+            }, 1500);
         }
         return () => clearTimeout(timerID);
     }, [isError, isLogin]);

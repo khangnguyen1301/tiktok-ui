@@ -4,6 +4,7 @@ import HomeAccountLoading from '../Loadings/HomeAccountLoading';
 import Video from '~/components/Video';
 
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+import { useSelector } from 'react-redux';
 
 function VideoList({ data }) {
     const [positionCurrentElement, setPositionCurrentElement] = useState(0);
@@ -12,6 +13,7 @@ function VideoList({ data }) {
     const wrapperRef = useRef();
     const context = useContext(VideoEnviroment);
     const maxLength = data.length - 1;
+    const isChangeStateLike = useSelector((state) => state.like?.isLiked);
 
     useLayoutEffect(() => {
         if (positionCurrentElement >= maxLength) {
@@ -20,7 +22,7 @@ function VideoList({ data }) {
             setPositionCurrentElement(context.positionVideo);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [context.positionVideo]);
+    }, [context.positionVideo, isChangeStateLike]);
 
     useLayoutEffect(() => {
         if (context.isVideoModalShow || keyDown) {

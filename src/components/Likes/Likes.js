@@ -3,41 +3,49 @@ import classNames from 'classnames/bind';
 
 import { useEffect, useState } from 'react';
 import * as likeService from '~/services/likeService';
+import * as videoService from '~/services/videoService';
 import { HeartedIcon, HeartIcon } from '../Icons';
 import styles from './Likes.module.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { liked, unliked } from '~/redux/likesSlice';
 
 const cx = classNames.bind(styles);
 
 function Likes({ data, width, height, horizontal = false, noneBorder = false, shake = false }) {
     const [isLiked, setIsLiked] = useState(data?.is_liked);
     const [likeCounts, setLikeCounts] = useState(data?.likes_count);
-    const [videoID, setVideoID] = useState(data?.id);
 
+    const dispatch = useDispatch();
     const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
+    const isChangeStateLike = useSelector((state) => state.like?.isLiked);
 
     useEffect(() => {
-        setVideoID(data?.id);
-        setIsLiked(data?.is_liked);
-        setLikeCounts(data?.likes_count);
-    }, [data]);
+        const getLikeInfo = async () => {
+            const res = await videoService.getVideo(data?.id);
+            setIsLiked(res?.is_liked);
+            setLikeCounts(res?.likes_count);
+        };
+        data?.id && getLikeInfo();
+    }, [data, isChangeStateLike]);
 
     const stateLikeVideo = () => {
         if (isLiked) {
             //unliked
             const unLikeVideo = async () => {
                 // eslint-disable-next-line no-unused-vars
-                const result = await likeService.unLikeVideo({ videoID: videoID });
-                setLikeCounts(result.likes_count);
+                const result = await likeService.unLikeVideo({ videoID: data?.id });
+                setLikeCounts(result?.likes_count);
                 setIsLiked(false);
+                dispatch(unliked());
             };
             unLikeVideo();
         } else {
             //likeVideo
             const likeVideo = async () => {
-                const result = await likeService.likeVideo({ videoID: videoID });
-                setLikeCounts(result.likes_count);
+                const result = await likeService.likeVideo({ videoID: data?.id });
+                setLikeCounts(result?.likes_count);
                 setIsLiked(true);
+                dispatch(liked());
             };
             likeVideo();
         }
@@ -56,7 +64,7 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
                     <HeartIcon width={width} height={height} />
                 )}
             </button>
-            <strong className={cx('count')}>{likeCounts ?? 0}</strong>
+            <strong className={cx('count')}>{likeCounts ?? '0'}</strong>
         </div>
     );
 }
