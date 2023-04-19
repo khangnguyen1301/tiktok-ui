@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { loginUser, registerUser } from '~/redux/apiRequest';
 import Notify from '~/components/Notify';
+import { resetLogin, resetRegister } from '~/redux/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -28,15 +29,18 @@ function FormModal({ onHideModal }) {
     const loginFetching = useSelector((state) => state.auth?.login?.isFetching);
     const registerFetching = useSelector((state) => state.auth?.register?.isFetching);
     const isLogin = useSelector((state) => state.auth?.login?.isLogin);
+    const isRegister = useSelector((state) => state.auth?.register?.isRegister);
     const isError = useSelector((state) => state.auth.login.error);
     const loginMessage = useSelector((state) => state.auth.login.message);
+    const registerMessage = useSelector((state) => state.auth.register.message);
     const loginRegisterForm = useMemo(() => FORM_ITEMS, []);
 
     useEffect(() => {
         let timerID;
         if (!isError && isLogin) {
             timerID = setTimeout(() => {
-                onHideModal();
+                //onHideModal();
+                window.location.reload();
             }, 1500);
         }
         return () => clearTimeout(timerID);
@@ -58,7 +62,7 @@ function FormModal({ onHideModal }) {
             password,
         };
         await registerUser(user, dispatch);
-        handleBack();
+        switchLogin();
     };
 
     const resetMenu = () => {
@@ -106,6 +110,8 @@ function FormModal({ onHideModal }) {
     const handleBack = () => {
         setIsChildren(false);
         resetMenu();
+        setEmail('');
+        setPassword('');
     };
 
     const switchLogin = () => {
@@ -117,11 +123,22 @@ function FormModal({ onHideModal }) {
         setFormLoginState('register');
         handleBack();
     };
+
+    const handleCloseModal = () => {
+        dispatch(resetLogin());
+        dispatch(resetRegister());
+        onHideModal();
+    };
+
     return (
         <div className={cx('modal-mask')}>
-            {(isLogin || isError) && (
-                <div className={cx('notify-success', { show: (isLogin || isError) && !loginFetching })}>
-                    <Notify message={loginMessage} />
+            {(isLogin || isError || isRegister) && (
+                <div
+                    className={cx('notify-success', {
+                        show: !loginFetching && !registerFetching,
+                    })}
+                >
+                    <Notify message={isRegister ? registerMessage : loginMessage} />
                 </div>
             )}
             <div className={cx('wrapper')}>
@@ -221,7 +238,7 @@ function FormModal({ onHideModal }) {
                     </div>
                 </div>
 
-                <div className={cx('close-btn')} onClick={onHideModal}>
+                <div className={cx('close-btn')} onClick={handleCloseModal}>
                     <XMarkIcon />
                 </div>
             </div>

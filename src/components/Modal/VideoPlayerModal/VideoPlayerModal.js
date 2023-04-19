@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState, useLayoutEffect, memo } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -8,6 +8,7 @@ import { faChevronDown, faChevronUp, faPlay, faXmark } from '@fortawesome/free-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from '~/components/Button/Button';
 import Likes from '~/components/Likes';
+import { adjustVolume, handleMuted } from '~/redux/videoSlice';
 
 import classNames from 'classnames/bind';
 import {
@@ -56,16 +57,22 @@ function VideoPlayerModal({ onHideModal }) {
     const commentRef = useRef();
     const postButtonRef = useRef();
     const contentRef = useRef();
+    const adjustRef = useRef();
 
     const videoContext = useContext(VideoEnviroment);
     const { showLoginModal, isFormModalShow } = useContext(ModalEnviroment);
 
-    const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
+    const dispatch = useDispatch();
 
-    useLayoutEffect(() => {
-        videoRef.current.volume = videoContext.isMuted ? 0 : videoContext.volume;
-        selectorRef.current.style.width = `${videoContext.isMuted ? 0 : videoContext.volume * 100}%`;
-    });
+    const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
+    const volume = useSelector((state) => state.video.defaultVolume);
+    const isMuted = useSelector((state) => state.video.isMuted);
+
+    useEffect(() => {
+        videoRef.current.volume = isMuted ? 0 : volume;
+        adjustRef.current.value = isMuted ? 0 : volume * 100;
+        selectorRef.current.style.width = `${isMuted ? 0 : volume * 100}%`;
+    }, [isMuted, volume]);
 
     useEffect(() => {
         getComment();
@@ -78,15 +85,6 @@ function VideoPlayerModal({ onHideModal }) {
         window.history.replaceState(null, '', `${nickName ?? ''}/video/${videoContext.videoID}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoContext.videoID, videoContext.nickName]);
-
-    useEffect(() => {
-        if (videoContext.isMuted) {
-            videoRef.current.volume = 0;
-        } else {
-            videoRef.current.volume = videoContext.volume;
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [videoContext.isMuted]);
 
     useEffect(() => {
         isPlayed ? videoRef.current.play() : videoRef.current.pause();
@@ -149,6 +147,25 @@ function VideoPlayerModal({ onHideModal }) {
         onHideModal();
     };
 
+    const handleAdjustVolume = (e) => {
+        const _volume = e.target.value / 100;
+        videoRef.current.volume = isMuted ? 0 : _volume;
+        adjustRef.current.value = _volume * 100;
+        selectorRef.current.style.width = `${isMuted ? 0 : _volume * 100}%`;
+        isMuted && dispatch(handleMuted(false));
+        _volume === 0 && dispatch(handleMuted(true));
+    };
+
+    const handleSetVolume = (e) => {
+        const value = e.target.value / 100;
+        dispatch(adjustVolume(value));
+    };
+
+    const handleToggleMuted = () => {
+        dispatch(adjustVolume(volume === 0 ? 0.6 : volume));
+        dispatch(handleMuted());
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('video-container')}>
@@ -191,8 +208,8 @@ function VideoPlayerModal({ onHideModal }) {
                     <FontAwesomeIcon icon={faChevronDown} />
                 </div>
 
-                <div className={cx('button')} onClick={() => videoContext.handleMutedVideo()}>
-                    {videoContext.isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}
+                <div className={cx('button')} onClick={handleToggleMuted}>
+                    {isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}
                 </div>
                 <div className={cx('adjust-volume')}>
                     <div className={cx('volume-bar')}>
@@ -202,8 +219,9 @@ function VideoPlayerModal({ onHideModal }) {
                             min="0"
                             max="100"
                             step="1"
-                            value={videoContext.isMuted ? 0 : videoContext.volume * 100}
-                            onChange={videoContext.handleAdjustVolume}
+                            onChange={handleAdjustVolume}
+                            onMouseUp={handleSetVolume}
+                            ref={adjustRef}
                         />
                         <div className={cx('selector')} ref={selectorRef}></div>
                     </div>

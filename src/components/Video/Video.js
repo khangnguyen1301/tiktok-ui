@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext, useLayoutEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ReactVisibilitySensor from 'react-visibility-sensor';
 import { memo } from 'react';
 import classNames from 'classnames/bind';
@@ -20,6 +20,7 @@ import TiktokLoading from '../Loadings/TiktokLoading';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import Likes from '../Likes';
+import { adjustVolume, handleMuted } from '~/redux/videoSlice';
 
 const cx = classNames.bind(styles);
 
@@ -28,18 +29,22 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
     const [isPlayed, setIsPlayed] = useState(true);
     const [loading, setLoading] = useState(true);
     const [commentCount, setCommentCount] = useState(data?.comments_count);
-
+    const dispatch = useDispatch();
     const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
 
+    const volume = useSelector((state) => state.video.defaultVolume);
+    const isMuted = useSelector((state) => state.video.isMuted);
     const { showLoginModal } = useContext(ModalEnviroment);
     const videoContext = useContext(VideoEnviroment);
     const videoRef = useRef();
     const selectorRef = useRef();
+    const adjustRef = useRef();
 
-    useLayoutEffect(() => {
-        videoRef.current.volume = videoContext.isMuted ? 0 : videoContext.volume;
-        selectorRef.current.style.width = `${videoContext.isMuted ? 0 : videoContext.volume * 100}%`;
-    });
+    useEffect(() => {
+        videoRef.current.volume = isMuted ? 0 : volume;
+        adjustRef.current.value = isMuted ? 0 : volume * 100;
+        selectorRef.current.style.width = `${isMuted ? 0 : volume * 100}%`;
+    }, [isMuted, volume]);
 
     useEffect(() => {
         if (videoContext.isVideoModalShow) {
@@ -87,6 +92,25 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
         setIsVisible(visible);
     };
 
+    const handleAdjustVolume = (e) => {
+        const _volume = e.target.value / 100;
+        videoRef.current.volume = isMuted ? 0 : _volume;
+        adjustRef.current.value = _volume * 100;
+        selectorRef.current.style.width = `${isMuted ? 0 : _volume * 100}%`;
+        isMuted && dispatch(handleMuted(false));
+        _volume === 0 && dispatch(handleMuted(true));
+    };
+
+    const handleSetVolume = (e) => {
+        const value = e.target.value / 100;
+        dispatch(adjustVolume(value));
+    };
+
+    const handleToggleMuted = () => {
+        dispatch(adjustVolume(volume === 0 ? 0.6 : volume));
+        dispatch(handleMuted());
+    };
+
     const handlePlayVideo = () => {
         if (isPlayed) {
             videoRef.current.pause();
@@ -102,7 +126,6 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
         videoContext.handleSetPositionVideo(index);
         videoContext.showVideoPlayer();
     };
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -162,10 +185,8 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                                 onClick={handleClickVideo}
                                 onLoadedMetadata={() => setLoading(false)}
                             ></video>
-                            <div className={cx('volume-icon', { muted: videoContext.isMuted })}>
-                                <div onClick={videoContext.handleMutedVideo}>
-                                    {videoContext.isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}
-                                </div>
+                            <div className={cx('volume-icon', { muted: isMuted })}>
+                                <div onClick={handleToggleMuted}>{isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}</div>
                             </div>
                             <div className={cx('volume-control')}>
                                 <div className={cx('volume-bar')}>
@@ -175,8 +196,9 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                                         min="0"
                                         max="100"
                                         step="1"
-                                        value={videoContext.isMuted ? 0 : videoContext.volume * 100}
-                                        onChange={videoContext.handleAdjustVolume}
+                                        onChange={handleAdjustVolume}
+                                        onMouseUp={handleSetVolume}
+                                        ref={adjustRef}
                                     />
                                     <div className={cx('selector')} ref={selectorRef}></div>
                                 </div>
