@@ -1,5 +1,7 @@
 import * as userService from '~/services/userService';
 import { loginFailed, loginStart, loginSuccess, registerStart, registerSuccess, registerFailed } from './authSlice';
+import { uploadFailed, uploadStart, uploadSuccess } from '~/redux/videoSlice';
+import * as upLoadService from '~/services/uploadService';
 
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
@@ -34,5 +36,15 @@ export const updateUser = async (user, dispatch, navigate) => {
         navigate(`/@${result.data?.nickname}`);
     } catch (e) {
         dispatch(loginFailed());
+    }
+};
+
+export const handleUploadVideo = async (video, dispatch) => {
+    dispatch(uploadStart());
+    try {
+        await upLoadService.upLoadVideo(video);
+        dispatch(uploadSuccess());
+    } catch (err) {
+        dispatch(uploadFailed());
     }
 };

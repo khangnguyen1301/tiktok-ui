@@ -69,8 +69,8 @@ function VideoPlayerModal({ onHideModal }) {
     const isMuted = useSelector((state) => state.video.isMuted);
 
     useEffect(() => {
-        videoRef.current.volume = isMuted ? 0 : volume;
         adjustRef.current.value = isMuted ? 0 : volume * 100;
+        videoRef.current.volume = isMuted ? 0 : volume;
         selectorRef.current.style.width = `${isMuted ? 0 : volume * 100}%`;
     }, [isMuted, volume]);
 
@@ -147,23 +147,22 @@ function VideoPlayerModal({ onHideModal }) {
         onHideModal();
     };
 
-    const handleAdjustVolume = (e) => {
-        const _volume = e.target.value / 100;
-        videoRef.current.volume = isMuted ? 0 : _volume;
-        adjustRef.current.value = _volume * 100;
-        selectorRef.current.style.width = `${isMuted ? 0 : _volume * 100}%`;
-        isMuted && dispatch(handleMuted(false));
-        _volume === 0 && dispatch(handleMuted(true));
+    const handleAdjustVolume = (_value) => {
+        const _volume = _value / 100;
+        videoRef.current.volume = _volume;
+        selectorRef.current.style.width = `${_volume * 100}%`;
+        dispatch(handleMuted(!_volume > 0));
+        isMuted && dispatch(adjustVolume(_volume));
     };
 
-    const handleSetVolume = (e) => {
-        const value = e.target.value / 100;
+    const handleSetVolume = (_value) => {
+        const value = _value / 100;
         dispatch(adjustVolume(value));
     };
 
     const handleToggleMuted = () => {
         dispatch(adjustVolume(volume === 0 ? 0.6 : volume));
-        dispatch(handleMuted());
+        dispatch(handleMuted(!isMuted));
     };
 
     return (
@@ -219,8 +218,9 @@ function VideoPlayerModal({ onHideModal }) {
                             min="0"
                             max="100"
                             step="1"
-                            onChange={handleAdjustVolume}
-                            onMouseUp={handleSetVolume}
+                            defaultValue="0"
+                            onChange={(e) => handleAdjustVolume(e.target.value)}
+                            onMouseUp={(e) => handleSetVolume(e.target.value)}
                             ref={adjustRef}
                         />
                         <div className={cx('selector')} ref={selectorRef}></div>

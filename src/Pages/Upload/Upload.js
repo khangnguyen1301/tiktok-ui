@@ -2,9 +2,7 @@ import classNames from 'classnames/bind';
 
 import { useEffect, useRef, useState, useContext } from 'react';
 
-import { useSelector } from 'react-redux';
-
-import * as upLoadService from '~/services/uploadService';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './Upload.module.scss';
 
@@ -16,6 +14,9 @@ import Footer from './Footer';
 import VideoFile from './VideoFile';
 import images from '~/assets/images';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import { resetUploadState, uploadFailed, uploadStart } from '~/redux/videoSlice';
+import Notify from '~/components/Notify/Notify';
+import { handleUploadVideo } from '~/redux/apiRequest';
 
 const cx = classNames.bind(styles);
 
@@ -38,10 +39,28 @@ function Upload() {
     const { showConFirmModal, isChangeFile } = useContext(ModalEnviroment);
 
     const thumbnailRef = useRef();
-
+    const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.auth.login?.currentUser) ?? {};
+    const uploadFetching = useSelector((state) => state.video.isUploadFetching);
+    const upLoadMessage = useSelector((state) => state.video.upLoadMessage);
+    const isUploaded = useSelector((state) => state.video.isUploaded);
+    const isUploadError = useSelector((state) => state.video.isUploadError);
+    useEffect(() => {
+        dispatch(resetUploadState());
+    }, []);
 
     const upLoadVideo = async () => {
+        if (!caption || !videoFile || !permissionViewer) {
+            await dispatch(uploadStart());
+            if (!caption) {
+                await dispatch(uploadFailed('Please enter caption!'));
+                return;
+            }
+            if (!videoFile) {
+                await dispatch(uploadFailed('Please upload video!'));
+                return;
+            }
+        }
         let formdata = new FormData();
         formdata.append('description', caption);
         formdata.append('upload_file', videoFile);
@@ -57,8 +76,10 @@ function Upload() {
             }
         });
         // eslint-disable-next-line no-unused-vars
-        const result = await upLoadService.upLoadVideo(formdata);
-        window.location.reload();
+        await handleUploadVideo(formdata, dispatch);
+        setTimeout(() => {
+            window.location.reload();
+        }, 3000);
     };
 
     useEffect(() => {
@@ -69,6 +90,10 @@ function Upload() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoFile, nameSlice]);
+
+    useEffect(() => {
+        isChangeFile && setVideoFile(null);
+    }, [isChangeFile]);
 
     const handleDefaultCaption = (cap) => {
         setCaption(cap);
@@ -111,6 +136,11 @@ function Upload() {
 
     return (
         <div className={cx('wrapper')}>
+            {(isUploaded || isUploadError) && (
+                <div className={cx('notify-upload', { show: !uploadFetching })}>
+                    <Notify message={upLoadMessage} />
+                </div>
+            )}
             {!detailUpload ? (
                 <div className={cx('video-file')}>
                     <VideoFile

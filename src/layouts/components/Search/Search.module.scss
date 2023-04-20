@@ -50,6 +50,23 @@
     color: var(--background-gray-color-05);
 }
 
+.all-result {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: var(--text-primary-color);
+    font-size: 1.6rem;
+    font-weight: 700;
+    padding: 0 20px;
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--background-gray-color-03);
+    }
+}
+
 .clear,
 .loading {
     position: absolute;

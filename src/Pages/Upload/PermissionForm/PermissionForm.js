@@ -89,8 +89,13 @@ function PermissionForm({
         setCaption(e.target.value);
     };
 
+    const handleUploadVideo = (e) => {
+        e.preventDefault();
+        upLoadVideo();
+    };
+
     return (
-        <div className={cx('form')}>
+        <form className={cx('form')} onSubmit={handleUploadVideo}>
             <div className={cx('caption')}>
                 <span className={cx('title-caption')}>Caption</span>
                 <span className={cx('count-char')}>{`${caption.length}/2200`}</span>
@@ -289,12 +294,10 @@ function PermissionForm({
                     <Button custom className={cx('btn-discard')}>
                         Discard
                     </Button>
-                    <Button primary className={cx('btn-post')} onClick={() => upLoadVideo()}>
-                        Post
-                    </Button>
+                    <button className={cx('btn-post')}>Post</button>
                 </div>
             </div>
-        </div>
+        </form>
     );
 }
 

@@ -7,7 +7,7 @@ import VideoList from '~/components/VideoList';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 
 import styles from './Home.module.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '~/redux/authSlice';
 
 const cx = classNames.bind(styles);
@@ -19,6 +19,9 @@ function Home() {
     const videoContext = useContext(VideoEnviroment);
     const location = useLocation();
     const dispatch = useDispatch();
+
+    const userInfo = useSelector((state) => state.auth.login?.currentUser);
+
     const TTL_COOKIES = document.cookie.split(';')[0].slice(6);
     !TTL_COOKIES && dispatch(logout());
     useEffect(() => {
@@ -30,8 +33,9 @@ function Home() {
     useEffect(() => {
         const fetchApi = async () => {
             const result = await videoService.getVideoListForYou({ page: page });
-            setVideoForYou((prev) => [...prev, ...result]);
-            videoContext.handleSetListVideo((prev) => [...prev, ...result]);
+            const except = result.filter((video) => video.user.id !== userInfo?.id);
+            setVideoForYou((prev) => [...prev, ...except]);
+            videoContext.handleSetListVideo((prev) => [...prev, ...except]);
         };
         fetchApi();
         // eslint-disable-next-line react-hooks/exhaustive-deps

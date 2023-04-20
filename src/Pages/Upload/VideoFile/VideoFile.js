@@ -9,7 +9,7 @@ import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 
-function VideoFile({ onChangeFile, onChangSrcVideo, onDetailUpload, onNameSlice, className }) {
+function VideoFile({ onChangeFile, onChangSrcVideo, onDetailUpload, onNameSlice = () => {}, className }) {
     const [dragActive, setDragActive] = useState(false);
 
     const inputRef = useRef();

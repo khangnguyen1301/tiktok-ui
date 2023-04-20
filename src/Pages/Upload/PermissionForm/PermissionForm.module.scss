@@ -423,6 +423,9 @@ input[type='checkbox'] {
 }
 .button {
     margin-top: 24px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .btn-post,
@@ -432,6 +435,12 @@ input[type='checkbox'] {
 }
 
 .btn-post {
+    background-color: var(--primary);
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
     span {
         color: #ffff !important;
     }
