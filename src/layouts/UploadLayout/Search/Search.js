@@ -10,6 +10,9 @@ import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/Icons';
 import styles from './Search.module.scss';
 import { useDebounce } from '~/hooks';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { resetSearching, setSearchQuery } from '~/redux/videoSlice';
 
 const cx = classNames.bind(styles);
 
@@ -19,9 +22,12 @@ function Search() {
     const [showResult, setShowResult] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const dispatch = useDispatch();
     const debouncedValue = useDebounce(searchValue, 450);
 
     const inputRef = useRef();
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (!debouncedValue.trim()) {
             setSearchResult([]);
@@ -34,7 +40,24 @@ function Search() {
             setSearchResult(result);
             setLoading(false);
         })();
+        dispatch(setSearchQuery(searchValue));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue]);
+
+    useEffect(() => {
+        if (searchValue) {
+            document.addEventListener('keydown', handleSearchMoreResult);
+            return () => document.removeEventListener('keydown', handleSearchMoreResult);
+        }
+    }, [searchValue]);
+
+    const handleSearchMoreResult = (e) => {
+        //key = Enter
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            handleShowMoreResult();
+        }
+    };
 
     const handleClear = () => {
         setSearchValue('');
@@ -58,6 +81,12 @@ function Search() {
         setSearchValue('');
     };
 
+    const handleShowMoreResult = () => {
+        dispatch(resetSearching());
+        handleResetSearchResult();
+        navigate('/search');
+    };
+
     return (
         <div>
             <HeadlessTippy
@@ -76,6 +105,10 @@ function Search() {
                                     />
                                 </div>
                             ))}
+                            <div
+                                className={cx('all-result')}
+                                onClick={handleShowMoreResult}
+                            >{`View all results for "${searchValue}"`}</div>
                         </PopperWrapper>
                     </div>
                 )}
@@ -97,9 +130,15 @@ function Search() {
                     )}
                     {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
 
-                    <button className={cx('search-btn')} onMouseDown={(e) => e.preventDefault()}>
-                        <SearchIcon />
-                    </button>
+                    {!searchValue ? (
+                        <button className={cx('search-btn')} onMouseDown={(e) => e.preventDefault()}>
+                            <SearchIcon />
+                        </button>
+                    ) : (
+                        <button className={cx('search-btn')} onClick={handleShowMoreResult}>
+                            <SearchIcon />
+                        </button>
+                    )}
                 </div>
             </HeadlessTippy>
         </div>

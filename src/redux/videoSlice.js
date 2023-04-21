@@ -11,6 +11,7 @@ const videoSlice = createSlice({
         upLoadMessage: '',
         searchQuery: '',
         isSearching: false,
+        isChangeCurrentTime: false,
     },
     reducers: {
         adjustVolume: (state, action) => {
@@ -49,6 +50,9 @@ const videoSlice = createSlice({
         resetSearching: (state) => {
             state.isSearching = !state.isSearching;
         },
+        hanldeChangeCurrentTime: (state) => {
+            state.isChangeCurrentTime = !state.isChangeCurrentTime;
+        },
     },
 });
 
@@ -61,6 +65,7 @@ export const {
     resetUploadState,
     setSearchQuery,
     resetSearching,
+    hanldeChangeCurrentTime,
 } = videoSlice.actions;
 
 export default videoSlice.reducer;

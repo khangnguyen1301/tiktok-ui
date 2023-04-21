@@ -1,8 +1,9 @@
+import { useContext, useEffect, useRef, useState, useLayoutEffect } from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { BackIcon, CloseIcon, GhimIcon, NextIcon, ReloadIcon } from '~/components/Icons';
 
 import styles from './VideoSticky.module.scss';
-import { useContext, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
@@ -26,6 +27,14 @@ function VideoSticky({
     const videoRef = useRef();
 
     const videoContext = useContext(VideoEnviroment);
+    const isChangeCurrentTime = useSelector((state) => state.video?.isChangeCurrentTime);
+
+    useEffect(() => {
+        videoRef.current.currentTime = currentTime;
+        isEnded && setIsPlayed(true);
+        setIsEnded(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isChangeCurrentTime]);
 
     useEffect(() => {
         const synchronized = playerPlayed === isPlayed;
@@ -39,13 +48,6 @@ function VideoSticky({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPlayed, playerPlayed, reload, playerLoaded, isChangeVideo]);
-
-    useEffect(() => {
-        videoRef.current.currentTime = currentTime;
-        isEnded && setIsPlayed(true);
-        setIsEnded(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentTime]);
 
     useEffect(() => {
         setIsPlayed(true);

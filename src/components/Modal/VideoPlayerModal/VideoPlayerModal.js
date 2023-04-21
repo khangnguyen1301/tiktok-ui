@@ -94,6 +94,21 @@ function VideoPlayerModal({ onHideModal }) {
         setIsPlayed(!isFormModalShow);
     }, [isFormModalShow]);
 
+    useEffect(() => {
+        if (contentComment) {
+            document.addEventListener('keydown', handleKeydown);
+            return () => document.removeEventListener('keydown', handleKeydown);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [contentComment]);
+
+    const handleKeydown = (e) => {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            postComment();
+        }
+    };
+
     const getVideoInfo = async () => {
         const result = await videoService.getVideo(videoContext.videoID);
         setVideo(result);

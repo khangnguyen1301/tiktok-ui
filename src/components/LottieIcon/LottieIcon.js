@@ -1,8 +1,8 @@
 import Lottie from 'lottie-react';
 
-function LottieIcon({ className, icon, options }) {
+function LottieIcon({ className, icon, options, isLoop = true }) {
     const lottieOptions = {
-        loop: true,
+        loop: isLoop,
         autoplay: true,
         animationData: icon,
         rendererSettings: {

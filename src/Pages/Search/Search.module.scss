@@ -1,9 +1,7 @@
 .wrapper {
-    // width: 100%;
-    // height: 100%;
     position: relative;
     padding-top: 10px;
-    padding-left: 260px;
+    padding-left: 23%;
     color: var(--text-primary-color);
 }
 
@@ -42,6 +40,7 @@
     width: 120px;
     height: 2px;
     background-color: var(--text-primary-color);
+    transition: all 0.2s ease-in-out;
 }
 
 .activeBar {
@@ -120,5 +119,14 @@
         align-items: center;
         justify-content: center;
         margin-left: 5px;
+    }
+}
+
+@media (max-width: 1115px) {
+    .wrapper {
+        padding-left: 10%;
+    }
+    .list-accounts-container {
+        width: fit-content;
     }
 }

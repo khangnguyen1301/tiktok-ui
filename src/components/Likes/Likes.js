@@ -14,6 +14,7 @@ const cx = classNames.bind(styles);
 function Likes({ data, width, height, horizontal = false, noneBorder = false, shake = false }) {
     const [isLiked, setIsLiked] = useState(data?.is_liked);
     const [likeCounts, setLikeCounts] = useState(data?.likes_count);
+    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
     const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
@@ -32,20 +33,24 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
         if (isLiked) {
             //unliked
             const unLikeVideo = async () => {
+                setLoading(true);
                 // eslint-disable-next-line no-unused-vars
                 const result = await likeService.unLikeVideo({ videoID: data?.id });
                 setLikeCounts(result?.likes_count);
                 setIsLiked(false);
                 dispatch(unliked());
+                setLoading(false);
             };
             unLikeVideo();
         } else {
             //likeVideo
             const likeVideo = async () => {
+                setLoading(true);
                 const result = await likeService.likeVideo({ videoID: data?.id });
                 setLikeCounts(result?.likes_count);
                 setIsLiked(true);
                 dispatch(liked());
+                setLoading(false);
             };
             likeVideo();
         }

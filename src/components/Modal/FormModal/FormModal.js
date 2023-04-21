@@ -80,6 +80,7 @@ function FormModal({ onHideModal }) {
 
     useEffect(() => {
         resetMenu();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formLoginState]);
 
     useEffect(() => {

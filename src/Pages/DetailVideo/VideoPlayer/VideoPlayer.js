@@ -26,6 +26,8 @@ import styles from './VideoPlayer.module.scss';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { useCalculator } from '~/hooks';
 import Likes from '~/components/Likes';
+import { useDispatch } from 'react-redux';
+import { hanldeChangeCurrentTime } from '~/redux/videoSlice';
 
 const cx = classNames.bind(styles);
 
@@ -78,6 +80,8 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
     const timeRef = useRef();
     const timeLineRef = useRef();
 
+    const dispatch = useDispatch();
+
     const [currentMinutes, currentSeconds] = useCalculator(+currentTime);
     const [durationMinutes, durationSeconds] = useCalculator(data?.meta?.playtime_seconds);
     const videoContext = useContext(VideoEnviroment);
@@ -93,6 +97,8 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
     useEffect(() => {
         const nickName = videoContext.nickName;
         const videoID = videoContext.videoID;
+        timeRef.current.value = 0;
+        timeLineRef.current.style.width = `0%`;
         if (isChangeVideo || videoContext.isChangeState) {
             window.history.replaceState(null, '', `/@${nickName ?? ''}/video/${videoID}`);
             setIsEnded(false);
@@ -117,7 +123,7 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPlayed, stickyPlayed, reload, stickyLoaded]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         videoRef.current.playbackRate = defaultSpeed;
         videoRef.current.volume = currentVolume;
         selectorRef.current.style.width = `${videoRef.current.volume * 100}%`;
@@ -127,6 +133,13 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
         setIsChangeVideo(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentTime, currentVolume]);
+
+    const handleChangeCurrentTimeVideo = (e) => {
+        handleCurrentTime(e.target.value);
+        onUpdateTime(e.target.value);
+        isEnded && handleReloadVideo();
+        dispatch(hanldeChangeCurrentTime());
+    };
 
     const handlePlayVideo = () => {
         onPlayed(!isPlayed);
@@ -352,6 +365,7 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
                             step="1"
                             onInput={handleTimeLine}
                             onChange={(e) => handleCurrentTime(e.target.value)}
+                            onClick={handleChangeCurrentTimeVideo}
                             ref={timeRef}
                         />
                         <div className={cx('timeline-selector')} ref={timeLineRef}></div>

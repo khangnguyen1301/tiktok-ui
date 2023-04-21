@@ -176,7 +176,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                                     <TiktokLoading medium />
                                 </div>
                             )}
-                            <img src={data?.thumb_url} alt="" className={cx('thumb-video', { active: isPlayed })} />
+                            <img src={data?.thumb_url} alt="" className={cx('thumb-video', { active: isVisible })} />
                             <video
                                 src={data?.file_url}
                                 loop

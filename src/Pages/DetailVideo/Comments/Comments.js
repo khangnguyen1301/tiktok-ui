@@ -29,6 +29,21 @@ function Comments({ videoID }) {
         postRef.current.style.color = contentComment ? 'var(--primary)' : 'var(--background-gray-color-34)';
     }, [contentComment]);
 
+    useEffect(() => {
+        if (contentComment) {
+            document.addEventListener('keydown', handleKeydown);
+            return () => document.removeEventListener('keydown', handleKeydown);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [contentComment]);
+
+    const handleKeydown = (e) => {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            postComment();
+        }
+    };
+
     const getComment = async () => {
         const result = await commentService.getComment({ videoID: videoID });
         setComments(result);

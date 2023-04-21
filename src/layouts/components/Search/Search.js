@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeadlessTippy from '@tippyjs/react/headless';
@@ -41,7 +41,23 @@ function Search() {
             setLoading(false);
         })();
         dispatch(setSearchQuery(searchValue));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue]);
+
+    useEffect(() => {
+        if (searchValue) {
+            document.addEventListener('keydown', handleSearchMore);
+            return () => document.removeEventListener('keydown', handleSearchMore);
+        }
+    }, [searchValue]);
+
+    const handleSearchMore = (e) => {
+        //key = Enter
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            handleShowMoreResult();
+        }
+    };
 
     const handleClear = () => {
         setSearchValue('');
