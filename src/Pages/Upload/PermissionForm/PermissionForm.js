@@ -48,6 +48,14 @@ function PermissionForm({
         }
     }, [isChangeFile, nameSliced]);
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleOnClickOutSide);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener('mousedown', handleOnClickOutSide);
+        };
+    }, [selectRef]);
+
     const handlePermission = () => {
         setIsSelected(!isSelected);
     };
@@ -71,7 +79,7 @@ function PermissionForm({
 
     const handleOnClickOutSide = (event) => {
         const { target } = event;
-        if (!selectRef.current.contains(target)) {
+        if (selectRef.current && !selectRef.current.contains(target)) {
             setIsSelected(false);
         }
     };

@@ -1,5 +1,3 @@
-import { faCircleQuestion, faKeyboard, faLanguage } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import images from '~/assets/images';
 import { UserIcon, QRIcon, LanguagesIcon, FeedbackIcon, KeyboardIcon, MoonIcon } from '~/components/Icons';
 import Theme from '~/components/Theme';
@@ -24,74 +22,106 @@ export const MENU_ITEMS = [
             title: 'Language',
             data: [
                 {
-                    type: 'language',
-                    code: 'en',
+                    title: 'Tiếng Việt (Việt Nam)',
+                },
+                {
                     title: 'English',
                 },
                 {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
+                    title: 'العربية',
                 },
                 {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
+                    title: 'বাঙ্গালি (ভারত)',
                 },
                 {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
+                    title: 'Cebuano (Pilipinas)',
                 },
                 {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
+                    title: 'Čeština (Česká republika)',
                 },
                 {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
+                    title: 'Deutsch',
                 },
                 {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
+                    title: 'Ελληνικά (Ελλάδα)',
                 },
                 {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
+                    title: 'Español',
                 },
                 {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
+                    title: 'Suomi (Suomi)',
                 },
                 {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
+                    title: 'Filipino (Pilipinas)',
                 },
                 {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
+                    title: 'Français',
                 },
                 {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
+                    title: 'हिंदी',
                 },
                 {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
+                    title: 'Magyar (Magyarország)',
                 },
                 {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
+                    title: 'Bahasa Indonesia (Indonesia)',
+                },
+                {
+                    title: 'Italiano (Italia)',
+                },
+                {
+                    title: '日本語（日本）',
+                },
+                {
+                    title: 'Basa Jawa (Indonesia)',
+                },
+                {
+                    title: 'ខ្មែរ (កម្ពុជា)',
+                },
+                {
+                    title: '한국어 (대한민국)',
+                },
+                {
+                    title: 'Bahasa Melayu (Malaysia)',
+                },
+                {
+                    title: 'မြန်မာ (မြန်မာ)',
+                },
+                {
+                    title: 'Nederlands (Nederland)',
+                },
+                {
+                    title: 'Polski (Polska)',
+                },
+                {
+                    title: 'Português (Brasil)',
+                },
+                {
+                    title: 'Română (Romania)',
+                },
+                {
+                    title: 'Русский (Россия)',
+                },
+                {
+                    title: 'Svenska (Sverige)',
+                },
+                {
+                    title: 'ไทย (ไทย)',
+                },
+                {
+                    title: 'Türkçe (Türkiye)',
+                },
+                {
+                    title: 'Українська (Україна)',
+                },
+                {
+                    title: 'اردو',
+                },
+                {
+                    title: '简体中文',
+                },
+                {
+                    title: '繁體中文',
                 },
             ],
         },
@@ -104,6 +134,7 @@ export const MENU_ITEMS = [
     {
         icon: <KeyboardIcon />,
         title: 'Keyboard shortcuts',
+        action: 'showKeyboardModal',
     },
     {
         icon: <MoonIcon />,

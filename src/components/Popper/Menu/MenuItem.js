@@ -5,11 +5,20 @@ import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
-function MenuItem({ data, onClick, customMenuItem = false, custom = false, shareActive = false, uploadLayout }) {
+function MenuItem({
+    data,
+    onClick,
+    customMenuItem = false,
+    custom = false,
+    shareActive = false,
+    language = false,
+    uploadLayout,
+}) {
     const classes = cx('menu-item', {
         uploadLayout,
         separate: data.separate,
         customMenuItem,
+        language,
     });
 
     return (

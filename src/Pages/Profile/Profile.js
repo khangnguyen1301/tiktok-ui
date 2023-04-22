@@ -225,7 +225,7 @@ function Profile() {
                                 })}
                             ></div>
                         </div>
-                        {user?.videos?.length === 0 && (
+                        {user?.videos?.length === 0 ? (
                             <div className={cx('none-item')}>
                                 <ProfileIcon />
                                 {selectTab === VIDEO_TAB ? (
@@ -234,9 +234,8 @@ function Profile() {
                                     <p> No liked videos yet</p>
                                 )}
                             </div>
-                        )}
-                        {selectTab === VIDEO_TAB &&
-                            (user === null ? (
+                        ) : selectTab === VIDEO_TAB ? (
+                            user === null ? (
                                 <div className={cx('video-item')}>
                                     <VideoLoading />
                                 </div>
@@ -254,7 +253,17 @@ function Profile() {
                                         />
                                     ))}
                                 </div>
-                            ))}
+                            )
+                        ) : (
+                            <div className={cx('none-item')}>
+                                <ProfileIcon />
+                                {selectTab === VIDEO_TAB ? (
+                                    <p> No videos have been posted yet</p>
+                                ) : (
+                                    <p> No liked videos yet</p>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

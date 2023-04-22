@@ -34,6 +34,10 @@ function DetailVideo() {
     const videoContext = useContext(VideoEnviroment);
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
+    useEffect(() => {
         const pathName = window.location.pathname;
         const rawID = [];
         for (let index = pathName.length; index > 0; index--) {

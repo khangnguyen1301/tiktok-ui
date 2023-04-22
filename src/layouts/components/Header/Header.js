@@ -17,6 +17,7 @@ import Menu from '~/components/Popper/Menu';
 import {
     GetCoinsIcon,
     InboxIcon,
+    InboxedIcon,
     LogoIcon,
     LogoutIcon,
     MessageIcon,
@@ -30,7 +31,7 @@ import { MENU_ITEMS } from '~/constants/constants';
 const cx = classNames.bind(styles);
 
 function Header({ className }) {
-    const { showLoginModal } = useContext(ModalEnviroment);
+    const { showLoginModal, showNotifiCationModal, isShowNotifiCation, hideNotifiModal } = useContext(ModalEnviroment);
 
     const user = useSelector((state) => state.auth.login?.currentUser) ?? {};
     const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
@@ -66,6 +67,11 @@ function Header({ className }) {
             default:
         }
     };
+
+    const handleShowNotifiCation = () => {
+        isShowNotifiCation ? hideNotifiModal() : showNotifiCationModal();
+    };
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner', className)}>
@@ -95,8 +101,8 @@ function Header({ className }) {
                                 </button>
                             </Tippy>
                             <Tippy delay={[0, 50]} offset={[0, 6]} content="Inbox" placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <InboxIcon />
+                                <button className={cx('action-btn')} onClick={handleShowNotifiCation}>
+                                    {isShowNotifiCation ? <InboxedIcon /> : <InboxIcon />}
                                     <span className={cx('badge')}>12</span>
                                 </button>
                             </Tippy>

@@ -6,6 +6,7 @@ import styles from './SuggestAccounts.module.scss';
 
 import { useState } from 'react';
 import LineLoading from '../Loadings/LineLoading';
+import AccountLoading from '../Loadings/AccountLoading/AccountLoading';
 
 const cx = classNames.bind(styles);
 
@@ -37,7 +38,7 @@ function SuggestAccounts({ title, data, sideBarRef, noneFollow = false, follow =
                     <div className={classes}>
                         <p className={cx('title')}> {title} </p>
                         {[...Array(8)].map((res, index) => (
-                            <LineLoading key={index} />
+                            <AccountLoading key={index} />
                         ))}
                     </div>
                 ) : (

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useLayoutEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 
@@ -11,6 +11,7 @@ import { ChevronDownIcon } from '~/components/Icons';
 
 import { useDispatch } from 'react-redux';
 import { logout } from '~/redux/authSlice';
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
 
@@ -41,7 +42,9 @@ function Menu({
 
     const dispatch = useDispatch();
 
-    useLayoutEffect(() => {
+    const { showKeyBoardModal } = useContext(ModalEnviroment);
+
+    useEffect(() => {
         setHistory([{ data: items }]);
     }, [items]);
 
@@ -71,9 +74,12 @@ function Menu({
     };
 
     const handleUserLogOut = () => {
-        //setDataLocalStorage('user-login', { state: false });
         dispatch(logout());
         window.location.reload();
+    };
+
+    const handleShowKeyboardModal = () => {
+        showKeyBoardModal();
     };
 
     const renderItems = () => {
@@ -89,11 +95,14 @@ function Menu({
                         } else {
                             if (item.logout) {
                                 handleUserLogOut();
+                            } else if (item.action?.includes('showKeyboardModal')) {
+                                handleShowKeyboardModal();
                             } else {
                                 onChange(item);
                             }
                         }
                     }}
+                    language={history.length > 1}
                     custom={custom}
                     customMenuItem={customMenuItem}
                     shareMenuItem={shareMenuItem}

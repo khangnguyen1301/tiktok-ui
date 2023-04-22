@@ -28,6 +28,11 @@ const images = {
     fullscreen: require('~/assets/images/fullscreen-button.svg').default,
     pause: require('~/assets/images/pause-button.svg').default,
     fileCheck: require('~/assets/images/check-icon.svg').default,
+    amazonStore: require('~/assets/images/Amazon-Store.png'),
+    appStore: require('~/assets/images/App-Store.png'),
+    googleStore: require('~/assets/images/CH-Play.png'),
+    microsoftStore: require('~/assets/images/Microsoft-Store.png'),
+    codeQR: require('~/assets/images/QR-TikTok-App.png'),
 };
 
 export default images;

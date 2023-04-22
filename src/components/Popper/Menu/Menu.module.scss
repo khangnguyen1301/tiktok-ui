@@ -19,7 +19,7 @@
         right: 2rem;
         border: 8px solid transparent;
         border-bottom: 7px solid var(--default-poper-color);
-        transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+        transition: background 0.4s cubic-bezier(0.65, 0, 0.35, 1);
     }
 }
 .arrow {
@@ -58,7 +58,7 @@
     line-height: 1.8rem;
     font-family: var(--font-family);
     background-color: var(--default-poper-color);
-    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    transition: background 0.4s cubic-bezier(0.65, 0, 0.35, 1);
     &:hover {
         background-color: var(--background-gray-color-03);
     }
@@ -72,7 +72,7 @@
     font-weight: 600 !important;
     display: flex;
     align-items: center;
-    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    transition: background 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .uploadLayout {
@@ -138,4 +138,8 @@
     &:hover {
         background-color: var(--background-gray-color-03);
     }
+}
+
+.language {
+    font-size: 1.4rem;
 }

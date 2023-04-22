@@ -46,6 +46,7 @@ function Upload() {
     const isUploaded = useSelector((state) => state.video.isUploaded);
     const isUploadError = useSelector((state) => state.video.isUploadError);
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         dispatch(resetUploadState());
     }, []);
 

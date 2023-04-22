@@ -1,0 +1,100 @@
+.wrapper {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00000080;
+    transition-property: opacity;
+    transition-duration: 300ms;
+    transition-timing-function: linear;
+    opacity: 1;
+    inset: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    box-sizing: border-box;
+    overflow: auto;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.container {
+    position: relative;
+    width: 400px;
+    height: 543px;
+    padding: 64px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: var(--default-background);
+    border-radius: 8px;
+    transition-property: transform, opacity;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    opacity: 1;
+    transform: scale(1);
+}
+
+.header {
+    width: 100%;
+    position: absolute;
+    top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-primary-color);
+}
+
+.title {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+    margin-left: 25px;
+}
+
+.close-btn {
+    font-size: 24px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.title-code {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    margin: 32px 0px 24px;
+    width: auto;
+    padding: 0px 24px;
+    color: var(--text-primary-color);
+}
+
+.QR-code {
+    width: 174px;
+    height: 174px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.stores {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.stores-item {
+    width: 138px;
+    height: 40px;
+    margin: 5px;
+    border: 1px solid var(--text-primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
