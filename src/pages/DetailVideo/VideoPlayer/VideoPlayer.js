@@ -345,7 +345,7 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
                 {/* </div> */}
 
                 <div className={cx('heart-icon')}>
-                    <Likes data={data} width="3.2rem" height="3.2rem" noneBorder shake />
+                    <Likes data={data} width="3.2rem" height="3.2rem" noneBorder shake defaultColor={true} />
                 </div>
                 <div className={cx('comment-icon')} onClick={!isLogin ? showLoginModal : () => {}}>
                     <div className={cx('icon')}>

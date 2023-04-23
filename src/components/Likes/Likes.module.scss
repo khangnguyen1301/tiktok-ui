@@ -19,7 +19,7 @@
     height: 48px;
     border-radius: 50%;
     background-color: var(--background-gray-color-06);
-    color: #fff;
+    color: var(--text-primary-color);
     cursor: pointer;
 }
 
@@ -42,7 +42,7 @@ heart-animation {
 }
 
 .count {
-    color: #fff;
+    color: var(--text-primary-color);
     font-size: 1.2rem;
     line-height: 17px;
     text-align: center;
@@ -69,4 +69,8 @@ heart-animation {
         transform: rotate(0);
         //transform: translateZ(150px);
     }
+}
+
+.defaultColor {
+    color: #fff !important;
 }

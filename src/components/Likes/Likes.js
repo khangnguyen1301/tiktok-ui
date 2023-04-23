@@ -12,7 +12,7 @@ import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 
-function Likes({ data, width, height, horizontal = false, noneBorder = false, shake = false }) {
+function Likes({ data, width, height, horizontal = false, noneBorder = false, shake = false, defaultColor = false }) {
     const [isLiked, setIsLiked] = useState(data?.is_liked);
     const [likeCounts, setLikeCounts] = useState(data?.likes_count);
     const [loading, setLoading] = useState(false);
@@ -64,20 +64,20 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
                 <>
                     <button
                         type="button"
-                        className={cx('icon-box', { modalOn: horizontal, noneBorder, shake })}
+                        className={cx('icon-box', { modalOn: horizontal, noneBorder, shake, defaultColor })}
                         onClick={() => showLoginModal()}
                     >
                         {/* icon */}
 
                         <HeartIcon width={width} height={height} />
                     </button>
-                    <strong className={cx('count')}>{likeCounts ?? '0'}</strong>
+                    <strong className={cx('count', { defaultColor })}>{likeCounts ?? '0'}</strong>
                 </>
             ) : (
                 <>
                     <button
                         type="button"
-                        className={cx('icon-box', { modalOn: horizontal, noneBorder, shake })}
+                        className={cx('icon-box', { modalOn: horizontal, noneBorder, shake, defaultColor })}
                         onClick={() => stateLikeVideo()}
                     >
                         {/* icon */}
@@ -87,7 +87,7 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
                             <HeartIcon width={width} height={height} />
                         )}
                     </button>
-                    <strong className={cx('count')}>{likeCounts ?? '0'}</strong>
+                    <strong className={cx('count', { defaultColor })}>{likeCounts ?? '0'}</strong>
                 </>
             )}
         </div>
