@@ -1,0 +1,143 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 16px 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    //margin: 0 129px;
+    background-color: #f8f8f8;
+    position: relative;
+    z-index: 1;
+}
+.notify-upload {
+    position: fixed;
+    width: 600px;
+    height: 40px;
+    background-color: rgb(204, 202, 202);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    top: 70px;
+    color: #000;
+    z-index: 999999;
+    opacity: 0;
+}
+
+.show {
+    animation: hidden 4s;
+}
+
+@keyframes hidden {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.video-file {
+    width: 1100px;
+}
+
+.container {
+    width: 1100px;
+}
+
+.upload-container-v2 {
+    position: relative;
+    width: 1100px;
+    height: 949px;
+    background-color: #ffff;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px;
+    border-radius: 8px;
+    padding: 24px 40px;
+
+    h1 {
+        font-size: 2.4rem;
+        line-height: 1.5;
+        font-weight: 700;
+    }
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #16182380;
+    }
+}
+
+.content {
+    display: flex;
+}
+.frame {
+    width: 284px;
+}
+
+.custom {
+    width: 260px;
+    height: 454px;
+    margin-top: 40px;
+    padding: 0 !important;
+    span {
+        text-align: center;
+        font-size: 1.4rem !important;
+    }
+
+    button {
+        width: 186px !important;
+    }
+}
+
+.change-file {
+    position: absolute;
+    bottom: 235px;
+    left: 43px;
+    width: 284px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    background-color: #ffff;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    border-radius: 12px;
+    padding: 12px;
+
+    .file-name {
+        width: 130px;
+        padding-top: 3px;
+        margin-left: 5px;
+        font-size: 1.2rem;
+        line-height: 17px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .change-video {
+        padding-top: 3px;
+        margin-left: 30px;
+        font-size: 1.2rem;
+        line-height: 17px;
+        font-weight: 700;
+        color: rgb(22, 24, 35);
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+@media (max-width: 1100px) {
+    .video-file {
+        width: 100%;
+    }
+
+    .upload-container-v2,
+    .container {
+        width: 100%;
+    }
+}

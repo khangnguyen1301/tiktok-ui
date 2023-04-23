@@ -1,0 +1,79 @@
+.wrapper {
+    //position: relative;
+    width: 320px;
+    padding: 20px;
+    background-color: var(--default-poper-color);
+    border-radius: 8px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .link {
+        display: flex;
+    }
+
+    .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+}
+
+.check {
+    font-size: 1.4rem;
+    margin: 0 0 4px 4px;
+    color: rgb(32, 213, 236);
+}
+
+.body {
+    margin-top: 12px;
+    width: fit-content;
+}
+
+.nickname {
+    color: var(--text-primary-color);
+    font-size: 1.8rem;
+}
+
+.name {
+    color: var(--text-primary-color);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-primary-color);
+}
+
+.analytics {
+    margin-top: 8px;
+}
+.value {
+    color: var(--text-primary-color);
+    font-size: 1.8rem;
+}
+
+.value ~ .value {
+    margin-left: 10px;
+}
+
+.label {
+    font-size: 1.7rem;
+    color: var(--background-gray-color-75);
+}
+
+.footer {
+    margin-top: 8px;
+    border-top: 1px solid var(--border-top);
+}
+
+.bio {
+    margin-top: 8px;
+    color: var(--text-primary-color);
+    font-size: 1.4rem;
+}
+
+.follow-btn {
+    min-width: 106px;
+}

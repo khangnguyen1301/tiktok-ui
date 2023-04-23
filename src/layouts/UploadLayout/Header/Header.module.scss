@@ -1,0 +1,124 @@
+.wrapper {
+    --search-border-radius: 92px;
+    --search-height: 46px;
+    --search-top-spacer: 9px;
+    --search-button-width: 52px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: var(--default-layout-header-height, 60px);
+    box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+    background-color: #fff;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.inner {
+    height: 100%;
+    width: var(--default-layout-width);
+    max-width: 100%;
+    padding: 0 24px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo-container {
+    min-width: 300px;
+    display: flex;
+    align-items: center;
+
+    .logo {
+        color: #000;
+        display: flex;
+        align-items: center;
+    }
+    img {
+        color: var(--text-primary-color);
+    }
+}
+
+.upload-layout {
+    background-color: #fff;
+    span {
+        color: #000 !important;
+    }
+    &::after {
+        position: absolute !important;
+        content: '' !important;
+        height: 0 !important;
+        width: 0 !important;
+        top: -1.5rem !important;
+        right: 2rem !important;
+        border: 10px solid transparent !important;
+        border-bottom: 8px solid #fff !important;
+        z-index: 999 !important;
+    }
+}
+
+.upload-btn {
+    span {
+        color: #000 !important;
+    }
+
+    &:hover {
+        background-color: rgba(22, 24, 35, 0.03) !important;
+    }
+}
+
+// Actions
+.actions {
+    min-width: 265px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.badge {
+    position: absolute;
+    top: -3px;
+    right: 0px;
+    padding: 0px 6px;
+    height: 2rem;
+    line-height: 2rem;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    font-family: var(--font-family);
+    background-color: var(--primary);
+}
+.more-btn {
+    font-size: 2rem;
+    margin-left: 28px;
+    padding: 4px 8px;
+    background-color: transparent;
+    color: #000;
+    cursor: pointer;
+}
+
+.action-btn {
+    color: #000;
+    position: relative;
+    display: flex;
+    font-size: 2.2rem;
+    color: #161823;
+    background-color: transparent;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-left: 12px;
+    cursor: pointer;
+}
+@media (max-width: 1071px) {
+    .logo-container {
+        min-width: 150px;
+    }
+}

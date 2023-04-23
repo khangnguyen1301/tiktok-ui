@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: min((100vh - 96px) - 60px, 734px);
+    min-height: 100px;
+    padding-top: 8px;
+    border-radius: 8px;
+    background-color: var(--default-poper-color);
+    box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}

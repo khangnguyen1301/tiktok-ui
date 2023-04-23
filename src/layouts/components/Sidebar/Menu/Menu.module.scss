@@ -1,0 +1,37 @@
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-radius: 4px;
+    color: var(--text-primary-color);
+    transition: background-color ease-in-out 200ms;
+
+    &.active {
+        color: var(--primary);
+    }
+
+    &:hover {
+        background-color: var(--background-gray-color-03);
+    }
+}
+
+.icon {
+    display: flex;
+}
+.title {
+    padding-left: 8px;
+}
+
+@media (max-width: 1071px) {
+    .icon {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .title {
+        display: none;
+    }
+}

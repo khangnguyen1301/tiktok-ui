@@ -1,0 +1,133 @@
+.wrapper {
+    width: 197px;
+    height: 350px;
+    position: fixed;
+    bottom: 30px;
+    right: 12px;
+    border-radius: 4px;
+    transition: all 0.2s cubic-bezier(0.65, 0, 0.35, 1);
+    background-color: #000;
+    z-index: -999;
+}
+
+.activeSticky {
+    z-index: 9999;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover > .controls,
+    &:hover > .ghim-top,
+    &:hover > .close-sticky {
+        opacity: 1;
+    }
+}
+
+.thumb-image {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+}
+
+.mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    backdrop-filter: blur(20px);
+    background-color: rgba($color: #000000, $alpha: 0.7);
+    border-radius: 4px;
+}
+
+.video {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    border-radius: 4px;
+    video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 4px;
+    }
+}
+
+.ghim-top {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.close-sticky {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    width: 168px;
+    z-index: 9999;
+    opacity: 0;
+}
+
+.play-btn,
+.pause-btn {
+    width: 4rem;
+    height: 4rem;
+    font-size: 3rem;
+    color: #fff;
+    text-align: center;
+}
+.reload-icon,
+.back-btn,
+.state-btn,
+.next-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    z-index: 999;
+}
+
+.state-btn {
+}
+
+.back-btn {
+    z-index: 999;
+}
+
+.next-btn {
+    transform: rotate(180deg);
+    z-index: 999;
+}
+
+.show {
+    opacity: 1;
+}
+
+.hide {
+    z-index: -9999;
+    opacity: 0;
+}

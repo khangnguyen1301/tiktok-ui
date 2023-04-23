@@ -1,0 +1,219 @@
+.wrapper {
+    position: fixed;
+    width: 356px;
+    height: 695px;
+    //max-height: 100%;
+    padding: 20px 0 65px 8px;
+    overflow-y: overlay;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    overscroll-behavior-y: contain;
+    // &:hover {
+    //     transition: opacity 2s ease;
+    // }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        padding: 0 4px;
+        border-radius: 4px;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: transparent;
+        transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+        background: var(--background-thumb-scrollbar);
+    }
+}
+
+.more-btn {
+    color: #fe2c55;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.log-in {
+    border-top: 1px solid var(--border-top);
+    margin-top: 8px;
+    width: 100%;
+    height: 156px;
+    padding: 20px 8px 24px 8px;
+}
+
+.custom-btn {
+    width: 100%;
+    height: 48px;
+    margin-top: 20px;
+    font-size: 1.8rem;
+    font-weight: 600px;
+}
+
+.title {
+    font-size: 1.6rem;
+    line-height: 22px;
+    color: var(--background-gray-color-05);
+    width: fit-content;
+    height: 44px;
+}
+
+.hashtag {
+    border-top: 1px solid var(--border-top);
+    padding: 16px 8px 8px;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.discover {
+    margin-bottom: 8px;
+    font-size: 1.45rem;
+    line-height: 20px;
+    color: var(--background-gray-color-75);
+    font-family: var(--font-family);
+    font-weight: 600;
+}
+
+.hashtag-box {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.hashtag-btn {
+    display: flex;
+    justify-content: left;
+    width: fit-content;
+    max-width: 100%;
+    box-sizing: border-box;
+    height: 24px;
+    margin-bottom: 12px;
+    margin-left: 0 !important;
+    padding: 3px 10px;
+    border: 1px solid var(--background-gray-color-02);
+    border-radius: 12px;
+    background: var(--background-hashtag);
+    margin-right: 8px;
+    cursor: pointer;
+    .style-music {
+        color: var(--background-gray-color-75);
+        flex-shrink: 0;
+    }
+
+    &:hover {
+        background-color: var(--background-gray-color-03);
+    }
+}
+
+.hashtag-content {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--background-gray-color-75);
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    margin-left: 5px;
+}
+
+.effect-btn {
+    width: 100%;
+    height: 52px;
+    border-radius: 8px;
+}
+
+.effect {
+    border-top: 1px solid var(--border-top);
+    padding: 16px 8px 0 8px;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+}
+.bg-container {
+    position: relative;
+}
+.bg-content {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 52px;
+    top: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease-in;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+.content {
+    color: #000;
+    font-family: SofiaPro;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 22px;
+    margin-left: 9px;
+}
+
+.link-container {
+    color: var(--background-gray-color-05);
+    font-family: var(--font-family);
+    margin-top: 25px;
+    padding: 0 40px 0 8px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    line-height: 17px;
+    display: flex;
+    flex-wrap: wrap;
+
+    .link {
+        margin: 5px 6px 8px 0;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.tiktok {
+    color: var(--background-gray-color-05);
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 1.2rem;
+    line-height: 17px;
+    padding: 0 40px 0 8px;
+    margin-bottom: 25px;
+}
+
+@media (max-width: 1071px) {
+    .wrapper {
+        width: 71px !important;
+        overflow-y: hidden;
+        border-right: 1px solid var(--background-gray-color-12);
+        box-shadow: var(--box-shadow-header);
+        padding-right: 8px;
+    }
+    .title {
+        display: none;
+    }
+
+    .discover,
+    .hashtag,
+    .effect,
+    .link,
+    .tiktok,
+    .log-in {
+        display: none;
+    }
+}

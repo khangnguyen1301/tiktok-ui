@@ -1,0 +1,20 @@
+.custom {
+    width: 1366px !important;
+    background-color: #fff !important;
+}
+
+.wrapper {
+    margin-top: 60px;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    // .content {
+    //     width: 100%;
+    //     height: 100%;
+    // }
+}
+
+.content {
+    background-color: #fff;
+}

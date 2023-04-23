@@ -1,0 +1,112 @@
+.action {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    bottom: -33px;
+    right: 15px;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: 99;
+}
+
+.download-container {
+    display: flex;
+    position: relative;
+}
+
+.close-icon {
+    position: absolute;
+    top: 19px;
+    right: 16px;
+    color: var(--text-primary-color);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.download-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    color: var(--text-primary-color);
+    padding: 8px;
+    border-radius: 8px;
+    margin: 10px 40px 10px 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--background-gray-color-03);
+    }
+}
+
+.title {
+    margin-left: 10px;
+}
+
+.get-app {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    border-radius: 52px !important;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--background-gray-color-75);
+    cursor: pointer;
+    height: 32px;
+    min-width: 90px;
+    width: 90px !important;
+    margin-bottom: 10px;
+    padding: 0 !important;
+    background-color: var(--background-gray-color-241);
+    transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+    transform-origin: right bottom;
+    transform: none;
+    &:hover {
+        background-color: var(--background-gray-color-248);
+    }
+}
+
+.hide {
+    transform: scale(0);
+}
+
+.download-options {
+    position: relative;
+    width: fit-content;
+    bottom: -1px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    background: var(--background-gray-color-241);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0.14, 0.3, 1) 0s;
+    transform-origin: right bottom;
+    transform: scale(0);
+    margin-bottom: 12px;
+    flex-shrink: 0;
+    right: -1px;
+}
+
+.activeDownload {
+    transform: scale(1);
+}
+
+.scroll-top {
+    border-radius: 50% !important;
+    margin: 0 10px 0 0;
+    margin-left: 0 !important;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 5px 10px 0;
+    // padding-right: 10px;
+    // padding-top: 4px;
+}
+
+.active {
+    bottom: 10px;
+}

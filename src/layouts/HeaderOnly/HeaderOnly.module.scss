@@ -1,0 +1,15 @@
+.custom {
+    width: 1366px;
+}
+
+.wrapper {
+    margin-top: 60px;
+    width: 100%;
+    height: auto;
+    background-color: var(--default-background);
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.content {
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
