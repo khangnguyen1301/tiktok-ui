@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 
 function Theme() {
     const { setDataLocalStorage, getDataLocalStorage } = useLocalStorage();
-    const currentTheme = getDataLocalStorage('history-theme').theme;
+    const currentTheme = getDataLocalStorage('history-theme')?.theme;
     const [isDarkMode, setIsDarkMode] = useState(currentTheme === 'dark');
 
     const themeToggle = () => {
