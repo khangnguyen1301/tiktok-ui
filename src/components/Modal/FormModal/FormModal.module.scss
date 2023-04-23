@@ -282,7 +282,7 @@
 }
 .submit {
     background-color: var(--primary);
-    color: var(--text-primary-color);
+    color: #fff;
 }
 
 .back-btn {
@@ -294,7 +294,7 @@
 }
 
 .loading {
-    color: var(--text-primary-color);
+    color: #fff;
     font-size: 1.6rem;
     animation: spinner 2s infinite;
 }

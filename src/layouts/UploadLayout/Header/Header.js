@@ -131,7 +131,7 @@ function Header({ className }) {
                         placement="bottom-end"
                         delay={[0, 700]}
                         className={cx('upload-layout')}
-                        uploadLayout
+                        uploadLayout={true}
                     >
                         {isLogin ? (
                             <Image className={cx('user-avatar')} src={userInfo?.avatar} alt={userInfo?.nickName} />

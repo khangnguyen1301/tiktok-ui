@@ -12,6 +12,7 @@ import { ChevronDownIcon } from '~/components/Icons';
 import { useDispatch } from 'react-redux';
 import { logout } from '~/redux/authSlice';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import { UploadLayout } from '~/layouts';
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
 
@@ -27,7 +28,7 @@ function Menu({
     zIndex,
     custom,
     className,
-    uploadLayout,
+    uploadLayout = false,
     onChange = defaultFn,
     hideOnClick = false,
     arrowBottom = false,
@@ -55,7 +56,7 @@ function Menu({
     const handleResult = (attrs) => (
         <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
             <PopperWrapper className={cx('menu-popper', { [className]: className, arrow: arrowBottom })}>
-                {history.length > 1 && <Header title={current.title} onBack={handleBack} upLoadLayout />}
+                {history.length > 1 && <Header title={current.title} onBack={handleBack} upLoadLayout={uploadLayout} />}
                 <div className={cx('menu-body', { hidden: hidden })}>{renderItems()}</div>
                 {expanded && (
                     <div className={cx('expand-btn')} onClick={() => onHideResetAction(false)}>

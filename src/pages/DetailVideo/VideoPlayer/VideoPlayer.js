@@ -26,8 +26,9 @@ import styles from './VideoPlayer.module.scss';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { useCalculator } from '~/hooks';
 import Likes from '~/components/Likes';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { hanldeChangeCurrentTime } from '~/redux/videoSlice';
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 
@@ -81,6 +82,10 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
     const timeLineRef = useRef();
 
     const dispatch = useDispatch();
+
+    const { showLoginModal } = useContext(ModalEnviroment);
+
+    const isLogin = useSelector((state) => state.auth?.login?.isLogin);
 
     const [currentMinutes, currentSeconds] = useCalculator(+currentTime);
     const [durationMinutes, durationSeconds] = useCalculator(data?.meta?.playtime_seconds);
@@ -342,7 +347,7 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
                 <div className={cx('heart-icon')}>
                     <Likes data={data} width="3.2rem" height="3.2rem" noneBorder shake />
                 </div>
-                <div className={cx('comment-icon')}>
+                <div className={cx('comment-icon')} onClick={!isLogin ? showLoginModal : () => {}}>
                     <div className={cx('icon')}>
                         <CommentIcon width="3.2rem" height="3.2rem" />
                     </div>

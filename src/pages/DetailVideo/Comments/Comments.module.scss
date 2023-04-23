@@ -52,6 +52,14 @@
     caret-color: var(--caret-color);
 }
 
+.login-notify {
+    width: 100%;
+    height: 24px;
+    font-weight: 700;
+    color: var(--primary);
+    cursor: pointer;
+}
+
 .post-comment {
     width: 48px;
     height: 48px;

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react';
@@ -9,6 +9,8 @@ import { GmailIcon, SmileIcon } from '~/components/Icons';
 import CommentItem from './CommentItem';
 
 import * as commentService from '~/services/commentService';
+import images from '~/assets/images';
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 const cx = classNames.bind(styles);
 
 function Comments({ videoID }) {
@@ -17,16 +19,16 @@ function Comments({ videoID }) {
 
     const postRef = useRef();
     const inputRef = useRef();
-
+    const { showLoginModal } = useContext(ModalEnviroment);
     const userInfo = useSelector((state) => state.auth.login?.currentUser) ?? {};
-
+    const isLogin = useSelector((state) => state.auth.login?.isLogin);
     useEffect(() => {
         videoID && getComment();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoID]);
 
     useEffect(() => {
-        postRef.current.style.color = contentComment ? 'var(--primary)' : 'var(--background-gray-color-34)';
+        isLogin && (postRef.current.style.color = contentComment ? 'var(--primary)' : '(--background-gray-color-34');
     }, [contentComment]);
 
     useEffect(() => {
@@ -63,31 +65,43 @@ function Comments({ videoID }) {
             <h3 className={cx('title')}>{`${comments?.length ?? '0'} comment`}</h3>
             <div className={cx('comments-container')}>
                 <div className={cx('avatar')}>
-                    <Image src={userInfo.avatar} alt={userInfo.nickname} />
+                    <Image src={userInfo.avatar ?? images.noImage} alt={userInfo.nickname} />
                 </div>
+
                 <div className={cx('comments-bar')}>
-                    <div className={cx('comments-enter')}>
-                        <input
-                            type="text"
-                            placeholder="Add comment..."
-                            className={cx('comments-box')}
-                            onChange={(e) => setContentComment(e.target.value)}
-                            ref={inputRef}
-                        />
-                        <Tippy content={`"@" a user to tag them in your comments`} placement="top" zIndex="99999">
-                            <button className={cx('comment-icon')}>
-                                <GmailIcon />
-                            </button>
-                        </Tippy>
-                        <Tippy content="Click to add emojis" placement="top" zIndex="99999">
-                            <button className={cx('comment-icon')}>
-                                <SmileIcon />
-                            </button>
-                        </Tippy>
-                    </div>
-                    <div className={cx('post-comment')} ref={postRef} onClick={() => postComment()}>
-                        <span>Post</span>
-                    </div>
+                    {isLogin ? (
+                        <div className={cx('comments-enter')}>
+                            <input
+                                type="text"
+                                placeholder="Add comment..."
+                                className={cx('comments-box')}
+                                onChange={(e) => setContentComment(e.target.value)}
+                                ref={inputRef}
+                            />
+
+                            <Tippy content={`"@" a user to tag them in your comments`} placement="top" zIndex="99999">
+                                <button className={cx('comment-icon')}>
+                                    <GmailIcon />
+                                </button>
+                            </Tippy>
+                            <Tippy content="Click to add emojis" placement="top" zIndex="99999">
+                                <button className={cx('comment-icon')}>
+                                    <SmileIcon />
+                                </button>
+                            </Tippy>
+                        </div>
+                    ) : (
+                        <div className={cx('comments-enter')}>
+                            <div className={cx('login-notify')} onClick={showLoginModal}>
+                                Login to comment
+                            </div>
+                        </div>
+                    )}
+                    {isLogin && (
+                        <div className={cx('post-comment')} ref={postRef} onClick={() => postComment()}>
+                            <span>Post</span>
+                        </div>
+                    )}
                 </div>
             </div>
             {comments?.map((res) => (

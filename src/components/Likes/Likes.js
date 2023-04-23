@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import * as likeService from '~/services/likeService';
 import * as videoService from '~/services/videoService';
 import { HeartedIcon, HeartIcon } from '../Icons';
 import styles from './Likes.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { liked, unliked } from '~/redux/likesSlice';
+import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +16,8 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
     const [isLiked, setIsLiked] = useState(data?.is_liked);
     const [likeCounts, setLikeCounts] = useState(data?.likes_count);
     const [loading, setLoading] = useState(false);
+
+    const { showLoginModal } = useContext(ModalEnviroment);
 
     const dispatch = useDispatch();
     const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
@@ -57,19 +60,36 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
     };
     return (
         <div className={cx('wrapper', { horizontal })}>
-            <button
-                type="button"
-                className={cx('icon-box', { modalOn: horizontal, noneBorder, shake })}
-                onClick={() => stateLikeVideo()}
-            >
-                {/* icon */}
-                {isLiked && isLogin ? (
-                    <HeartedIcon width={width} height={height} />
-                ) : (
-                    <HeartIcon width={width} height={height} />
-                )}
-            </button>
-            <strong className={cx('count')}>{likeCounts ?? '0'}</strong>
+            {!isLogin ? (
+                <>
+                    <button
+                        type="button"
+                        className={cx('icon-box', { modalOn: horizontal, noneBorder, shake })}
+                        onClick={() => showLoginModal()}
+                    >
+                        {/* icon */}
+
+                        <HeartIcon width={width} height={height} />
+                    </button>
+                    <strong className={cx('count')}>{likeCounts ?? '0'}</strong>
+                </>
+            ) : (
+                <>
+                    <button
+                        type="button"
+                        className={cx('icon-box', { modalOn: horizontal, noneBorder, shake })}
+                        onClick={() => stateLikeVideo()}
+                    >
+                        {/* icon */}
+                        {isLiked && isLogin ? (
+                            <HeartedIcon width={width} height={height} />
+                        ) : (
+                            <HeartIcon width={width} height={height} />
+                        )}
+                    </button>
+                    <strong className={cx('count')}>{likeCounts ?? '0'}</strong>
+                </>
+            )}
         </div>
     );
 }

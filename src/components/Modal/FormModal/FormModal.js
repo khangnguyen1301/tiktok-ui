@@ -157,7 +157,7 @@ function FormModal({ onHideModal }) {
                                             onClick={() => handleMenu(index)}
                                             className={cx('menu-item')}
                                         >
-                                            <span className={cx('icon')}>{content.icon}</span>{' '}
+                                            <span className={cx('icon')}>{content.icon}</span>
                                             <span>{content.title}</span>
                                         </Button>
                                     );
