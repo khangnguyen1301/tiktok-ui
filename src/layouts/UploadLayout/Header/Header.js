@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -16,9 +16,11 @@ import Menu from '~/components/Popper/Menu';
 import {
     GetCoinsIcon,
     InboxIcon,
+    InboxedIcon,
     LogoIcon,
     LogoutIcon,
     MessageIcon,
+    MessageSolidIcon,
     SettingsIcon,
     UserMenuIcon,
 } from '~/components/Icons';
@@ -31,7 +33,9 @@ import { MENU_ITEMS_UPLOAD_LAYOUT } from '~/constants/constants';
 const cx = classNames.bind(styles);
 
 function Header({ className }) {
-    const { showLoginModal } = useContext(ModalEnviroment);
+    const { showLoginModal, showNotifiCationModal, isShowNotifiCation, hideNotifiModal } = useContext(ModalEnviroment);
+
+    const location = useLocation();
 
     const userInfo = useSelector((state) => state.auth.login?.currentUser) ?? {};
     const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
@@ -45,12 +49,10 @@ function Header({ className }) {
         {
             icon: <GetCoinsIcon />,
             title: 'Get coins',
-            to: '/coin',
         },
         {
             icon: <SettingsIcon />,
             title: 'Settings',
-            to: '/settings',
         },
         ...MENU_ITEMS_UPLOAD_LAYOUT,
         {
@@ -68,6 +70,11 @@ function Header({ className }) {
             default:
         }
     };
+
+    const handleShowNotifiCation = () => {
+        isShowNotifiCation ? hideNotifiModal() : showNotifiCationModal();
+    };
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner', className)}>
@@ -93,14 +100,16 @@ function Header({ className }) {
                             </Button>
 
                             <Tippy delay={[0, 50]} content="Messages" placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <MessageIcon />
-                                </button>
+                                <Link to={'/message'}>
+                                    <button className={cx('action-btn')}>
+                                        <MessageIcon />
+                                    </button>
+                                </Link>
                             </Tippy>
                             <Tippy delay={[0, 50]} offset={[0, 6]} content="Inbox" placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <InboxIcon />
-                                    <span className={cx('badge')}>12</span>
+                                <button className={cx('action-btn')} onClick={handleShowNotifiCation}>
+                                    {isShowNotifiCation ? <InboxedIcon /> : <InboxIcon />}
+                                    {/* <span className={cx('badge')}>12</span> */}
                                 </button>
                             </Tippy>
                         </>

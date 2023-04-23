@@ -55,7 +55,7 @@ function Menu({
     const handleResult = (attrs) => (
         <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
             <PopperWrapper className={cx('menu-popper', { [className]: className, arrow: arrowBottom })}>
-                {history.length > 1 && <Header title={current.title} onBack={handleBack} />}
+                {history.length > 1 && <Header title={current.title} onBack={handleBack} upLoadLayout />}
                 <div className={cx('menu-body', { hidden: hidden })}>{renderItems()}</div>
                 {expanded && (
                     <div className={cx('expand-btn')} onClick={() => onHideResetAction(false)}>

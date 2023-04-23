@@ -6,13 +6,13 @@ import styles from './Menu.module.scss';
 
 const cx = classNames.bind(styles);
 
-function Header({ title, onBack }) {
+function Header({ title, onBack, upLoadLayout = false }) {
     return (
         <header className={cx('header')}>
-            <button className={cx('back-btn')} onClick={onBack}>
+            <button className={cx('back-btn', { upLoadLayout })} onClick={onBack}>
                 <FontAwesomeIcon icon={faChevronLeft} />
             </button>
-            <h4 className={cx('header-title')}>{title}</h4>
+            <h4 className={cx('header-title', { upLoadLayout })}>{title}</h4>
         </header>
     );
 }

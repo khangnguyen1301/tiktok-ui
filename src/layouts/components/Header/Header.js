@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -21,6 +21,7 @@ import {
     LogoIcon,
     LogoutIcon,
     MessageIcon,
+    MessageSolidIcon,
     SettingsIcon,
     UserMenuIcon,
 } from '~/components/Icons';
@@ -33,6 +34,8 @@ const cx = classNames.bind(styles);
 function Header({ className }) {
     const { showLoginModal, showNotifiCationModal, isShowNotifiCation, hideNotifiModal } = useContext(ModalEnviroment);
 
+    const location = useLocation();
+
     const user = useSelector((state) => state.auth.login?.currentUser) ?? {};
     const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
     const userMenu = [
@@ -44,12 +47,10 @@ function Header({ className }) {
         {
             icon: <GetCoinsIcon />,
             title: 'Get coins',
-            to: '/coin',
         },
         {
             icon: <SettingsIcon />,
             title: 'Settings',
-            to: '/settings',
         },
         ...MENU_ITEMS,
         {
@@ -96,14 +97,20 @@ function Header({ className }) {
                             </Button>
 
                             <Tippy delay={[0, 50]} content="Messages" placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <MessageIcon />
-                                </button>
+                                <Link to={'/message'}>
+                                    <button className={cx('action-btn')}>
+                                        {location.pathname.includes('/message') ? (
+                                            <MessageSolidIcon />
+                                        ) : (
+                                            <MessageIcon />
+                                        )}
+                                    </button>
+                                </Link>
                             </Tippy>
                             <Tippy delay={[0, 50]} offset={[0, 6]} content="Inbox" placement="bottom">
                                 <button className={cx('action-btn')} onClick={handleShowNotifiCation}>
                                     {isShowNotifiCation ? <InboxedIcon /> : <InboxIcon />}
-                                    <span className={cx('badge')}>12</span>
+                                    {/* <span className={cx('badge')}>12</span> */}
                                 </button>
                             </Tippy>
                         </>

@@ -33,7 +33,7 @@ function UpdateProFileModal({ onHideModal }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (firstName && lastName && birthDay && bio) {
+        if (firstName && lastName && bio) {
             setIsReady(true);
         } else {
             setIsReady(false);
@@ -134,7 +134,7 @@ function UpdateProFileModal({ onHideModal }) {
                                 <p>Please enter last name</p>
                             </div>
                         </div>
-                        <div className={cx('birthday')}>
+                        {/* <div className={cx('birthday')}>
                             <span>Date of birth</span>
                             <div className={cx('content-edit')}>
                                 <input
@@ -144,7 +144,7 @@ function UpdateProFileModal({ onHideModal }) {
                                 />
                                 <p>Please enter day of birth</p>
                             </div>
-                        </div>
+                        </div> */}
                         <div className={cx('bio')}>
                             <span>Bio</span>
                             <div className={cx('bio-edit')}>

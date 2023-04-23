@@ -1,4 +1,5 @@
 .wrapper {
+    width: 692px;
     max-width: 100%;
     border-bottom: 1px solid var(--border-top);
     position: relative;
@@ -321,5 +322,8 @@
     .video {
         width: 250px !important;
         height: 450px !important;
+    }
+    .body {
+        width: 400px;
     }
 }

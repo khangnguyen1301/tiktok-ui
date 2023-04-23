@@ -1,5 +1,3 @@
-import { DEFAULT_USER_INFO } from '~/constants/constants';
-
 function useLocalStorage() {
     const setDataLocalStorage = (key, data = {}) => {
         const dataLocalStorage = JSON.stringify(data);
@@ -7,7 +5,7 @@ function useLocalStorage() {
     };
 
     const getDataLocalStorage = (key) => {
-        const data = JSON.parse(localStorage.getItem(key)) ?? DEFAULT_USER_INFO;
+        const data = JSON.parse(localStorage.getItem(key));
         return data;
     };
 

@@ -20,7 +20,6 @@ import {
 } from '~/components/Icons';
 import * as proFileService from '~/services/proFileService';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import Sidebar from '~/layouts/components/Sidebar';
 import Button from '~/components/Button';
 import Image from '~/components/Image';
 import VideoPreview from '~/components/VideoPreview';
@@ -101,7 +100,6 @@ function Profile() {
     };
     return (
         <div className={cx('wrapper')}>
-            <Sidebar className={cx('custom-sidebar')} />
             {user === null ? (
                 <div className={cx('profile')}>
                     <div className={cx('info')}>

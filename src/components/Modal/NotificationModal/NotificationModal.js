@@ -1,3 +1,4 @@
+import { useLayoutEffect, useEffect, useState, useRef } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './NotificationModal.module.scss';
@@ -8,7 +9,6 @@ import {
     MentionActivityIcon,
     MessageActivityIcon,
 } from '~/components/Icons';
-import { useLayoutEffect, useState } from 'react';
 import TiktokLoading from '~/components/Loadings/TiktokLoading';
 
 const cx = classNames.bind(styles);
@@ -50,6 +50,8 @@ function NotificationModal({ onHideModal }) {
     const [content, setContent] = useState(ALL_TABS[0]);
     const [loading, setLoading] = useState(false);
 
+    const selectRef = useRef();
+
     useLayoutEffect(() => {
         setLoading(true);
         const timerID = setTimeout(() => {
@@ -59,13 +61,28 @@ function NotificationModal({ onHideModal }) {
         return () => clearTimeout(timerID);
     }, [content]);
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleOnClickOutSide);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener('mousedown', handleOnClickOutSide);
+        };
+    }, [selectRef]);
+
     const handleSetContent = (id) => {
         const contentItem = ALL_TABS.find((item) => item.id === id);
         setContent(contentItem);
     };
 
+    const handleOnClickOutSide = (event) => {
+        const { target } = event;
+        if (selectRef.current && !selectRef.current.contains(target)) {
+            onHideModal();
+        }
+    };
+
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper')} ref={selectRef}>
             <div className={cx('header')}>
                 <span className={cx('title')}>Notifications</span>
                 <div className={cx('notify-container')}>

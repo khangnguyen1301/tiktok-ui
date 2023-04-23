@@ -1,7 +1,7 @@
 .wrapper {
-    position: absolute;
+    position: fixed;
     top: 55px;
-    right: 15px;
+    right: 13px;
     width: 376px;
     height: 640px;
     background-color: var(--background-gray-color-241);
@@ -9,14 +9,14 @@
     border-radius: 8px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px -4px 32px;
     transition: all 200ms linear;
-
+    z-index: 9999;
     &::after {
         position: absolute;
         content: '';
         height: 0;
         width: 0;
         top: -1.8rem;
-        right: 18rem;
+        right: 19%;
         border: 10px solid transparent;
         border-bottom: 8px solid var(--background-gray-color-241);
         z-index: 999;

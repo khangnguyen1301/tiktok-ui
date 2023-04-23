@@ -22,7 +22,7 @@ function VideoContext({ children }) {
         setNickName(listVideo[positionVideo]?.user?.nickname);
         setVideoID(listVideo[positionVideo]?.id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [positionVideo, videoID, nickName]);
+    }, [positionVideo, videoID, nickName, window.location.pathname]);
 
     const handleSetPositionVideo = (position) => {
         setPositionVideo(position);

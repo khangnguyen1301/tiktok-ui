@@ -21,6 +21,7 @@ function DetailVideo() {
 
     const [page, setPage] = useState(randomPage);
     const [videoID, setVideoID] = useState('');
+
     const [listVideo, setListVideo] = useState([]);
     const [video, setVideo] = useState({});
 

@@ -71,7 +71,7 @@ function Following() {
     };
 
     return (
-        <>
+        <div className={cx('wrapper-following')}>
             {isLogin && suggestAccounts.length === 0 ? (
                 <HomeAccountLoading />
             ) : !isLogin || (isLogin && followList.length === 0) ? (
@@ -91,7 +91,7 @@ function Following() {
                     <VideoList data={followList} />
                 </div>
             )}
-        </>
+        </div>
     );
 }
 
