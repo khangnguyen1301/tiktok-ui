@@ -1,0 +1,43 @@
+.wrapper {
+    background-color: var(--default-background);
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.container {
+    padding: 24px 0 0 32px;
+    display: flex;
+    //flex-wrap: wrap;
+}
+
+.detail-container {
+    width: 732px;
+    border-radius: 4px;
+}
+
+.list-container {
+    width: 322px;
+    height: 500px;
+    flex: 1;
+}
+
+.title {
+    color: var(--text-primary-color);
+    font-weight: 700;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 1.8rem;
+    padding-left: 24px;
+    margin-bottom: 15px;
+    line-height: 24px;
+}
+
+.list-card {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background-color: var(--default-background);
+    padding: 0 24px;
+    transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
