@@ -60,7 +60,7 @@ function Comments({ videoID }) {
 
     return (
         <div className={cx('comments-wrapper')}>
-            <h3 className={cx('title')}>{`${comments.length} comment`}</h3>
+            <h3 className={cx('title')}>{`${comments?.length} comment`}</h3>
             <div className={cx('comments-container')}>
                 <div className={cx('avatar')}>
                     <Image src={userInfo.avatar} alt={userInfo.nickname} />
