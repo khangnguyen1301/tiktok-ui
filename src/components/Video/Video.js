@@ -21,6 +21,7 @@ import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import Likes from '../Likes';
 import { adjustVolume, handleMuted } from '~/redux/videoSlice';
+import { useInView } from 'react-intersection-observer';
 
 const cx = classNames.bind(styles);
 
@@ -29,6 +30,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
     const [isPlayed, setIsPlayed] = useState(true);
     const [loading, setLoading] = useState(true);
     const [commentCount, setCommentCount] = useState(data?.comments_count);
+
     const dispatch = useDispatch();
     const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
 
@@ -36,9 +38,18 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
     const isMuted = useSelector((state) => state.video.isMuted);
     const { showLoginModal } = useContext(ModalEnviroment);
     const videoContext = useContext(VideoEnviroment);
+
     const videoRef = useRef();
     const selectorRef = useRef();
     const adjustRef = useRef();
+
+    const {
+        meta: {
+            video: { resolution_x: videoWidth, resolution_y: videoHeight },
+        },
+    } = data;
+
+    const directionVideoClass = videoWidth < videoHeight;
 
     useEffect(() => {
         adjustRef.current.value = isMuted ? 0 : volume * 100;
@@ -63,18 +74,17 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
     useLayoutEffect(() => {
         let timerID;
         if (isVisible && !videoContext.isVideoModalShow) {
+            currentElement(index);
             timerID = setTimeout(() => {
                 videoRef.current.play();
                 setIsPlayed(true);
             }, 250);
-            currentElement(index);
         } else {
             if (videoRef.current.play) {
                 videoRef.current.load();
                 setIsPlayed(false);
             }
         }
-
         return () => clearTimeout(timerID);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isVisible]);
@@ -88,8 +98,8 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoContext.isComment]);
 
-    const handleVisibleVideo = (visible) => {
-        setIsVisible(visible);
+    const handleVisibleVideo = async (visible) => {
+        await setIsVisible(visible);
     };
 
     const handleAdjustVolume = (_value) => {
@@ -125,6 +135,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
         videoContext.handleSetPositionVideo(index);
         videoContext.showVideoPlayer();
     };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -164,12 +175,15 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                         offset={{ top: 300, bottom: 200 }}
                     >
                         <div
-                            className={cx('video')}
-                            style={
-                                data?.meta?.video?.resolution_x < data?.meta?.video?.resolution_y
-                                    ? { width: '313px', height: '553px' }
-                                    : { width: '500px', height: '313px' }
-                            }
+                            className={cx('video', {
+                                vertical: directionVideoClass,
+                                horizontal: !directionVideoClass,
+                            })}
+                            // style={
+                            //     directionVideoClass === 'vertical'
+                            //         ? { width: '313px', height: '553px' }
+                            //         : { width: '500px', height: '313px' }
+                            // }
                         >
                             {loading && (
                                 <div className={cx('video-loading')}>

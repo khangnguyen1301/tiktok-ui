@@ -1,6 +1,6 @@
 .wrapper {
     width: 692px;
-    max-width: 100%;
+    //max-width: 100%;
     border-bottom: 1px solid var(--border-top);
     position: relative;
     display: flex;
@@ -21,7 +21,7 @@
 
 .body {
     margin-left: 12px;
-    width: 524px;
+    //width: 524px;
     //flex: 1 1 624px;
 }
 
@@ -86,7 +86,7 @@
 .name-music {
     margin-left: 5px;
     font-size: 16px;
-    font-weight: 600px;
+    font-weight: 600;
 }
 
 .video-container {
@@ -106,6 +106,7 @@
     height: 100%;
     margin-right: 20px;
     cursor: pointer;
+    object-fit: cover;
     flex-shrink: 0;
     background-color: var(--background-gray-color-75);
     video {
@@ -144,6 +145,18 @@
     &:hover > .report {
         opacity: 1;
     }
+}
+
+.vertical {
+    // width: calc(450px + 100vw / 1152 * 100) !important;
+    // height: 553px !important;
+    width: 310px;
+    height: 530px;
+}
+
+.horizontal {
+    width: 530px;
+    height: 300px;
 }
 
 .interactive {
@@ -319,11 +332,14 @@
 }
 
 @media (max-width: 767px) {
-    .video {
-        width: 250px !important;
-        height: 450px !important;
-    }
+    // .wrapper {
+    //     height: 1000px;
+    // }
+    // .video {
+    //     width: 345px !important;
+    //     height: 800px !important;
+    // }
     .body {
-        width: 400px;
+        width: auto;
     }
 }

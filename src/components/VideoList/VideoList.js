@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState, useLayoutEffect } from 'react';
 
-import HomeAccountLoading from '../Loadings/HomeAccountLoading';
 import Video from '~/components/Video';
 
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
@@ -78,22 +77,19 @@ function VideoList({ data }) {
 
     return (
         <div ref={wrapperRef}>
-            {data.length === 0 ? (
-                <HomeAccountLoading />
-            ) : (
-                data?.map((video, index) => (
-                    <Video
-                        data={video}
-                        key={index}
-                        videoID={video?.id}
-                        index={index}
-                        onCloseModal={index === positionCurrentElement}
-                        currentElement={handleSetCurrentElement}
-                        handleFollow={handleFollow}
-                        updateFollow={updateFollow}
-                    />
-                ))
-            )}
+            {data?.map((video, index) => (
+                <Video
+                    data={video}
+                    key={index}
+                    videoID={video?.id}
+                    index={index}
+                    onCloseModal={index === positionCurrentElement}
+                    currentElement={handleSetCurrentElement}
+                    handleFollow={handleFollow}
+                    updateFollow={updateFollow}
+                    // inViewPlay={video?.id === data[positionCurrentElement]?.id}
+                />
+            ))}
         </div>
     );
 }

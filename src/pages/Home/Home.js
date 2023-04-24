@@ -9,13 +9,15 @@ import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import styles from './Home.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '~/redux/authSlice';
+import { InView } from 'react-intersection-observer';
+import HomeAccountLoading from '~/components/Loadings/HomeAccountLoading/HomeAccountLoading';
+import TiktokLoading from '~/components/Loadings/TiktokLoading';
 
 const cx = classNames.bind(styles);
 
 function Home() {
-    const randomPage = Math.floor(Math.random() * 10 + 1);
     const [videoForYou, setVideoForYou] = useState([]);
-    const [page, setPage] = useState(randomPage);
+    const [page, setPage] = useState(0);
     const videoContext = useContext(VideoEnviroment);
     const location = useLocation();
     const dispatch = useDispatch();
@@ -31,6 +33,10 @@ function Home() {
     }, [location.pathname]);
 
     useEffect(() => {
+        if (page < 1) {
+            return;
+        }
+
         const fetchApi = async () => {
             const result = await videoService.getVideoListForYou({ page: page });
             const except = result.filter((video) => video.user.id !== userInfo?.id);
@@ -41,20 +47,32 @@ function Home() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    const handleRandomPage = () => {
+        let checkDuplicate = false;
+        let randomPage = 0;
+        let prevPage = 0;
+        do {
+            prevPage = page;
+            randomPage = Math.floor(Math.random() * 10 + 1);
+            checkDuplicate = randomPage === prevPage;
+        } while (checkDuplicate);
 
-    const handleScroll = () => {
-        if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
-            setPage((page) => page + 1);
-        }
+        setPage(randomPage);
     };
 
     return (
         <div className={cx('wrapper')}>
             <VideoList data={videoForYou} />
+
+            <InView onChange={(inView) => inView && handleRandomPage()}>
+                {videoForYou.length === 0 ? (
+                    <HomeAccountLoading />
+                ) : (
+                    <div className={cx('load-more')}>
+                        <TiktokLoading small />
+                    </div>
+                )}
+            </InView>
         </div>
     );
 }
