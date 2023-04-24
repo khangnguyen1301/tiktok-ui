@@ -56,6 +56,7 @@ function Search() {
         if (e.keyCode === 13) {
             e.preventDefault();
             handleShowMoreResult();
+            inputRef.current.blur();
         }
     };
 
