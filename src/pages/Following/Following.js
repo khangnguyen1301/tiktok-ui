@@ -10,6 +10,8 @@ import { useLocation } from 'react-router-dom';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { useSelector } from 'react-redux';
 import HomeAccountLoading from '~/components/Loadings/HomeAccountLoading/HomeAccountLoading';
+import { InView } from 'react-intersection-observer';
+import TiktokLoading from '~/components/Loadings/TiktokLoading';
 
 const DEFAULT_PERPAGE = 15;
 
@@ -47,10 +49,10 @@ function Following() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLogin, page]);
 
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    // useEffect(() => {
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => window.removeEventListener('scroll', handleScroll);
+    // }, []);
 
     const handleSetFollowList = async (list) => {
         await setFollowList(list);
@@ -60,14 +62,27 @@ function Following() {
         await setSuggestAccounts(list);
     };
 
-    const handleScroll = () => {
-        if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
-            setPage((page) => page + 1);
-        }
-    };
+    // const handleScroll = () => {
+    //     if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
+    //         setPage((page) => page + 1);
+    //     }
+    // };
 
     const handleMouseMove = (value) => {
         setPositionPlay(value);
+    };
+
+    const handleRandomPage = () => {
+        let checkDuplicate = false;
+        let randomPage = 0;
+        let prevPage = 0;
+        do {
+            prevPage = page;
+            randomPage = Math.floor(Math.random() * 10 + 1);
+            checkDuplicate = randomPage === prevPage;
+        } while (checkDuplicate);
+
+        setPage(randomPage);
     };
 
     return (
@@ -91,6 +106,15 @@ function Following() {
                     <VideoList data={followList} />
                 </div>
             )}
+            <InView onChange={(inView) => inView && handleRandomPage()}>
+                {suggestAccounts.length === 0 ? (
+                    <></>
+                ) : (
+                    <div className={cx('load-more')}>
+                        <TiktokLoading small />
+                    </div>
+                )}
+            </InView>
         </div>
     );
 }
