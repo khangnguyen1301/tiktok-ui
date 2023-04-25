@@ -7,24 +7,35 @@ export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
         const result = await userService.userLogin(user);
-        let now = new Date();
-        now.setTime(now.getTime() + 3 * 24 * 60 * 60 * 1000);
-        let expires = 'expires=' + now.toUTCString();
-        document.cookie = 'token=' + result.meta.token + ';' + expires;
-        dispatch(loginSuccess(result.data));
-        navigate('/');
-    } catch (e) {
-        dispatch(loginFailed());
+        if (result?.response?.data?.status_code === 422) {
+            throw result.response.data.errors.email[0];
+        } else if (result?.response?.data?.status_code === 401) {
+            // eslint-disable-next-line no-throw-literal
+            throw 'Wrong password';
+        } else {
+            let now = new Date();
+            now.setTime(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+            let expires = 'expires=' + now.toUTCString();
+            document.cookie = 'token=' + result.meta.token + ';' + expires;
+            dispatch(loginSuccess(result.data));
+            navigate('/');
+        }
+    } catch (err) {
+        dispatch(loginFailed(err));
     }
 };
 
 export const registerUser = async (user, dispatch) => {
     dispatch(registerStart());
     try {
-        await userService.userRegister(user);
-        dispatch(registerSuccess());
-    } catch (e) {
-        dispatch(registerFailed());
+        const result = await userService.userRegister(user);
+        if (result.response.data.status_code === 422) {
+            throw result.response.data.errors;
+        } else {
+            dispatch(registerSuccess(result.data));
+        }
+    } catch (err) {
+        dispatch(registerFailed(err));
     }
 };
 

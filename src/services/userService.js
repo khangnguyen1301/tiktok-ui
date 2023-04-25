@@ -46,9 +46,9 @@ export const userRegister = async ({ email, password }) => {
             email,
             password,
         });
-        return res.data;
+        return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 

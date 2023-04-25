@@ -12,7 +12,6 @@ import { faCircleNotch, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-ic
 import { loginUser, registerUser } from '~/redux/apiRequest';
 import Notify from '~/components/Notify';
 import { resetLogin, resetRegister } from '~/redux/authSlice';
-import { type } from '@testing-library/user-event/dist/type';
 
 const cx = classNames.bind(styles);
 
@@ -32,21 +31,31 @@ function FormModal({ onHideModal }) {
     const registerFetching = useSelector((state) => state.auth?.register?.isFetching);
     const isLogin = useSelector((state) => state.auth?.login?.isLogin);
     const isRegister = useSelector((state) => state.auth?.register?.isRegister);
-    const isError = useSelector((state) => state.auth.login.error);
+    const isLoginError = useSelector((state) => state.auth.login.error);
+    const isRegisterError = useSelector((state) => state.auth.register.error);
     const loginMessage = useSelector((state) => state.auth.login.message);
     const registerMessage = useSelector((state) => state.auth.register.message);
+    const errEmail = registerMessage?.email;
+    const errPassword = registerMessage?.password;
     const loginRegisterForm = useMemo(() => FORM_ITEMS, []);
 
     useEffect(() => {
         let timerID;
-        if (!isError && isLogin) {
+        if (!isLoginError && isLogin) {
             timerID = setTimeout(() => {
                 //onHideModal();
                 window.location.reload();
             }, 1500);
         }
         return () => clearTimeout(timerID);
-    }, [isError, isLogin]);
+    }, [isLoginError, isLogin]);
+
+    useEffect(() => {
+        if (!isRegisterError && isRegister) {
+            dispatch(resetRegister());
+            switchLogin();
+        }
+    }, [isRegisterError, isRegister]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -65,7 +74,6 @@ function FormModal({ onHideModal }) {
             password,
         };
         await registerUser(user, dispatch);
-        switchLogin();
     };
 
     const resetMenu = () => {
@@ -141,13 +149,17 @@ function FormModal({ onHideModal }) {
 
     return (
         <div className={cx('modal-mask')}>
-            {(isLogin || isError || isRegister) && (
+            {(isLogin || isLoginError || isRegister || isRegisterError) && (
                 <div
                     className={cx('notify-success', {
                         show: !loginFetching && !registerFetching,
                     })}
                 >
-                    <Notify message={isRegister ? registerMessage : loginMessage} />
+                    <Notify
+                        message={
+                            isRegister || isRegisterError ? `${errEmail ?? ''} ${errPassword ?? ''}` : loginMessage
+                        }
+                    />
                 </div>
             )}
             <div className={cx('wrapper')}>

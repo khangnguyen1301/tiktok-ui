@@ -28,10 +28,10 @@ const authSlice = createSlice({
             state.login.isLogin = true;
             state.login.message = 'Login success';
         },
-        loginFailed: (state) => {
+        loginFailed: (state, action) => {
             state.login.isFetching = false;
             state.login.error = true;
-            state.login.message = 'Email or password wrong. Please try again!';
+            state.login.message = action.payload;
         },
         logout: (state) => {
             state.login.isFetching = false;
@@ -47,19 +47,22 @@ const authSlice = createSlice({
             state.register.isRegister = false;
             state.register.isFetching = true;
         },
-        registerSuccess: (state) => {
+        registerSuccess: (state, action) => {
+            state.login.currentUser = action.payload;
             state.register.isFetching = false;
             state.register.error = false;
             state.register.isRegister = true;
             state.register.message = 'Register success';
         },
-        registerFailed: (state) => {
+        registerFailed: (state, action) => {
             state.register.isFetching = false;
             state.register.error = true;
+            state.register.message = action.payload;
         },
         resetRegister: (state) => {
             state.register.isRegister = false;
             state.register.message = '';
+            state.register.error = false;
         },
     },
 });
