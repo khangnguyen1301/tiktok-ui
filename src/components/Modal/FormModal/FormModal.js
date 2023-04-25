@@ -8,10 +8,11 @@ import Button from '~/components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { loginUser, registerUser } from '~/redux/apiRequest';
 import Notify from '~/components/Notify';
 import { resetLogin, resetRegister } from '~/redux/authSlice';
+import { type } from '@testing-library/user-event/dist/type';
 
 const cx = classNames.bind(styles);
 
@@ -22,6 +23,7 @@ function FormModal({ onHideModal }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
+    const [typePassword, setTypePassword] = useState('password');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -131,6 +133,11 @@ function FormModal({ onHideModal }) {
         onHideModal();
     };
 
+    const handleShowPassword = (e) => {
+        e.preventDefault();
+        typePassword.includes('password') ? setTypePassword('text') : setTypePassword('password');
+    };
+
     return (
         <div className={cx('modal-mask')}>
             {(isLogin || isError || isRegister) && (
@@ -193,10 +200,17 @@ function FormModal({ onHideModal }) {
                                 </div>
                                 <div className={cx('password')}>
                                     <input
-                                        type="password"
+                                        type={typePassword}
                                         placeholder="Password"
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
+                                    <button className={cx('show-password')} onClick={handleShowPassword}>
+                                        {typePassword.includes('password') ? (
+                                            <FontAwesomeIcon icon={faEyeSlash} />
+                                        ) : (
+                                            <FontAwesomeIcon icon={faEye} />
+                                        )}
+                                    </button>
                                 </div>
                             </div>
                             <p className={cx('forgot')}>Forgot password</p>

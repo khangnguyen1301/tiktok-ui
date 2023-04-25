@@ -241,6 +241,7 @@
 
     .email,
     .password {
+        position: relative;
         width: 100%;
         height: 44px;
         border: 1px solid var(--background-gray-color-12);
@@ -261,6 +262,16 @@
                 color: var(--background-gray-color-05);
                 font-size: 1.4rem;
             }
+        }
+
+        .show-password {
+            position: absolute;
+            top: 13px;
+            right: 9px;
+            background-color: transparent;
+            color: var(--text-primary-color);
+            font-size: 1.6rem;
+            cursor: pointer;
         }
     }
 }
