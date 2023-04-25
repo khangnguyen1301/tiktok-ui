@@ -15,7 +15,7 @@ import GetApp from '~/components/GetApp';
 const cx = classNames.bind(styles);
 
 function FullScreenLayout({ children }) {
-    const [route, setRoute] = useState(window.location.pathname);
+    const [route, setRoute] = useState('/pathname');
     const context = useContext(VideoEnviroment);
 
     const pathName = window.location.pathname;
