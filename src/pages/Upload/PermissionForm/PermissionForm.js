@@ -176,18 +176,14 @@ function PermissionForm({
 
             <div className={cx('permisson')}>
                 <span>Who can watch this video</span>
-                <div className={cx('select-container')}>
+                <div className={cx('select-container')} ref={selectRef}>
                     <div className={cx('select')} onClick={handlePermission}>
                         <span> {permissionViewer}</span>
-                        <div className={cx('icon', { activeIcon: !isSelected })} onClick={handlePermission}>
+                        <div className={cx('icon', { activeIcon: !isSelected })}>
                             <BottomArrowIcon />
                         </div>
                     </div>
-                    <div
-                        className={cx('select-item', { selected: !isSelected })}
-                        ref={selectRef}
-                        onClick={handleOnClickOutSide}
-                    >
+                    <div className={cx('select-item', { selected: !isSelected })} onClick={handleOnClickOutSide}>
                         <div
                             className={cx('item', {
                                 activeItem: permissionViewer === 'Public',
