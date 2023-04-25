@@ -2,16 +2,22 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
 import likesReducer from './likesSlice';
 import videoReducer from './videoSlice';
+import followReducer from './followSlice';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage';
 
-const rootReducer = combineReducers({ auth: authReducer, like: likesReducer, video: videoReducer });
+const rootReducer = combineReducers({
+    auth: authReducer,
+    like: likesReducer,
+    video: videoReducer,
+    follow: followReducer,
+});
 const persistConfig = {
     key: 'root',
     version: 1,
     storage,
-    blacklist: ['video'],
+    blacklist: ['video', 'follow'],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

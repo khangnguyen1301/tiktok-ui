@@ -78,7 +78,7 @@ function Sidebar({ className }) {
     const sideBarRef = useRef();
 
     const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
-
+    const isUpdateFollowing = useSelector((state) => state.follow.isChangeFollow);
     useEffect(() => {
         if (isLogin) {
             const getFollowAccount = async () => {
@@ -92,7 +92,7 @@ function Sidebar({ className }) {
             setSuggestedUsers(data);
         };
         getSuggestAccount();
-    }, [isLogin]);
+    }, [isLogin, isUpdateFollowing]);
     return (
         <aside className={cx('wrapper', className)} ref={sideBarRef}>
             <Menu>

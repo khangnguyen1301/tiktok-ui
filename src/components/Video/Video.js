@@ -262,7 +262,7 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                 </div>
 
                 {!isLogin ? (
-                    <Button small outline className={cx('follow-btn')} onClick={() => videoContext.handleShowModal()}>
+                    <Button small outline className={cx('follow-btn')} onClick={showLoginModal}>
                         Follow
                     </Button>
                 ) : (

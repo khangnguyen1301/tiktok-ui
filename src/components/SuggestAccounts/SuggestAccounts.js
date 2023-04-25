@@ -5,7 +5,6 @@ import AccountItem from '~/components/SuggestAccounts/AccountItem';
 import styles from './SuggestAccounts.module.scss';
 
 import { useState } from 'react';
-import LineLoading from '../Loadings/LineLoading';
 import AccountLoading from '../Loadings/AccountLoading/AccountLoading';
 
 const cx = classNames.bind(styles);

@@ -6,6 +6,8 @@ import * as followService from '~/services/followService';
 import { useContext, useLayoutEffect, useState } from 'react';
 
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
+import { useDispatch } from 'react-redux';
+import { changeFollow } from '~/redux/followSlice';
 
 const cx = classNames.bind(styles);
 
@@ -22,6 +24,7 @@ function Follow({
 }) {
     const [isFollowed, setIsFollowed] = useState(false);
     const context = useContext(VideoEnviroment);
+    const dispatch = useDispatch();
 
     useLayoutEffect(() => {
         setIsFollowed(isFollow);
@@ -31,12 +34,14 @@ function Follow({
         const result = await followService.followUser({ userID: userID || context.listVideo[index]?.user?.id });
         setIsFollowed(true);
         handleFollow(result);
+        dispatch(changeFollow());
     };
 
     const unFollow = async () => {
         const result = await followService.unFollowUser({ userID: userID || context.listVideo[index]?.user?.id });
         setIsFollowed(false);
         handleFollow(result);
+        dispatch(changeFollow());
     };
 
     return (
