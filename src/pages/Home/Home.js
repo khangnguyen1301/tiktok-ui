@@ -23,9 +23,9 @@ function Home() {
     const dispatch = useDispatch();
 
     const userInfo = useSelector((state) => state.auth.login?.currentUser);
-
+    const isLogin = useSelector((state) => state.auth.login?.isLogin);
     const TTL_COOKIES = document.cookie.split(';')[0].slice(6);
-    !TTL_COOKIES && dispatch(logout());
+    !TTL_COOKIES && isLogin && dispatch(logout());
     useEffect(() => {
         videoContext.handleSetListVideo([]);
 
