@@ -42,6 +42,7 @@ function PermissionForm({
             setSnapshots([]);
             setCaption('');
             captionRef.current.value = '';
+            translateRef.current.style.transform = `translateX(0px)`;
         } else {
             setCaption(nameSliced);
             captionRef.current.value = nameSliced;
