@@ -110,9 +110,11 @@ function Following() {
                 {suggestAccounts.length === 0 ? (
                     <></>
                 ) : (
-                    <div className={cx('load-more')}>
-                        <TiktokLoading small />
-                    </div>
+                    isLogin && (
+                        <div className={cx('load-more')}>
+                            <TiktokLoading small />
+                        </div>
+                    )
                 )}
             </InView>
         </div>

@@ -50,6 +50,7 @@ function FormModal({ onHideModal }) {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        dispatch(resetRegister());
         const user = {
             email,
             password,
