@@ -8,22 +8,13 @@ import { useCalculator } from '~/hooks';
 const cx = classNames.bind(styles);
 
 function ControlVideo({ currentTime, duration, isMuted, handleMuted, isPlayed, handlePlayed, onPlayed }) {
-    const [currentMinutes, setCurrentMinutes] = useState(0);
-    const [currentSeconds, setCurrentSeconds] = useState(0);
-    const [durationMinutes, setDurationMinutes] = useState(0);
-    const [durationSeconds, setDurationSeconds] = useState(0);
-
     const controlRef = useRef();
     const selectorRef = useRef();
 
-    const [minutesOfCurrent, secondsOfCurrent] = useCalculator(currentTime);
-    const [minutesOfDuration, secondsOfDuration] = useCalculator(duration);
+    const [currentMinutes, currentSeconds] = useCalculator(currentTime);
+    const [durationMinutes, durationSeconds] = useCalculator(duration);
 
     useEffect(() => {
-        setCurrentMinutes(minutesOfCurrent);
-        setCurrentSeconds(secondsOfCurrent);
-        setDurationMinutes(minutesOfDuration);
-        setDurationSeconds(secondsOfDuration);
         controlRef.current.value = currentTime;
         handleSelector();
         // eslint-disable-next-line react-hooks/exhaustive-deps

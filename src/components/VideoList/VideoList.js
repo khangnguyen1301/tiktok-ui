@@ -31,8 +31,8 @@ function VideoList({ data }) {
             if (positionCurrentElement > maxLength) {
                 setPositionCurrentElement(maxLength);
             } else {
-                handleScrollElement(positionCurrentElement);
                 videoContext.videoInViewList[positionCurrentElement].inView = true;
+                handleScrollElement(positionCurrentElement);
                 setKeyDown(false);
             }
         }

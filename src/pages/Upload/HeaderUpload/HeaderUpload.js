@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './HeaderUpload.module.scss';
 
@@ -12,30 +12,19 @@ const cx = classNames.bind(styles);
 function HeaderUpload({ srcVideo, nameSlice, forwardSnapshotRef }) {
     const [loadedData, setLoadedData] = useState(false);
     const [durationTime, setDurationTime] = useState(0);
-    const [durationMinutes, setDurationMinutes] = useState(0);
-    const [durationSeconds, setDurationSeconds] = useState(0);
 
     const { isChangeFile } = useContext(ModalEnviroment);
 
-    const [minutes, seconds] = useCalculator(durationTime);
-
     const miniSnapshotRef = useRef();
+    const [durationMinutes, durationSeconds] = useCalculator(durationTime);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (loadedData || isChangeFile) {
             forwardSnapshotRef(miniSnapshotRef);
             setDurationTime(miniSnapshotRef.current.duration);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loadedData, isChangeFile]);
-
-    useEffect(() => {
-        if (loadedData || isChangeFile) {
-            setDurationMinutes(minutes);
-            setDurationSeconds(seconds);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [durationTime, isChangeFile]);
 
     return (
         <div className={cx('header-upload')}>
