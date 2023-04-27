@@ -199,8 +199,9 @@
 
 @media (max-width: 1071px) {
     .wrapper {
-        width: 71px !important;
-        overflow-y: hidden;
+        height: 100%;
+        width: 60px !important;
+        overflow-y: auto;
         border-right: 1px solid var(--background-gray-color-12);
         box-shadow: var(--box-shadow-header);
         padding-right: 8px;
