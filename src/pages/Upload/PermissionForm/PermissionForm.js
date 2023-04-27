@@ -296,7 +296,7 @@ function PermissionForm({
                 </div>
 
                 <div className={cx('button')}>
-                    <Button custom className={cx('btn-discard')}>
+                    <Button custom className={cx('btn-discard')} onClick={(e) => e.preventDefault()}>
                         Discard
                     </Button>
                     <button className={cx('btn-post')}>Post</button>

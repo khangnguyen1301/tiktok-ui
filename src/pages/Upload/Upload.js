@@ -80,7 +80,7 @@ function Upload() {
         await handleUploadVideo(formdata, dispatch);
         setTimeout(() => {
             window.location.reload();
-        }, 3000);
+        }, 1500);
     };
 
     useEffect(() => {

@@ -3,40 +3,31 @@ import { useEffect, useRef, useState } from 'react';
 import images from '~/assets/images';
 import { VolumeIcon, VolumeMutedIcon } from '~/components/Icons';
 import styles from './ControlVideo.module.scss';
+import { useCalculator } from '~/hooks';
 
 const cx = classNames.bind(styles);
 
 function ControlVideo({ currentTime, duration, isMuted, handleMuted, isPlayed, handlePlayed, onPlayed }) {
-    const [minutes, setMinutes] = useState(0);
-    const [seconds, setSeconds] = useState(0);
+    const [currentMinutes, setCurrentMinutes] = useState(0);
+    const [currentSeconds, setCurrentSeconds] = useState(0);
     const [durationMinutes, setDurationMinutes] = useState(0);
     const [durationSeconds, setDurationSeconds] = useState(0);
 
     const controlRef = useRef();
     const selectorRef = useRef();
 
+    const [minutesOfCurrent, secondsOfCurrent] = useCalculator(currentTime);
+    const [minutesOfDuration, secondsOfDuration] = useCalculator(duration);
+
     useEffect(() => {
-        const [currentMinutes, currentSeconds] = calcTime(currentTime);
-        const [durationMinutes, durationSeconds] = calcTime(duration);
-        setMinutes(currentMinutes);
-        setSeconds(currentSeconds);
-        setDurationMinutes(durationMinutes);
-        setDurationSeconds(durationSeconds);
+        setCurrentMinutes(minutesOfCurrent);
+        setCurrentSeconds(secondsOfCurrent);
+        setDurationMinutes(minutesOfDuration);
+        setDurationSeconds(secondsOfDuration);
         controlRef.current.value = currentTime;
         handleSelector();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentTime, duration]);
-
-    const calcTime = (time) => {
-        let minutes = 0;
-        let seconds = 0;
-        if (time >= 60) {
-            minutes = (time / 60)?.toFixed(0);
-            seconds = (time % 60)?.toFixed(0);
-        } else {
-            seconds = time?.toFixed(0);
-        }
-        return [minutes, seconds];
-    };
 
     const handleSelector = () => {
         selectorRef.current.style.width = `${(controlRef.current.value / controlRef.current.max) * 100}%`;
@@ -52,7 +43,9 @@ function ControlVideo({ currentTime, duration, isMuted, handleMuted, isPlayed, h
 
                     <div className={cx('time-video')}>
                         <div className={cx('current-time')}>
-                            {`${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? '0' + seconds : seconds}`}
+                            {`${currentMinutes < 10 ? `0${currentMinutes}` : currentMinutes}:${
+                                currentSeconds < 10 ? '0' + currentSeconds : currentSeconds
+                            }`}
                         </div>
                         <div>{`/`}</div>
                         <div className={cx('duration-time')}>

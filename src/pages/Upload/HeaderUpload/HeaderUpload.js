@@ -5,6 +5,7 @@ import styles from './HeaderUpload.module.scss';
 import Button from '~/components/Button';
 import { CutIcon, DecreaseIcon, IncreaseIcon, SplitIcon } from '~/components/Icons';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import { useCalculator } from '~/hooks';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +16,8 @@ function HeaderUpload({ srcVideo, nameSlice, forwardSnapshotRef }) {
     const [durationSeconds, setDurationSeconds] = useState(0);
 
     const { isChangeFile } = useContext(ModalEnviroment);
+
+    const [minutes, seconds] = useCalculator(durationTime);
 
     const miniSnapshotRef = useRef();
 
@@ -28,25 +31,11 @@ function HeaderUpload({ srcVideo, nameSlice, forwardSnapshotRef }) {
 
     useEffect(() => {
         if (loadedData || isChangeFile) {
-            const [minutes, seconds] = calcTime(durationTime);
             setDurationMinutes(minutes);
             setDurationSeconds(seconds);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [durationTime, isChangeFile]);
-
-    const calcTime = (time) => {
-        let minutes = 0;
-        let seconds = 0;
-        if (time >= 60) {
-            minutes = (time / 60)?.toFixed(0);
-            seconds = (time % 60)?.toFixed(0);
-        } else {
-            seconds = time?.toFixed(0);
-        }
-
-        return [minutes, seconds];
-    };
 
     return (
         <div className={cx('header-upload')}>

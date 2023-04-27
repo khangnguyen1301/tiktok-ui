@@ -84,3 +84,9 @@
         background-position-x: -150%;
     }
 }
+
+@media (max-width: 767px) {
+    .description {
+        width: 100%;
+    }
+}

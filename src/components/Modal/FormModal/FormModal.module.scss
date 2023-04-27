@@ -318,3 +318,20 @@
         transform: rotate(360deg);
     }
 }
+
+@media (max-width: 767px) {
+    .wrapper {
+        width: 400px;
+    }
+
+    .container,
+    .inner {
+        width: 100%;
+    }
+
+    .notify-success {
+        width: auto;
+        padding: 0 24px;
+        text-align: center;
+    }
+}

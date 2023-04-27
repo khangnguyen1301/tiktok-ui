@@ -63,3 +63,9 @@
     margin-top: 20px;
     width: 40rem;
 }
+
+@media (max-width: 767px) {
+    .upload-btn {
+        width: 20rem;
+    }
+}

@@ -9,8 +9,11 @@ function VideoList({ data }) {
     const [positionCurrentElement, setPositionCurrentElement] = useState(0);
     const [updateFollow, setUpdateFollow] = useState({});
     const [keyDown, setKeyDown] = useState(false);
-    const wrapperRef = useRef();
-    const context = useContext(VideoEnviroment);
+    const [inView, setInView] = useState(false);
+    const [positionInView, setPositionInView] = useState(0);
+
+    const wrapperRef = useRef(null);
+    const videoContext = useContext(VideoEnviroment);
     const maxLength = data.length - 1;
     const isChangeStateLike = useSelector((state) => state.like?.isLiked);
 
@@ -18,13 +21,13 @@ function VideoList({ data }) {
         if (positionCurrentElement >= maxLength) {
             return;
         } else {
-            setPositionCurrentElement(context.positionVideo);
+            setPositionCurrentElement(videoContext.positionVideo);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [context.positionVideo, isChangeStateLike]);
+    }, [videoContext.positionVideo, isChangeStateLike]);
 
     useLayoutEffect(() => {
-        if (context.isVideoModalShow || keyDown) {
+        if (videoContext.isVideoModalShow || keyDown) {
             if (positionCurrentElement > maxLength) {
                 setPositionCurrentElement(maxLength);
             } else {
@@ -39,6 +42,11 @@ function VideoList({ data }) {
         document.addEventListener('keydown', handleKeydown);
         return () => document.removeEventListener('keydown', handleKeydown);
     }, []);
+
+    useEffect(() => {
+        const firstInView = handleVideoInView();
+        setPositionInView(firstInView);
+    }, [inView]);
 
     const handleKeydown = (e) => {
         //back video
@@ -63,8 +71,8 @@ function VideoList({ data }) {
         wrapperRef.current?.childNodes[position]?.scrollIntoView({
             behavior: 'smooth',
         });
-        context.handleSetVideoID(data[position]?.id);
-        context.handleSetPositionVideo(position);
+        videoContext.handleSetVideoID(data[position]?.id);
+        videoContext.handleSetPositionVideo(position);
     };
 
     const handleSetCurrentElement = useCallback((position) => {
@@ -73,6 +81,15 @@ function VideoList({ data }) {
 
     const handleFollow = (data) => {
         setUpdateFollow(data);
+    };
+
+    const handleInViewPlay = (view) => {
+        setInView(view);
+    };
+
+    const handleVideoInView = () => {
+        const firstVideo = videoContext.videoInViewList.findIndex((entity) => entity?.inView === true);
+        return firstVideo;
     };
 
     return (
@@ -87,7 +104,8 @@ function VideoList({ data }) {
                     currentElement={handleSetCurrentElement}
                     handleFollow={handleFollow}
                     updateFollow={updateFollow}
-                    // inViewPlay={video?.id === data[positionCurrentElement]?.id}
+                    onInView={handleInViewPlay}
+                    inViewPlay={index === positionInView}
                 />
             ))}
         </div>

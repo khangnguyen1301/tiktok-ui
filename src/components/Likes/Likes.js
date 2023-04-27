@@ -35,23 +35,25 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
     const stateLikeVideo = () => {
         if (isLiked) {
             //unliked
+            setIsLiked(false);
             const unLikeVideo = async () => {
                 setLoading(true);
                 // eslint-disable-next-line no-unused-vars
                 const result = await likeService.unLikeVideo({ videoID: data?.id });
                 setLikeCounts(result?.likes_count);
-                setIsLiked(false);
+
                 dispatch(unliked());
                 setLoading(false);
             };
             unLikeVideo();
         } else {
             //likeVideo
+            setIsLiked(true);
             const likeVideo = async () => {
                 setLoading(true);
                 const result = await likeService.likeVideo({ videoID: data?.id });
                 setLikeCounts(result?.likes_count);
-                setIsLiked(true);
+
                 dispatch(liked());
                 setLoading(false);
             };
@@ -82,9 +84,9 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
                     >
                         {/* icon */}
                         {isLiked && isLogin ? (
-                            <HeartedIcon width={width} height={height} />
+                            <HeartedIcon width={width} height={height} className={cx('scale-heart')} />
                         ) : (
-                            <HeartIcon width={width} height={height} />
+                            <HeartIcon width={width} height={height} className={cx('scale-heart')} />
                         )}
                     </button>
                     <strong className={cx('count', { defaultColor })}>{likeCounts ?? '0'}</strong>

@@ -190,17 +190,50 @@
     .save-btn {
         background-color: var(--background-gray-color-06);
         color: var(--background-gray-color-34);
-        border: none;
+        border: 1px solid var(--background-gray-color-12);
         height: 36px;
         border-radius: 4px;
         font-size: 1.4rem;
         font-weight: 600;
         font-family: 'ProximaNova', sans-serif;
         padding-bottom: 2px;
+        cursor: pointer;
     }
 
     .submit {
         background-color: var(--primary);
         color: var(--white);
+        &:hover {
+            border-color: var(--primary);
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .wrapper {
+        width: 100%;
+    }
+    .update-container {
+        max-width: 400px;
+    }
+
+    .avatar-container {
+        margin-left: 20px !important;
+    }
+
+    .last-name,
+    .birthday,
+    .first-name,
+    .bio {
+        width: 350px;
+    }
+    input {
+        width: 200px !important;
+    }
+    .bio-edit {
+        textarea {
+            width: 246px !important;
+        }
     }
 }

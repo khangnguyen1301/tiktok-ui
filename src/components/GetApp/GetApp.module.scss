@@ -72,8 +72,8 @@
 }
 
 .download-options {
-    position: relative;
-    width: fit-content;
+    position: absolute;
+    width: max-content;
     bottom: -1px;
     font-weight: 700;
     font-size: 16px;
@@ -91,6 +91,7 @@
 }
 
 .activeDownload {
+    position: relative;
     transform: scale(1);
 }
 
@@ -103,8 +104,6 @@
     min-width: 32px;
     min-height: 32px;
     padding: 5px 10px 0;
-    // padding-right: 10px;
-    // padding-top: 4px;
 }
 
 .active {

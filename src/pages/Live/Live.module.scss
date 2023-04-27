@@ -8,3 +8,9 @@
 .custom-sidebar {
     width: 232px;
 }
+
+@media (max-width: 767px) {
+    .wrapper {
+        margin-left: 12px;
+    }
+}

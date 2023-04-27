@@ -23,6 +23,10 @@
     cursor: pointer;
 }
 
+.scale-heart {
+    animation: appearHeart 1s;
+}
+
 heart-animation {
     width: 2.4rem;
     height: 2.4rem;
@@ -42,7 +46,7 @@ heart-animation {
 }
 
 .count {
-    color: var(--text-primary-color);
+    color: var(--background-gray-color-75);
     font-size: 1.2rem;
     line-height: 17px;
     text-align: center;
@@ -68,6 +72,15 @@ heart-animation {
     100% {
         transform: rotate(0);
         //transform: translateZ(150px);
+    }
+}
+
+@keyframes appearHeart {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
     }
 }
 

@@ -155,7 +155,7 @@
     border-bottom: 1px solid rgba($color: #d4cece, $alpha: 0.2);
 }
 .tab-item {
-    width: 230px;
+    width: 50%;
     height: 44px;
     display: flex;
     align-items: center;
@@ -178,14 +178,14 @@
 .active-bar {
     position: absolute;
     bottom: 0;
-    width: 230px;
+    width: 50%;
     height: 2px;
     background-color: var(--text-primary-color);
     transition: transform 0.3s ease-out;
 }
 
 .active {
-    transform: translateX(230px);
+    transform: translateX(100%);
 }
 
 .video-item {
@@ -225,6 +225,31 @@
 @media (max-width: 1071px) {
     .profile {
         margin-left: 80px;
+    }
+    .video-item {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 767px) {
+    .header {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .avatar {
+        margin-left: 20px;
+    }
+
+    .counter {
+        span {
+            margin-right: 20px;
+        }
+    }
+
+    .profile {
+        margin-left: 10px;
     }
     .video-item {
         flex-wrap: wrap;

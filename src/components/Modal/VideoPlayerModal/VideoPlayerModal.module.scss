@@ -437,8 +437,8 @@
 
 .comment-container {
     width: 100%;
-    height: 20vh;
-    min-height: 55vh;
+    height: 45%;
+    min-height: 200px;
     //max-height: 212px;
     box-sizing: border-box;
     flex-grow: 1;
@@ -446,7 +446,7 @@
     border-top: 1px solid var(--background-gray-color-02);
     border-bottom: 1px solid var(--background-gray-color-02);
     margin-top: 16px;
-    padding: 24px 32px;
+    padding: 18px 32px 54px 32px;
     overflow: hidden overlay;
 }
 .comment-item {

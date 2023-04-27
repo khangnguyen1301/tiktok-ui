@@ -176,7 +176,7 @@ function Profile() {
                             <span>{`www.facebook.com/${user?.nickname}`}</span>
                         </div>
                         <div className={cx('icon')}>
-                            <ShareAction delay={[0, 300]} offset={[-43, 0]} placement="bottom-end" zIndex="999">
+                            <ShareAction delay={[0, 300]} offset={[-43, 0]} placement="bottom-end" zIndex="998">
                                 <div className={cx('icon-item')}>
                                     <ShareIconRegular />
                                 </div>
@@ -189,6 +189,7 @@ function Profile() {
                                 placement="bottom-end"
                                 custom
                                 customMenuItem
+                                zIndex="998"
                             >
                                 <div className={cx('icon-item')}>
                                     <ThreeDotIcon />

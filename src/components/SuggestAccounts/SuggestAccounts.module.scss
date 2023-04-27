@@ -35,7 +35,7 @@
     padding: 6px;
     width: 100%;
     border-radius: 4px;
-
+    overflow: hidden;
     &:hover {
         cursor: pointer;
         background-color: var(--background-gray-color-03);
@@ -57,8 +57,12 @@
     height: 32px;
     border-radius: 50%;
     object-fit: cover;
+    flex-shrink: 0;
 }
 .content-container {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     .content {
         display: flex;
         margin-left: 13px;
@@ -70,8 +74,10 @@
             line-height: 22px;
             font-weight: 700;
             margin-top: 2px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
-
         .icon {
             margin-left: 5px;
             color: #20d5ec;

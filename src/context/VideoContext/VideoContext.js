@@ -18,6 +18,11 @@ function VideoContext({ children }) {
 
     const [, showVideoPlayer, hideVideoPlayer, isVideoModalShow] = useVideoModal(VideoPlayerModal);
 
+    const videoInViewList = listVideo.map((video, index) => {
+        const newVideo = { dataInfo: video, inView: null, position: index, update: null };
+        return newVideo;
+    });
+
     useEffect(() => {
         setNickName(listVideo[positionVideo]?.user?.nickname);
         setVideoID(listVideo[positionVideo]?.id);
@@ -84,6 +89,7 @@ function VideoContext({ children }) {
     };
 
     const value = {
+        videoInViewList,
         isVideoModalShow,
         showVideoPlayer,
         hideVideoPlayer,

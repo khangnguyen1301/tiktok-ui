@@ -6,7 +6,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 999;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -93,5 +93,17 @@
 @media (max-width: 1071px) {
     .logo-container {
         min-width: 150px;
+    }
+}
+
+@media (max-width: 767px) {
+    .wrapper {
+        width: 100vw;
+    }
+    .inner {
+        padding: 0 10px;
+    }
+    .logo-container {
+        min-width: 135px;
     }
 }

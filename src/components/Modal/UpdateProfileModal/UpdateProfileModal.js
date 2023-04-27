@@ -13,6 +13,7 @@ import styles from './UpdateProfileModal.module.scss';
 
 import { updateUser } from '~/redux/apiRequest';
 import { useNavigate } from 'react-router-dom';
+import { loginSuccess } from '~/redux/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -38,7 +39,7 @@ function UpdateProFileModal({ onHideModal }) {
         } else {
             setIsReady(false);
         }
-    }, [firstName, lastName, birthDay, bio]);
+    }, [firstName, lastName, bio]);
 
     const updateProFile = async (e) => {
         e.preventDefault();
@@ -48,9 +49,9 @@ function UpdateProFileModal({ onHideModal }) {
         }
         formData.append('first_name', firstName);
         formData.append('last_name', lastName);
-        formData.append('date_of_birth', birthDay);
         formData.append('bio', bio);
         await updateUser(formData, dispatch, navigate);
+
         window.location.reload();
     };
 

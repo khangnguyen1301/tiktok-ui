@@ -43,7 +43,8 @@ export const updateUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
         const result = await userService.userUpdateInfo(user);
-        dispatch(loginSuccess(result));
+        console.log(result);
+        dispatch(loginSuccess(result.data));
         navigate(`/@${result.data?.nickname}`);
     } catch (e) {
         dispatch(loginFailed());

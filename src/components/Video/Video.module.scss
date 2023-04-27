@@ -109,6 +109,7 @@
     object-fit: cover;
     flex-shrink: 0;
     background-color: var(--background-gray-color-75);
+    overflow: hidden;
     video {
         width: 100%;
         height: 100%;
@@ -332,13 +333,24 @@
 }
 
 @media (max-width: 767px) {
-    // .wrapper {
-    //     height: 1000px;
-    // }
-    // .video {
-    //     width: 345px !important;
-    //     height: 800px !important;
-    // }
+    .wrapper {
+        margin-left: 10px;
+    }
+    .custom-img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .video {
+        width: 215px !important;
+        height: 400px !important;
+    }
+
+    .thumb-video {
+        width: 215px !important;
+        height: 400px !important;
+    }
+
     .body {
         width: auto;
     }

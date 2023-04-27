@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useContext, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactVisibilitySensor from 'react-visibility-sensor';
 import { memo } from 'react';
 import classNames from 'classnames/bind';
 import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
@@ -25,9 +24,18 @@ import { useInView } from 'react-intersection-observer';
 
 const cx = classNames.bind(styles);
 
-function Video({ data, videoID, index, currentElement, updateFollow, handleFollow, onCloseModal = false }) {
-    const [isVisible, setIsVisible] = useState(false);
-    const [isPlayed, setIsPlayed] = useState(true);
+function Video({
+    data,
+    videoID,
+    index,
+    currentElement,
+    updateFollow,
+    handleFollow,
+    onInView = () => {},
+    inViewPlay = false,
+    onCloseModal = false,
+}) {
+    const [isPlayed, setIsPlayed] = useState(false);
     const [loading, setLoading] = useState(true);
     const [commentCount, setCommentCount] = useState(data?.comments_count);
 
@@ -51,43 +59,46 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
 
     const directionVideoClass = videoWidth < videoHeight;
 
+    const [inViewRef, isInView] = useInView({ root: null, rootMargin: '20px', threshold: 0.47 });
+
+    useEffect(() => {
+        if (inViewPlay && !videoContext.isVideoModalShow) {
+            setTimeout(() => {
+                setIsPlayed(true);
+                videoRef.current.play();
+            }, 230);
+        } else {
+            handleReloadVideo();
+        }
+    }, [inViewPlay]);
+
     useEffect(() => {
         adjustRef.current.value = isMuted ? 0 : volume * 100;
         videoRef.current.volume = isMuted ? 0 : volume;
         selectorRef.current.style.width = `${isMuted ? 0 : volume * 100}%`;
     }, [isMuted, volume]);
 
+    useLayoutEffect(() => {
+        videoContext.videoInViewList[index].inView = isInView;
+        !isInView && handleReloadVideo();
+        onInView(isInView);
+        isInView && currentElement(index);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isInView]);
+
     useEffect(() => {
         if (videoContext.isVideoModalShow) {
-            videoRef.current.pause();
             setIsPlayed(false);
+            videoRef.current.pause();
         } else {
-            if (onCloseModal && !videoContext.isVideoModalShow && isVisible) {
+            if (onCloseModal && !videoContext.isVideoModalShow && isInView) {
+                setIsPlayed(true);
                 videoRef.current.load();
                 videoRef.current.play();
-                setIsPlayed(true);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoContext.isVideoModalShow]);
-
-    useLayoutEffect(() => {
-        let timerID;
-        if (isVisible && !videoContext.isVideoModalShow) {
-            currentElement(index);
-            timerID = setTimeout(() => {
-                videoRef.current.play();
-                setIsPlayed(true);
-            }, 250);
-        } else {
-            if (videoRef.current.play) {
-                videoRef.current.load();
-                setIsPlayed(false);
-            }
-        }
-        return () => clearTimeout(timerID);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isVisible]);
 
     useEffect(() => {
         if (videoContext.isComment && videoContext.isVideoModalShow)
@@ -97,10 +108,6 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
             }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoContext.isComment]);
-
-    const handleVisibleVideo = async (visible) => {
-        await setIsVisible(visible);
-    };
 
     const handleAdjustVolume = (_value) => {
         const _volume = _value / 100;
@@ -122,12 +129,17 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
 
     const handlePlayVideo = () => {
         if (isPlayed) {
-            videoRef.current.pause();
             setIsPlayed(false);
+            videoRef.current.pause();
         } else {
-            videoRef.current.play();
             setIsPlayed(true);
+            videoRef.current.play();
         }
+    };
+
+    const handleReloadVideo = () => {
+        setIsPlayed(false);
+        videoRef.current.load();
     };
 
     const handleClickVideo = () => {
@@ -168,66 +180,58 @@ function Video({ data, videoID, index, currentElement, updateFollow, handleFollo
                         <p className={cx('name-music')}>Can't find the music link</p>
                     )}
                 </div>
-                <div className={cx('video-container')}>
-                    <ReactVisibilitySensor
-                        onChange={handleVisibleVideo}
-                        partialVisibility={true}
-                        offset={{ top: 300, bottom: 200 }}
+                <div className={cx('video-container')} ref={inViewRef}>
+                    <div
+                        className={cx('video', {
+                            vertical: directionVideoClass,
+                            horizontal: !directionVideoClass,
+                        })}
                     >
-                        <div
-                            className={cx('video', {
-                                vertical: directionVideoClass,
-                                horizontal: !directionVideoClass,
-                            })}
-                            // style={
-                            //     directionVideoClass === 'vertical'
-                            //         ? { width: '313px', height: '553px' }
-                            //         : { width: '500px', height: '313px' }
-                            // }
-                        >
-                            {loading && (
-                                <div className={cx('video-loading')}>
-                                    <TiktokLoading medium />
-                                </div>
-                            )}
-                            <img src={data?.thumb_url} alt="" className={cx('thumb-video', { active: isVisible })} />
-                            <video
-                                src={data?.file_url}
-                                loop
-                                ref={videoRef}
-                                onClick={handleClickVideo}
-                                onLoadedMetadata={() => setLoading(false)}
-                            ></video>
-                            <div className={cx('volume-icon', { muted: isMuted })}>
-                                <div onClick={handleToggleMuted}>{isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}</div>
+                        {loading && (
+                            <div className={cx('video-loading')}>
+                                <TiktokLoading medium />
                             </div>
-                            <div className={cx('volume-control')}>
-                                <div className={cx('volume-bar')}>
-                                    <input
-                                        className={cx('input')}
-                                        type="range"
-                                        min="0"
-                                        max="100"
-                                        step="1"
-                                        onChange={(e) => handleAdjustVolume(e.target.value)}
-                                        onMouseUp={(e) => handleSetVolume(e.target.value)}
-                                        ref={adjustRef}
-                                    />
-                                    <div className={cx('selector')} ref={selectorRef}></div>
-                                </div>
-                            </div>
-
-                            <div className={cx('play-icon')} onClick={handlePlayVideo}>
-                                {isPlayed ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
-                            </div>
-
-                            <div className={cx('report')}>
-                                <FontAwesomeIcon icon={faFlag} />
-                                <span>Report</span>
+                        )}
+                        <img
+                            src={data?.thumb_url}
+                            alt=""
+                            className={cx('thumb-video', { active: inViewPlay && isInView })}
+                        />
+                        <video
+                            src={data?.file_url}
+                            loop
+                            ref={videoRef}
+                            onClick={handleClickVideo}
+                            onLoadedMetadata={() => setLoading(false)}
+                        ></video>
+                        <div className={cx('volume-icon', { muted: isMuted })}>
+                            <div onClick={handleToggleMuted}>{isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}</div>
+                        </div>
+                        <div className={cx('volume-control')}>
+                            <div className={cx('volume-bar')}>
+                                <input
+                                    className={cx('input')}
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    step="1"
+                                    onChange={(e) => handleAdjustVolume(e.target.value)}
+                                    onMouseUp={(e) => handleSetVolume(e.target.value)}
+                                    ref={adjustRef}
+                                />
+                                <div className={cx('selector')} ref={selectorRef}></div>
                             </div>
                         </div>
-                    </ReactVisibilitySensor>
 
+                        <div className={cx('play-icon')} onClick={handlePlayVideo}>
+                            {isPlayed ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+                        </div>
+
+                        <div className={cx('report')}>
+                            <FontAwesomeIcon icon={faFlag} />
+                            <span>Report</span>
+                        </div>
+                    </div>
                     <div className={cx('interactive')}>
                         {!isLogin ? (
                             <div className={cx('likes-box')}>
