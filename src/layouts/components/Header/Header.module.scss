@@ -101,9 +101,24 @@
         width: 100vw;
     }
     .inner {
-        padding: 0 10px;
+        width: 100% !important;
+        padding: 0 8px;
     }
     .logo-container {
         min-width: 135px;
+    }
+
+    .actions {
+        min-width: fit-content;
+        margin-right: 10px;
+        justify-content: flex-end;
+    }
+
+    .action-btn {
+        padding: 4px 8px;
+    }
+
+    .user-avatar {
+        margin-left: 5px;
     }
 }

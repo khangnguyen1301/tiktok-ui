@@ -327,6 +327,11 @@
     .wrapper {
         max-width: fit-content;
     }
+
+    .content {
+        margin-top: 15px;
+    }
+
     .body {
         width: auto;
     }
@@ -334,20 +339,48 @@
 
 @media (max-width: 767px) {
     .wrapper {
-        margin-left: 10px;
+        width: min-content !important;
+        margin-left: 5%;
+        flex-direction: column;
     }
+
     .custom-img {
+        position: absolute;
+        top: 30px;
+        left: 10px;
         width: 45px;
         height: 45px;
     }
 
+    .name {
+        overflow: hidden;
+        width: max-content;
+        text-overflow: ellipsis;
+        margin-left: 50px;
+        margin-top: 2px;
+        word-wrap: break-word;
+
+        .info-box {
+            flex-direction: column;
+
+            h4 {
+                margin-left: -12px;
+            }
+        }
+    }
+
+    .content {
+        margin-top: 10px;
+        width: 250px;
+    }
+
     .video {
-        width: 215px !important;
+        width: 210px !important;
         height: 400px !important;
     }
 
     .thumb-video {
-        width: 215px !important;
+        width: 210px !important;
         height: 400px !important;
     }
 

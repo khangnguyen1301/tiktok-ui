@@ -112,3 +112,9 @@
         color: var(--text-primary-color);
     }
 }
+
+@media (max-width: 767px) {
+    .custom {
+        display: none;
+    }
+}

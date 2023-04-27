@@ -44,9 +44,9 @@ function VideoList({ data }) {
     }, []);
 
     useEffect(() => {
-        console.log('da vao day');
         const firstInView = handleVideoInView();
         setPositionInView(firstInView);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView, positionCurrentElement]);
 
     const handleKeydown = (e) => {
