@@ -62,14 +62,28 @@ function Video({
     const [inViewRef, isInView] = useInView({ root: null, rootMargin: '20px', threshold: 0.47 });
 
     useEffect(() => {
+        console.log('da set inview');
+        console.log(isInView);
+        console.log('index: ', index);
+        videoContext.videoInViewList[index].inView = isInView;
+        onInView(isInView);
+        !isInView && handleReloadVideo();
+        isInView && currentElement(index);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isInView]);
+
+    useEffect(() => {
+        let timerID;
         if (inViewPlay && !videoContext.isVideoModalShow) {
-            setTimeout(() => {
+            timerID = setTimeout(() => {
                 setIsPlayed(true);
                 videoRef.current.play();
             }, 230);
         } else {
             handleReloadVideo();
         }
+
+        return () => clearTimeout(timerID);
     }, [inViewPlay]);
 
     useEffect(() => {
@@ -77,14 +91,6 @@ function Video({
         videoRef.current.volume = isMuted ? 0 : volume;
         selectorRef.current.style.width = `${isMuted ? 0 : volume * 100}%`;
     }, [isMuted, volume]);
-
-    useLayoutEffect(() => {
-        videoContext.videoInViewList[index].inView = isInView;
-        !isInView && handleReloadVideo();
-        onInView(isInView);
-        isInView && currentElement(index);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isInView]);
 
     useEffect(() => {
         if (videoContext.isVideoModalShow) {
@@ -117,6 +123,10 @@ function Video({
         isMuted && dispatch(adjustVolume(_volume));
     };
 
+    // useEffect(() => {
+    //     !isInView && handleReloadVideo();
+    // }, [isInView]);
+
     const handleSetVolume = (_value) => {
         const value = _value / 100;
         dispatch(adjustVolume(value));
@@ -146,6 +156,16 @@ function Video({
         videoContext.handleGetVideoID(videoID);
         videoContext.handleSetPositionVideo(index);
         videoContext.showVideoPlayer();
+    };
+
+    const handleVideoInView = () => {
+        const firstVideo = videoContext.videoInViewList.findIndex((entity) => entity?.inView === true);
+        return firstVideo;
+    };
+
+    const handleRemoveInteractive = () => {
+        const activeId = handleVideoInView();
+        index !== activeId && handleReloadVideo();
     };
 
     return (

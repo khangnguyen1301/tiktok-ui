@@ -44,9 +44,10 @@ function VideoList({ data }) {
     }, []);
 
     useEffect(() => {
+        console.log('da vao day');
         const firstInView = handleVideoInView();
         setPositionInView(firstInView);
-    }, [inView]);
+    }, [inView, positionCurrentElement]);
 
     const handleKeydown = (e) => {
         //back video
