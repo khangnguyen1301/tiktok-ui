@@ -32,6 +32,7 @@ function VideoList({ data }) {
                 setPositionCurrentElement(maxLength);
             } else {
                 handleScrollElement(positionCurrentElement);
+                videoContext.videoInViewList[positionCurrentElement].inView = true;
                 setKeyDown(false);
             }
         }

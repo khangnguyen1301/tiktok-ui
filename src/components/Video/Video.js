@@ -64,8 +64,7 @@ function Video({
     useEffect(() => {
         videoContext.videoInViewList[index].inView = isInView;
         onInView(isInView);
-        !isInView && handleReloadVideo();
-        isInView && currentElement(index);
+        isInView ? currentElement(index) : handleReloadVideo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInView]);
 
