@@ -29,10 +29,10 @@ export const registerUser = async (user, dispatch) => {
     dispatch(registerStart());
     try {
         const result = await userService.userRegister(user);
-        if (result.response.data.status_code === 422) {
+        if (result?.response?.data?.status_code === 422) {
             throw result.response.data.errors;
         } else {
-            dispatch(registerSuccess(result.data));
+            dispatch(registerSuccess());
         }
     } catch (err) {
         dispatch(registerFailed(err));
@@ -43,7 +43,6 @@ export const updateUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
         const result = await userService.userUpdateInfo(user);
-        console.log(result);
         dispatch(loginSuccess(result.data));
         navigate(`/@${result.data?.nickname}`);
     } catch (e) {

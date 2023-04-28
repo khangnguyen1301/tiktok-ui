@@ -47,8 +47,7 @@ const authSlice = createSlice({
             state.register.isRegister = false;
             state.register.isFetching = true;
         },
-        registerSuccess: (state, action) => {
-            state.login.currentUser = action.payload;
+        registerSuccess: (state) => {
             state.register.isFetching = false;
             state.register.error = false;
             state.register.isRegister = true;

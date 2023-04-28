@@ -53,7 +53,9 @@ function FormModal({ onHideModal }) {
 
     useEffect(() => {
         if (!isRegisterError && isRegister) {
-            dispatch(resetRegister());
+            setTimeout(() => {
+                dispatch(resetRegister());
+            }, 1000);
             switchLogin();
         }
     }, [isRegisterError, isRegister]);
@@ -158,7 +160,11 @@ function FormModal({ onHideModal }) {
                 >
                     <Notify
                         message={
-                            isRegister || isRegisterError ? `${errEmail ?? ''} ${errPassword ?? ''}` : loginMessage
+                            isRegister || isRegisterError
+                                ? isRegisterError
+                                    ? `${errEmail ?? ''} ${errPassword ?? ''}`
+                                    : registerMessage
+                                : loginMessage
                         }
                     />
                 </div>
