@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
@@ -480,7 +480,14 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
 }
 
 VideoPlayer.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.object.isRequired,
+    listVideo: PropTypes.array,
+    onPlayed: PropTypes.func,
+    onUpdateTime: PropTypes.func,
+    stickyPlayed: PropTypes.bool,
+    onLoad: PropTypes.func,
+    stickyLoaded: PropTypes.bool,
+    activeSticky: PropTypes.bool,
 };
 
 export default VideoPlayer;

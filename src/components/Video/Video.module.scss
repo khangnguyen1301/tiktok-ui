@@ -324,9 +324,9 @@
 }
 
 @media (max-width: 1071px) {
-    .wrapper {
-        max-width: fit-content;
-    }
+    // .wrapper {
+    //     max-width: fit-content;
+    // }
 
     .content {
         margin-top: 15px;
@@ -334,6 +334,9 @@
 
     .body {
         width: auto;
+    }
+    .follow-btn {
+        right: 50px !important;
     }
 }
 

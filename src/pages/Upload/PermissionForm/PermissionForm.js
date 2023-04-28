@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState, useRef, useEffect, useContext } from 'react';
 import VideoThumbnail from 'react-video-thumbnail';
 
@@ -305,5 +306,15 @@ function PermissionForm({
         </form>
     );
 }
+
+PermissionForm.propTypes = {
+    srcVideo: PropTypes.string.isRequired,
+    nameSliced: PropTypes.string,
+    initialList: PropTypes.object,
+    upLoadVideo: PropTypes.func,
+    onCaption: PropTypes.func,
+    onPermission: PropTypes.func,
+    onListChecked: PropTypes.func,
+};
 
 export default PermissionForm;

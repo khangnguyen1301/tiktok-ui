@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Header from '~/layouts/UploadLayout/Header';
 import classNames from 'classnames/bind';
 
@@ -15,5 +16,9 @@ function UploadLayout({ children }) {
         </div>
     );
 }
+
+UploadLayout.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default UploadLayout;

@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react';
-
+import PropTypes from 'prop-types';
 import styles from './Comments.module.scss';
 import Image from '~/components/Image';
 import { GmailIcon, SmileIcon } from '~/components/Icons';
@@ -112,5 +112,9 @@ function Comments({ videoID }) {
         </div>
     );
 }
+
+Comments.propTypes = {
+    videoID: PropTypes.string.isRequired,
+};
 
 export default Comments;

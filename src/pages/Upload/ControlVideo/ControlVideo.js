@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import images from '~/assets/images';
 import { VolumeIcon, VolumeMutedIcon } from '~/components/Icons';
 import styles from './ControlVideo.module.scss';
@@ -75,5 +76,15 @@ function ControlVideo({ currentTime, duration, isMuted, handleMuted, isPlayed, h
         </div>
     );
 }
+
+ControlVideo.propTypes = {
+    currentTime: PropTypes.number,
+    duration: PropTypes.number,
+    isMuted: PropTypes.bool,
+    handleMuted: PropTypes.func,
+    isPlayed: PropTypes.bool,
+    handlePlayed: PropTypes.func,
+    onPlayed: PropTypes.func,
+};
 
 export default ControlVideo;

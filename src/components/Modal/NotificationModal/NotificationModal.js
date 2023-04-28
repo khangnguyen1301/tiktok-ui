@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useLayoutEffect, useEffect, useState, useRef } from 'react';
 import classNames from 'classnames/bind';
 
@@ -132,5 +133,9 @@ function NotificationModal({ onHideModal }) {
         </div>
     );
 }
+
+NotificationModal.propTypes = {
+    onHideModal: PropTypes.func,
+};
 
 export default NotificationModal;

@@ -1,7 +1,6 @@
+import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useRef, useState, useLayoutEffect } from 'react';
-
 import Video from '~/components/Video';
-
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { useSelector } from 'react-redux';
 
@@ -113,5 +112,9 @@ function VideoList({ data }) {
         </div>
     );
 }
+
+VideoList.propTypes = {
+    data: PropTypes.array.isRequired,
+};
 
 export default VideoList;

@@ -1,5 +1,5 @@
+import PropTypes from 'prop-types';
 import { useState, useRef, useEffect } from 'react';
-
 import classNames from 'classnames/bind';
 
 import Image from '~/components/Image';
@@ -125,5 +125,11 @@ function MobileFrame({ userInfo, nameSlice, srcVideo }) {
         </div>
     );
 }
+
+MobileFrame.propTypes = {
+    userInfo: PropTypes.object,
+    nameSlice: PropTypes.array,
+    srcVideo: PropTypes.string,
+};
 
 export default MobileFrame;

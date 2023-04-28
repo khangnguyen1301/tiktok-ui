@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { HeartMiniIcon, LineLoading } from '~/components/Icons';
 
@@ -86,5 +87,11 @@ function VideoCard({ data, videoID, index }) {
         </div>
     );
 }
+
+VideoCard.propTypes = {
+    data: PropTypes.object,
+    videoID: PropTypes.string,
+    index: PropTypes.number,
+};
 
 export default VideoCard;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -273,5 +274,9 @@ function FormModal({ onHideModal }) {
         </div>
     );
 }
+
+FormModal.propTypes = {
+    onHideModal: PropTypes.func,
+};
 
 export default FormModal;

@@ -1,4 +1,5 @@
-import { useContext, useEffect, useRef, useState, useLayoutEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { BackIcon, CloseIcon, GhimIcon, NextIcon, ReloadIcon } from '~/components/Icons';
@@ -143,5 +144,15 @@ function VideoSticky({
         </div>
     );
 }
+
+VideoSticky.propTypes = {
+    data: PropTypes.object.isRequired,
+    playerPlayed: PropTypes.bool,
+    stickyPlayed: PropTypes.func,
+    onLoad: PropTypes.func,
+    isChangeVideo: PropTypes.bool,
+    playerLoaded: PropTypes.bool,
+    activeSticky: PropTypes.bool,
+};
 
 export default VideoSticky;

@@ -32,6 +32,7 @@ function AccountPreviewHome({ children, data }) {
 
 AccountPreviewHome.propTypes = {
     children: PropTypes.node,
+    data: PropTypes.object,
 };
 
 export default AccountPreviewHome;

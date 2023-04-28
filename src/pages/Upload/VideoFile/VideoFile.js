@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState, useRef, useContext, useEffect } from 'react';
 
 import classNames from 'classnames/bind';
@@ -94,5 +95,13 @@ function VideoFile({ onChangeFile, onChangSrcVideo, onDetailUpload, onNameSlice 
         </div>
     );
 }
+
+VideoFile.propTypes = {
+    onChangeFile: PropTypes.func,
+    onChangSrcVideo: PropTypes.func,
+    onDetailUpload: PropTypes.func,
+    onNameSlice: PropTypes.func,
+    className: PropTypes.string,
+};
 
 export default VideoFile;

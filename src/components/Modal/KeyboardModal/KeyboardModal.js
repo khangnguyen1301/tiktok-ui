@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import styles from './KeyboardModal.module.scss';
@@ -45,5 +46,9 @@ function KeyboardModal({ onHideModal }) {
         </div>
     );
 }
+
+KeyboardModal.propsTypes = {
+    onHideModal: PropTypes.func,
+};
 
 export default KeyboardModal;

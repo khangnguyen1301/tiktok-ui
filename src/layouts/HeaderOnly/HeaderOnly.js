@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import Header from '~/layouts/components/Header';
 import classNames from 'classnames/bind';
@@ -22,5 +23,9 @@ function HeaderOnly({ children }) {
         </div>
     );
 }
+
+HeaderOnly.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default HeaderOnly;

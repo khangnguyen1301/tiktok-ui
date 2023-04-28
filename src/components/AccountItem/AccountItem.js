@@ -25,6 +25,8 @@ function AccountItem({ data, handleInput, className }) {
 
 AccountItem.propTypes = {
     data: PropTypes.object.isRequired,
+    handleInput: PropTypes.func,
+    className: PropTypes.string,
 };
 
 export default AccountItem;

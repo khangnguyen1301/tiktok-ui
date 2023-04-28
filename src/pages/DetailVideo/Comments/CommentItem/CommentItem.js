@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { HeartMiniIcon, ThreeDotIcon } from '~/components/Icons';
 import Image from '~/components/Image';
@@ -36,5 +37,9 @@ function CommentItem({ data }) {
         </div>
     );
 }
+
+CommentItem.propTypes = {
+    data: PropTypes.object.isRequired,
+};
 
 export default CommentItem;

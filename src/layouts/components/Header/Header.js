@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
@@ -146,5 +147,9 @@ function Header({ className }) {
         </header>
     );
 }
+
+Header.propTypes = {
+    className: PropTypes.string,
+};
 
 export default Header;

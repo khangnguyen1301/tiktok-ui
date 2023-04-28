@@ -73,6 +73,8 @@ function AccountPreview({ data, outlineButton = false, bioDescription = false })
 
 AccountPreview.propTypes = {
     data: PropTypes.object,
+    outlineButton: PropTypes.bool,
+    bioDescription: PropTypes.bool,
 };
 
 export default AccountPreview;

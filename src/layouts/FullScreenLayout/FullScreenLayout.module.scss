@@ -10,14 +10,17 @@
     margin-top: 60px;
     width: 100%;
     height: auto;
+    display: flex;
     background-color: var(--default-background);
     transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .content {
-    margin-left: 232px;
+    flex: 1;
+    padding-left: 232px;
+    max-width: 100%;
+    // background-color: #000;
     transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
-    overflow: hidden;
 }
 
 @media (max-width: 1024px) {
@@ -26,8 +29,8 @@
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .content {
-        margin-left: 12%;
+        padding-left: 80px;
     }
 }

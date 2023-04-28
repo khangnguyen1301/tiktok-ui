@@ -1,4 +1,5 @@
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useContext, useLayoutEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './HeaderUpload.module.scss';
 
@@ -95,5 +96,10 @@ function HeaderUpload({ srcVideo, nameSlice, forwardSnapshotRef }) {
         </div>
     );
 }
+
+HeaderUpload.propTypes = {
+    srcVideo: PropTypes.string,
+    nameSlice: PropTypes.array,
+};
 
 export default HeaderUpload;

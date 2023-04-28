@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import Header from '~/layouts/components/Header';
@@ -37,5 +38,9 @@ function FullScreenLayout({ children }) {
         </div>
     );
 }
+
+FullScreenLayout.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default FullScreenLayout;

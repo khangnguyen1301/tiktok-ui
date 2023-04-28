@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useLayoutEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import Menu from '../Popper/Menu';
@@ -104,5 +105,14 @@ function ShareAction({ children, offset, delay, placement, arrowBottom, zIndex }
         </div>
     );
 }
+
+ShareAction.propTypes = {
+    children: PropTypes.node,
+    offset: PropTypes.array,
+    delay: PropTypes.array,
+    placement: PropTypes.string,
+    arrowBottom: PropTypes.bool,
+    zIndex: PropTypes.string,
+};
 
 export default ShareAction;

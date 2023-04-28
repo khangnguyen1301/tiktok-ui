@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
@@ -171,5 +172,9 @@ function UpdateProFileModal({ onHideModal }) {
         </div>
     );
 }
+
+UpdateProFileModal.propTypes = {
+    onHideModal: PropTypes.func,
+};
 
 export default UpdateProFileModal;

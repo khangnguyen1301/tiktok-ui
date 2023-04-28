@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import styles from './ConfirmModal.module.scss';
@@ -22,5 +23,10 @@ function ConfirmModal({ onHideModal, onChangeFile }) {
         </div>
     );
 }
+
+ConfirmModal.propTypes = {
+    onHideModal: PropTypes.func,
+    onChangeFile: PropTypes.func,
+};
 
 export default ConfirmModal;

@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import Follow from '~/components/Follow';
 
+import Follow from '~/components/Follow';
 import Image from '~/components/Image';
 import AccountPreviewHome from '~/components/Video/AccountPreviewHome';
 import Button from '~/components/Button/Button';
@@ -69,5 +70,9 @@ function UserInfo({ data }) {
         </div>
     );
 }
+
+UserInfo.propTypes = {
+    data: PropTypes.object.isRequired,
+};
 
 export default UserInfo;

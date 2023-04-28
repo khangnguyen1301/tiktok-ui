@@ -1,4 +1,5 @@
-import { useContext, useEffect, useRef, useState, useLayoutEffect, memo } from 'react';
+import PropTypes from 'prop-types';
+import { useContext, useEffect, useRef, useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
@@ -469,5 +470,9 @@ function VideoPlayerModal({ onHideModal }) {
         </div>
     );
 }
+
+VideoPlayerModal.propTypes = {
+    onHideModal: PropTypes.func,
+};
 
 export default memo(VideoPlayerModal);

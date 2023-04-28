@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import styles from './Follow.module.scss';
 
@@ -64,5 +65,17 @@ function Follow({
         </div>
     );
 }
+
+Follow.propTypes = {
+    className: PropTypes.string,
+    primary: PropTypes.bool,
+    outline: PropTypes.bool,
+    userID: PropTypes.number,
+    index: PropTypes.number,
+    isFollow: PropTypes.bool,
+    updateFollow: PropTypes.object,
+    handleFollow: PropTypes.func,
+    isUpdateFollow: PropTypes.bool,
+};
 
 export default Follow;

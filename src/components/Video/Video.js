@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useContext, useLayoutEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { memo } from 'react';
 import classNames from 'classnames/bind';
@@ -286,5 +287,17 @@ function Video({
         </div>
     );
 }
+
+Video.propTypes = {
+    data: PropTypes.object,
+    videoID: PropTypes.number,
+    index: PropTypes.number,
+    currentElement: PropTypes.func,
+    updateFollow: PropTypes.object,
+    handleFollow: PropTypes.func,
+    onInView: PropTypes.func,
+    inViewPlay: PropTypes.bool,
+    onCloseModal: PropTypes.bool,
+};
 
 export default memo(Video);
