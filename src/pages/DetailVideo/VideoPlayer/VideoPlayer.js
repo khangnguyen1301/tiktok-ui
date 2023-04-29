@@ -60,7 +60,17 @@ const SPEED_ITEM = [
     },
 ];
 
-function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, onLoad, stickyLoaded, activeSticky }) {
+function VideoPlayer({
+    data,
+    listVideo,
+    onPlayed,
+    onUpdateTime,
+    onDefaultSpeed,
+    stickyPlayed,
+    onLoad,
+    stickyLoaded,
+    activeSticky,
+}) {
     const [suggestVideo, setSuggestVideo] = useState([]);
     const [isTurnAround, setIsTurnAround] = useState(false);
     const [isPlayed, setIsPlayed] = useState(true);
@@ -230,6 +240,7 @@ function VideoPlayer({ data, listVideo, onPlayed, onUpdateTime, stickyPlayed, on
         });
         setSpeedItem(newItem);
         setDefaultSpeed(item.speed);
+        onDefaultSpeed(item.speed);
         videoRef.current.playbackRate = item.speed;
     };
 
@@ -484,6 +495,7 @@ VideoPlayer.propTypes = {
     listVideo: PropTypes.array,
     onPlayed: PropTypes.func,
     onUpdateTime: PropTypes.func,
+    onDefaultSpeed: PropTypes.func,
     stickyPlayed: PropTypes.bool,
     onLoad: PropTypes.func,
     stickyLoaded: PropTypes.bool,

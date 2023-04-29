@@ -103,14 +103,15 @@ function MobileFrame({ userInfo, nameSlice, srcVideo }) {
                     <Image src={userInfo.avatar} alt={userInfo.nickname} className={cx('avatar-rotate')} />
                 </div>
             </div>
-            <video
-                src={srcVideo}
-                className={cx('video-preview')}
-                onTimeUpdate={handleSetCurrentTime}
-                onLoadedData={handleSetDurationTime}
-                onEnded={handleEndedVideo}
-                ref={videoRef}
-            />
+            <div className={cx('video-preview')}>
+                <video
+                    src={srcVideo}
+                    onTimeUpdate={handleSetCurrentTime}
+                    onLoadedData={handleSetDurationTime}
+                    onEnded={handleEndedVideo}
+                    ref={videoRef}
+                />
+            </div>
             <div className={cx('video-control')}>
                 <ControlVideo
                     currentTime={currentTimeVideo}

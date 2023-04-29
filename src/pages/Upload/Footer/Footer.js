@@ -52,15 +52,38 @@ function Footer() {
             <div className={cx('language')}>
                 <select>
                     <option>English</option>
-                    <option>Tiếng Việt</option>
-                    <option>English</option>
-                    <option>Tiếng Việt</option>
-                    <option>English</option>
-                    <option>Tiếng Việt</option>
-                    <option>English</option>
-                    <option>Tiếng Việt</option>
-                    <option>English</option>
-                    <option>Tiếng Việt</option>
+                    <option>Tiếng Việt (Việt Nam)</option>
+                    <option>العربية</option>
+                    <option>বাঙ্গালি (ভারত)</option>
+                    <option>Cebuano (Pilipinas)</option>
+                    <option>Čeština (Česká republika)</option>
+                    <option>Deutsch</option>
+                    <option>Ελληνικά (Ελλάδα)</option>
+                    <option>Español</option>
+                    <option>Suomi (Suomi)</option>
+                    <option>Filipino (Pilipinas)</option>
+                    <option>Français</option>
+                    <option>हिंदी</option>
+                    <option>Magyar (Magyarország)</option>
+                    <option>Italiano (Italia)</option>
+                    <option>日本語（日本）</option>
+                    <option>Basa Jawa (Indonesia)</option>
+                    <option>ខ្មែរ (កម្ពុជា)</option>
+                    <option>한국어 (대한민국)</option>
+                    <option>Bahasa Melayu (Malaysia)</option>
+                    <option>မြန်မာ (မြန်မာ)</option>
+                    <option>Nederlands (Nederland)</option>
+                    <option>Polski (Polska)</option>
+                    <option>Português (Brasil)</option>
+                    <option>Română (Romania)</option>
+                    <option>Русский (Россия)</option>
+                    <option>Svenska (Sverige)</option>
+                    <option>ไทย (ไทย)</option>
+                    <option>Türkçe (Türkiye)</option>
+                    <option>Українська (Україна)</option>
+                    <option>اردو </option>
+                    <option>简体中文</option>
+                    <option>繁體中文</option>
                 </select>
                 <span>&copy; 2023 TikTok</span>
             </div>

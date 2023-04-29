@@ -6,9 +6,10 @@ import classNames from 'classnames/bind';
 
 import styles from './PermissionForm.module.scss';
 import images from '~/assets/images';
-import Button from '~/components/Button';
 import { BottomArrowIcon, CheckIcon } from '~/components/Icons';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -22,6 +23,7 @@ function PermissionForm({
     onCaption,
     onPermission,
     onListChecked,
+    loading = false,
 }) {
     const [caption, setCaption] = useState('');
     const [isDetected, setIsDetected] = useState(false);
@@ -36,10 +38,10 @@ function PermissionForm({
     const snapshotRef = useRef();
     const translateRef = useRef();
 
-    const { isChangeFile } = useContext(ModalEnviroment);
+    const { isChangeFile, isDiscardFile, showDisCardModal } = useContext(ModalEnviroment);
 
     useEffect(() => {
-        if (isChangeFile) {
+        if (isChangeFile || isDiscardFile) {
             setSnapshots([]);
             setCaption('');
             captionRef.current.value = '';
@@ -48,7 +50,7 @@ function PermissionForm({
             setCaption(nameSliced);
             captionRef.current.value = nameSliced;
         }
-    }, [isChangeFile, nameSliced]);
+    }, [isChangeFile, nameSliced, isDiscardFile]);
 
     useEffect(() => {
         document.addEventListener('mousedown', handleOnClickOutSide);
@@ -127,7 +129,7 @@ function PermissionForm({
                 <span>Cover</span>
                 <div className={cx('thumb-image')}>
                     <div className={cx('img-container')}>
-                        {!isChangeFile && (
+                        {!isChangeFile && !isDiscardFile && (
                             <input
                                 type="range"
                                 min="0"
@@ -139,7 +141,7 @@ function PermissionForm({
                             />
                         )}
 
-                        {isChangeFile ? (
+                        {isChangeFile || isDiscardFile ? (
                             <div className={cx('image-dragbox')} ref={translateRef}>
                                 <div className={cx('video-snapshot')}></div>
                             </div>
@@ -153,6 +155,7 @@ function PermissionForm({
 
                         {/* <div className={cx('mask-container')}></div> */}
                         {!isChangeFile &&
+                            !isDiscardFile &&
                             [...Array(8)].map((res, index) => (
                                 <div className={cx('image')} key={index}>
                                     <div className={cx('image-none')}>
@@ -166,7 +169,7 @@ function PermissionForm({
                                     </div>
                                 </div>
                             ))}
-                        {!isChangeFile &&
+                        {(!isChangeFile || !isDiscardFile) &&
                             snapshots.map((res, index) => (
                                 <div className={cx('snapshot-container')} key={index}>
                                     <img src={res} alt="" />
@@ -192,7 +195,7 @@ function PermissionForm({
                             })}
                             onClick={handleInnerText}
                         >
-                            <span>Public</span>
+                            <span className={cx('title')}>Public</span>
                         </div>
                         <div
                             className={cx('item', {
@@ -200,7 +203,7 @@ function PermissionForm({
                             })}
                             onClick={handleInnerText}
                         >
-                            <span>Friends</span>
+                            <span className={cx('title')}>Friends</span>
                         </div>
                         <div
                             className={cx('item', {
@@ -208,7 +211,7 @@ function PermissionForm({
                             })}
                             onClick={handleInnerText}
                         >
-                            <span>Private</span>
+                            <span className={cx('title')}>Private</span>
                         </div>
                     </div>
                 </div>
@@ -297,10 +300,18 @@ function PermissionForm({
                 </div>
 
                 <div className={cx('button')}>
-                    <Button custom className={cx('btn-discard')} onClick={(e) => e.preventDefault()}>
+                    <button type="button" className={cx('btn-discard')} onClick={() => showDisCardModal()}>
                         Discard
-                    </Button>
-                    <button className={cx('btn-post')}>Post</button>
+                    </button>
+                    <button type="submit" className={cx('btn-post')}>
+                        {loading ? (
+                            <div className={cx('loading')}>
+                                <FontAwesomeIcon icon={faCircleNotch} />
+                            </div>
+                        ) : (
+                            'Post'
+                        )}
+                    </button>
                 </div>
             </div>
         </form>
@@ -315,6 +326,7 @@ PermissionForm.propTypes = {
     onCaption: PropTypes.func,
     onPermission: PropTypes.func,
     onListChecked: PropTypes.func,
+    loading: PropTypes.bool,
 };
 
 export default PermissionForm;

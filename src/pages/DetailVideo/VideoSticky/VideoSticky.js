@@ -20,6 +20,7 @@ function VideoSticky({
     isChangeVideo,
     playerLoaded,
     activeSticky,
+    defaultSpeed,
 }) {
     const [isPlayed, setIsPlayed] = useState(true);
     const [isEnded, setIsEnded] = useState(false);
@@ -60,6 +61,10 @@ function VideoSticky({
     useEffect(() => {
         activeSticky && setIsClose(false);
     }, [activeSticky]);
+
+    useEffect(() => {
+        videoRef.current.playbackRate = defaultSpeed;
+    }, [defaultSpeed, data]);
 
     const handleScrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -153,6 +158,7 @@ VideoSticky.propTypes = {
     isChangeVideo: PropTypes.bool,
     playerLoaded: PropTypes.bool,
     activeSticky: PropTypes.bool,
+    defaultSpeed: PropTypes.number,
 };
 
 export default VideoSticky;

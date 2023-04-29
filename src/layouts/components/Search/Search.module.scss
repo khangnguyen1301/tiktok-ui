@@ -114,7 +114,13 @@
     }
 }
 
-@media (max-width: 798px) {
+@media (max-width: 1023px) {
+    .search {
+        width: auto;
+    }
+}
+
+@media (max-width: 767px) {
     .search {
         display: none;
     }

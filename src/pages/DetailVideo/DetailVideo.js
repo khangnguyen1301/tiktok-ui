@@ -18,19 +18,17 @@ function DetailVideo() {
     const randomPage = Math.floor(Math.random() * 10 + 1);
     const [isFirstVideo, setIsFirstVideo] = useState(true);
     const [firstVideo, setFirstVideo] = useState({});
-
     const [page, setPage] = useState(randomPage);
     const [videoID, setVideoID] = useState('');
-
     const [listVideo, setListVideo] = useState([]);
     const [video, setVideo] = useState({});
-
     const [activeSticky, setActiveSticky] = useState(false);
     const [playerPlayed, setPlayerPlayed] = useState(true);
     const [stickyPlayed, setStickyPlayed] = useState(true);
     const [playerReload, setPlayerReload] = useState(false);
     const [stickyReload, setStickyReload] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
+    const [defaultSpeed, setDefaultSpeed] = useState(1);
 
     const videoContext = useContext(VideoEnviroment);
 
@@ -103,6 +101,10 @@ function DetailVideo() {
         setStickyReload(state);
     };
 
+    const handleDefaultSpeed = (speed) => {
+        setDefaultSpeed(speed);
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -116,6 +118,7 @@ function DetailVideo() {
                         onUpdateTime={handleSetCurrentTime}
                         onPlayed={handlePlayVideo}
                         onLoad={handlePlayerReload}
+                        onDefaultSpeed={handleDefaultSpeed}
                     />
                     <UserInfo data={video} />
                     <Comments videoID={videoID} />
@@ -130,7 +133,6 @@ function DetailVideo() {
                     </div>
                 </div>
             </div>
-
             <VideoSticky
                 data={video}
                 currentTime={currentTime}
@@ -139,6 +141,7 @@ function DetailVideo() {
                 playerLoaded={playerReload}
                 onLoad={handleStickyReload}
                 activeSticky={activeSticky}
+                defaultSpeed={defaultSpeed}
             />
         </div>
     );

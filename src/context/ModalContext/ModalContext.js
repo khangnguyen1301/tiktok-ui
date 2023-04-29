@@ -6,6 +6,7 @@ import {
     DownloadMobileModal,
     KeyboardModal,
     NotificationModal,
+    DiscardModal,
 } from '~/components/Modal';
 import { useModal } from '~/hooks';
 
@@ -20,11 +21,17 @@ function ModalContext({ children }) {
     const [KeyBoardModal, showKeyBoardModal] = useModal(KeyboardModal);
     const [NotifiCationModal, showNotifiCationModal, isShowNotifiCation, hideNotifiModal] = useModal(NotificationModal);
 
+    const [DisCardModal, showDisCardModal, isDisCardShow, hideDisCardModal, isDiscardFile, handleDiscardFile] =
+        useModal(DiscardModal);
+
     const value = {
         isFormModalShow,
         isConFirmShow,
+        isDisCardShow,
         isChangeFile,
         isShowNotifiCation,
+        isDiscardFile,
+        showDisCardModal,
         showLoginModal,
         showUpdateModal,
         showConFirmModal,
@@ -34,6 +41,8 @@ function ModalContext({ children }) {
         hideConFirmModal,
         hideNotifiModal,
         handleChangeFile,
+        handleDiscardFile,
+        hideDisCardModal,
     };
 
     return (
@@ -42,6 +51,7 @@ function ModalContext({ children }) {
             <LoginModal />
             <UpdateProFileModal />
             <ConFirmModal />
+            <DisCardModal />
             <DownLoadMobileModal />
             <KeyBoardModal />
             <NotifiCationModal />

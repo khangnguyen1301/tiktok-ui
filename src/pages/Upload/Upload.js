@@ -35,8 +35,9 @@ function Upload() {
     const [permissionVideo, setPermissionVideo] = useState(initialChecked);
     const [permissionViewer, setPermissionViewer] = useState('Public');
     const [miniSnapshotRef, setMiniSnapShotRef] = useState();
+    const [loading, setLoading] = useState(false);
 
-    const { showConFirmModal, isChangeFile } = useContext(ModalEnviroment);
+    const { showConFirmModal, isChangeFile, isDiscardFile } = useContext(ModalEnviroment);
 
     const thumbnailRef = useRef();
     const dispatch = useDispatch();
@@ -76,11 +77,10 @@ function Upload() {
                 formdata.append('allows[]', type);
             }
         });
+        setLoading(true);
         // eslint-disable-next-line no-unused-vars
         await handleUploadVideo(formdata, dispatch);
-        setTimeout(() => {
-            window.location.reload();
-        }, 1500);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -93,8 +93,8 @@ function Upload() {
     }, [videoFile, nameSlice]);
 
     useEffect(() => {
-        isChangeFile && setVideoFile(null);
-    }, [isChangeFile]);
+        (isChangeFile || isDiscardFile) && setVideoFile(null);
+    }, [isChangeFile, isDiscardFile]);
 
     const handleDefaultCaption = (cap) => {
         setCaption(cap);
@@ -146,13 +146,13 @@ function Upload() {
                 <div className={cx('video-file')}>
                     <VideoFile
                         onChangeFile={handleSetVideoFile}
-                        onChangSrcVideo={handleSetSrcVideo}
+                        onChangeSrcVideo={handleSetSrcVideo}
                         onDetailUpload={handleDetailUpload}
                     />
                 </div>
             ) : (
                 <div className={cx('container')}>
-                    {!isChangeFile && (
+                    {!isChangeFile && !isDiscardFile && (
                         <HeaderUpload srcVideo={srcVideo} nameSlice={nameSlice} forwardSnapshotRef={handleForwardRef} />
                     )}
                     <div className={cx('upload-container-v2')}>
@@ -161,12 +161,12 @@ function Upload() {
                             <h2>Post a video to your account</h2>
                             <div className={cx('content')}>
                                 <div className={cx('frame')}>
-                                    {!isChangeFile ? (
+                                    {!isChangeFile && !isDiscardFile ? (
                                         <MobileFrame userInfo={userInfo} nameSlice={nameSlice} srcVideo={srcVideo} />
                                     ) : (
                                         <VideoFile
                                             onChangeFile={handleSetVideoFile}
-                                            onChangSrcVideo={handleSetSrcVideo}
+                                            onChangeSrcVideo={handleSetSrcVideo}
                                             onDetailUpload={handleDetailUpload}
                                             onNameSlice={handleNameSlice}
                                             className={cx('custom')}
@@ -184,13 +184,14 @@ function Upload() {
                                     onPermission={handlePermissionViewer}
                                     onListChecked={handleListChecked}
                                     onCaption={handleDefaultCaption}
+                                    loading={loading}
                                 />
                             </div>
-                            {!isChangeFile && (
+                            {!isChangeFile && !isDiscardFile && (
                                 <div className={cx('change-file')}>
                                     <img src={images.fileCheck} alt="" />
-                                    <span title={videoFile.name} className={cx('file-name')}>
-                                        {videoFile.name}
+                                    <span title={videoFile?.name} className={cx('file-name')}>
+                                        {videoFile?.name}
                                     </span>
                                     <span className={cx('change-video')} onClick={showConFirmModal}>
                                         Change video

@@ -10,12 +10,20 @@ import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
 
-function VideoFile({ onChangeFile, onChangSrcVideo, onDetailUpload, onNameSlice = () => {}, className }) {
+const defaultFunc = () => {};
+
+function VideoFile({
+    onChangeFile = defaultFunc,
+    onChangeSrcVideo,
+    onDetailUpload = defaultFunc,
+    onNameSlice = defaultFunc,
+    className,
+}) {
     const [dragActive, setDragActive] = useState(false);
 
     const inputRef = useRef();
 
-    const { isChangeFile, handleChangeFile } = useContext(ModalEnviroment);
+    const { isChangeFile, handleChangeFile, handleDiscardFile } = useContext(ModalEnviroment);
 
     useEffect(() => {
         if (isChangeFile) {
@@ -41,17 +49,20 @@ function VideoFile({ onChangeFile, onChangSrcVideo, onDetailUpload, onNameSlice 
         setDragActive(false);
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             onChangeFile(e.dataTransfer.files[0]);
+            onChangeSrcVideo(URL.createObjectURL(e.dataTransfer.files[0]));
             onDetailUpload(true);
-            onChangSrcVideo(URL.createObjectURL(e.dataTransfer.files[0]));
+            handleChangeFile(false);
+            handleDiscardFile(false);
         }
     };
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         onChangeFile(selectedFile);
-        onChangSrcVideo(URL.createObjectURL(selectedFile));
+        onChangeSrcVideo(URL.createObjectURL(selectedFile));
         onDetailUpload(true);
         handleChangeFile(false);
+        handleDiscardFile(false);
         if (isChangeFile) {
             onNameSlice();
         }
@@ -98,7 +109,7 @@ function VideoFile({ onChangeFile, onChangSrcVideo, onDetailUpload, onNameSlice 
 
 VideoFile.propTypes = {
     onChangeFile: PropTypes.func,
-    onChangSrcVideo: PropTypes.func,
+    onChangeSrcVideo: PropTypes.func,
     onDetailUpload: PropTypes.func,
     onNameSlice: PropTypes.func,
     className: PropTypes.string,

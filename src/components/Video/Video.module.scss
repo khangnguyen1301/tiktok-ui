@@ -397,3 +397,10 @@
         width: auto;
     }
 }
+
+@media (max-width: 426px) {
+    .follow-btn {
+        min-width: 70px !important;
+        right: -15px !important;
+    }
+}

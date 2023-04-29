@@ -5,3 +5,4 @@ export { default as ConfirmModal } from './ConfirmModal';
 export { default as KeyboardModal } from './KeyboardModal';
 export { default as DownloadMobileModal } from './DownloadMobileModal';
 export { default as NotificationModal } from './NotificationModal';
+export { default as DiscardModal } from './DiscardModal';

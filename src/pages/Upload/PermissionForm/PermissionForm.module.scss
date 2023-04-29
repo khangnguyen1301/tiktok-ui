@@ -182,7 +182,7 @@
     display: flex;
     flex-direction: column;
 
-    span {
+    .title {
         font-size: 1.6rem;
         line-height: 1.5;
         font-weight: 700;
@@ -441,16 +441,43 @@ input[type='checkbox'] {
     font-weight: 700;
     border-radius: 4px;
     cursor: pointer;
-    span {
-        color: #ffff !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+        animation: spinner 0.4s infinite;
+        transform-origin: center center;
+    }
+
+    &:hover {
+        border-color: var(--primary);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
     }
 }
 .btn-discard {
     background-color: #fff !important;
-    span {
-        color: #000 !important;
-    }
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #000 !important;
+    border: 1px solid var(--border-top);
+    margin-right: 15px;
+    cursor: pointer;
     &:hover {
         background-color: rgba(22, 24, 35, 0.03) !important;
+    }
+}
+
+@keyframes spinner {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
     }
 }
