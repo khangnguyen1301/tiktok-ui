@@ -36,3 +36,12 @@ export const getVideoListFollowing = async ({ type = 'following', page }) => {
         console.log(error);
     }
 };
+
+export const deleteVideo = async (videoID) => {
+    try {
+        const res = await httpRequest.deleteMethod(`videos/${videoID}`);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};

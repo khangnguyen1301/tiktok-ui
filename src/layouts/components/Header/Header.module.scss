@@ -18,7 +18,7 @@
 
 .inner {
     height: 100%;
-    width: var(--default-layout-width);
+    width: 100%;
     max-width: 100%;
     padding: 0 24px 0 20px;
     display: flex;
@@ -120,5 +120,11 @@
 
     .user-avatar {
         margin-left: 5px;
+    }
+    .more-btn {
+        margin-left: 10px;
+    }
+    .upload-btn {
+        display: none !important;
     }
 }

@@ -117,7 +117,12 @@ function Header({ className }) {
                         </>
                     ) : (
                         <>
-                            <Button custom leftIcon={<FontAwesomeIcon icon={faPlus} />} onClick={showLoginModal}>
+                            <Button
+                                custom
+                                leftIcon={<FontAwesomeIcon icon={faPlus} />}
+                                onClick={showLoginModal}
+                                className={cx('upload-btn')}
+                            >
                                 Upload
                             </Button>
 

@@ -19,4 +19,9 @@ export const post = async (path, options = {}, params = {}) => {
     return response.data;
 };
 
+export const deleteMethod = async (path, options = {}, params = {}) => {
+    const response = await httpRequest.delete(path, options, params);
+    return response.data;
+};
+
 export default httpRequest;

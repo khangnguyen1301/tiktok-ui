@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useRef, useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
+import TippyHeadless from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faChevronDown, faChevronUp, faPlay, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -45,6 +46,17 @@ import AvatarLoading from '~/components/Loadings/AvatarLoading';
 
 const cx = classNames.bind(styles);
 
+const OPTIONS_UPDATE = [
+    {
+        title: 'Update Permission',
+        action: 'OPEN_UPDATEMODAL',
+    },
+    {
+        title: 'Delete',
+        action: 'DELETE_VIDEO',
+    },
+];
+
 function VideoPlayerModal({ onHideModal }) {
     const [video, setVideo] = useState({});
     const [comments, setComments] = useState([]);
@@ -60,6 +72,7 @@ function VideoPlayerModal({ onHideModal }) {
     const contentRef = useRef();
     const adjustRef = useRef();
 
+    const navigate = useNavigate();
     const videoContext = useContext(VideoEnviroment);
     const { showLoginModal, isFormModalShow } = useContext(ModalEnviroment);
 
@@ -67,6 +80,7 @@ function VideoPlayerModal({ onHideModal }) {
 
     const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
     const volume = useSelector((state) => state.video.defaultVolume);
+    const userInfo = useSelector((state) => state.auth.login?.currentUser);
     const isMuted = useSelector((state) => state.video.isMuted);
 
     useEffect(() => {
@@ -181,6 +195,39 @@ function VideoPlayerModal({ onHideModal }) {
         dispatch(handleMuted(!isMuted));
     };
 
+    const handleAction = (action) => {
+        switch (action) {
+            case 'OPEN_UPDATEMODAL':
+                console.log('da click');
+                break;
+            case 'DELETE_VIDEO':
+                handleDeleteVideo();
+                break;
+            default:
+                break;
+        }
+    };
+    const handleDeleteVideo = async () => {
+        await videoService.deleteVideo(videoContext.videoID);
+        navigate(`/@${userInfo.nickname}`);
+        window.location.reload();
+    };
+
+    const renderOptionView = (attrs) => (
+        <div className={cx('options-view')} tabIndex="-1" {...attrs}>
+            {OPTIONS_UPDATE.map((item, index) => (
+                <div className={cx('options-view-item')} key={index}>
+                    <div
+                        className={cx('options-view-title')}
+                        onClick={() => (item.hasOwnProperty('action') ? handleAction(item.action) : () => {})}
+                    >
+                        <span>{item.title}</span>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('video-container')}>
@@ -293,6 +340,20 @@ function VideoPlayerModal({ onHideModal }) {
                                 >
                                     Follow
                                 </Button>
+                            ) : videoContext.nickName === userInfo.nickname ? (
+                                <TippyHeadless
+                                    interactive
+                                    render={renderOptionView}
+                                    offset={[0, 0]}
+                                    delay={[0, 200]}
+                                    zIndex="999999"
+                                    placement="bottom-end"
+                                    popperOptions={{ modifiers: [{ name: 'flip', enabled: false }] }}
+                                >
+                                    <div className={cx('profile-icon')}>
+                                        <ThreeDotIcon />
+                                    </div>
+                                </TippyHeadless>
                             ) : (
                                 <Follow
                                     className={cx('custom-btn')}
