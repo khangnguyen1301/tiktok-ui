@@ -17,6 +17,7 @@ import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import { resetUploadState, uploadFailed, uploadStart } from '~/redux/videoSlice';
 import Notify from '~/components/Notify/Notify';
 import { handleUploadVideo } from '~/redux/apiRequest';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -37,6 +38,7 @@ function Upload() {
     const [miniSnapshotRef, setMiniSnapShotRef] = useState();
     const [loading, setLoading] = useState(false);
 
+    const navigate = useNavigate();
     const { showConFirmModal, isChangeFile, isDiscardFile } = useContext(ModalEnviroment);
 
     const thumbnailRef = useRef();
@@ -81,6 +83,9 @@ function Upload() {
         // eslint-disable-next-line no-unused-vars
         await handleUploadVideo(formdata, dispatch);
         setLoading(false);
+        setTimeout(() => {
+            navigate(`/@${userInfo.nickname}`);
+        }, 1000);
     };
 
     useEffect(() => {
