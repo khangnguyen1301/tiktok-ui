@@ -303,7 +303,7 @@ function PermissionForm({
                     <button type="button" className={cx('btn-discard')} onClick={() => showDisCardModal()}>
                         Discard
                     </button>
-                    <button type="submit" className={cx('btn-post')}>
+                    <button type="submit" className={cx('btn-post', { disabled: isChangeFile || isDiscardFile })}>
                         {loading ? (
                             <div className={cx('loading')}>
                                 <FontAwesomeIcon icon={faCircleNotch} />

@@ -459,6 +459,13 @@ input[type='checkbox'] {
         border-color: var(--primary);
         background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
     }
+
+    &.disabled {
+        color: #000;
+        pointer-events: none;
+        opacity: 0.5;
+        background-color: rgba(235, 235, 235, 1);
+    }
 }
 .btn-discard {
     background-color: #fff !important;

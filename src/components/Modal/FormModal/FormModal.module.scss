@@ -321,7 +321,11 @@
 
 @media (max-width: 767px) {
     .wrapper {
-        width: 400px;
+        width: 350px;
+    }
+
+    .list {
+        width: 300px;
     }
 
     .container,
@@ -333,5 +337,9 @@
         width: auto;
         padding: 0 24px;
         text-align: center;
+    }
+
+    input {
+        width: 100% !important;
     }
 }
