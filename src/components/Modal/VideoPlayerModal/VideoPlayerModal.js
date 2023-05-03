@@ -346,7 +346,7 @@ function VideoPlayerModal({ onHideModal }) {
                                     render={renderOptionView}
                                     offset={[0, 0]}
                                     delay={[0, 200]}
-                                    zIndex="999999"
+                                    zIndex="999999999"
                                     placement="bottom-end"
                                     popperOptions={{ modifiers: [{ name: 'flip', enabled: false }] }}
                                 >

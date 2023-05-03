@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { memo } from 'react';
 import classNames from 'classnames/bind';
@@ -62,7 +62,7 @@ function Video({
 
     const [inViewRef, isInView] = useInView({ root: null, rootMargin: '20px', threshold: 0.47 });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         videoContext.videoInViewList[index].inView = isInView;
         onInView(isInView);
         isInView ? currentElement(index) : handleReloadVideo();

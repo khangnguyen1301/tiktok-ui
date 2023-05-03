@@ -30,7 +30,9 @@ function VideoList({ data }) {
             if (positionCurrentElement > maxLength) {
                 setPositionCurrentElement(maxLength);
             } else {
-                videoContext.videoInViewList[positionCurrentElement].inView = true;
+                videoContext.videoInViewList.forEach((video, index) => {
+                    video.inView = index === positionCurrentElement;
+                });
                 handleScrollElement(positionCurrentElement);
                 setKeyDown(false);
             }
@@ -43,9 +45,10 @@ function VideoList({ data }) {
         return () => document.removeEventListener('keydown', handleKeydown);
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const firstInView = handleVideoInView();
         setPositionInView(firstInView);
+        console.log('VideoList', videoContext.videoInViewList);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView, positionCurrentElement]);
 
