@@ -48,13 +48,14 @@ function VideoList({ data }) {
     useLayoutEffect(() => {
         const firstInView = handleVideoInView();
         setPositionInView(firstInView);
-        console.log('VideoList', videoContext.videoInViewList);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView, positionCurrentElement]);
 
     const handleKeydown = (e) => {
         //back video
-        if (e.keyCode === 38) {
+        const ARROW_UP = 38;
+        const ARROW_DOWN = 40;
+        if (e.keyCode === ARROW_UP) {
             e.preventDefault();
             setTimeout(() => {
                 setPositionCurrentElement((prev) => (prev <= 0 ? 0 : prev - 1));
@@ -62,7 +63,7 @@ function VideoList({ data }) {
             }, 200);
         }
         //next video
-        if (e.keyCode === 40) {
+        if (e.keyCode === ARROW_DOWN) {
             e.preventDefault();
             setTimeout(() => {
                 setPositionCurrentElement((prev) => prev + 1);
