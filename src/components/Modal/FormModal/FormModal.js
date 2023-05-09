@@ -17,6 +17,7 @@ import { resetLogin, resetRegister } from '~/redux/authSlice';
 const cx = classNames.bind(styles);
 
 function FormModal({ onHideModal }) {
+    const [isClosed, setIsClosed] = useState(false);
     const [formLoginState, setFormLoginState] = useState('login');
     const [filteredForm, setFilteredForm] = useState([{}]);
     const [isChildren, setIsChildren] = useState(false);
@@ -28,6 +29,7 @@ function FormModal({ onHideModal }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const submitRef = useRef();
+    const modalRef = useRef();
     const loginFetching = useSelector((state) => state.auth?.login?.isFetching);
     const registerFetching = useSelector((state) => state.auth?.register?.isFetching);
     const isLogin = useSelector((state) => state.auth?.login?.isLogin);
@@ -111,7 +113,6 @@ function FormModal({ onHideModal }) {
 
     const handleMenu = (position) => {
         const nextForm = [...loginRegisterForm.find((form) => form.type === formLoginState).contents];
-        // const newForm = [...nextForm.contents];
         nextForm.map((form, index) => {
             let parent = !!form.children;
             if (parent && position === index) {
@@ -142,7 +143,10 @@ function FormModal({ onHideModal }) {
     const handleCloseModal = () => {
         dispatch(resetLogin());
         dispatch(resetRegister());
-        onHideModal();
+        setIsClosed(true);
+        setTimeout(() => {
+            onHideModal();
+        }, 330);
     };
 
     const handleShowPassword = (e) => {
@@ -151,7 +155,7 @@ function FormModal({ onHideModal }) {
     };
 
     return (
-        <div className={cx('modal-mask')}>
+        <div className={cx('modal-mask', { hideModal: isClosed })} ref={modalRef}>
             {(isLogin || isLoginError || isRegister || isRegisterError) && (
                 <div
                     className={cx('notify-success', {

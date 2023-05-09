@@ -328,7 +328,7 @@ export const FORM_ITEMS = [
                 icon: <UserIcon />,
                 title: 'Use phone or email',
                 children: {
-                    title: 'Log in',
+                    title: 'Register',
                     data: [{ title: 'Phone' }],
                 },
             },

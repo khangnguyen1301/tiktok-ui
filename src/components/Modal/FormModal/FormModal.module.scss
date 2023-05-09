@@ -23,7 +23,11 @@
     height: 80%;
     overflow: hidden;
     background-color: var(--default-background);
-    animation: showLoginForm 0.33s linear, hidden 0.23s linear;
+    animation: showLoginForm 0.33s linear;
+}
+
+.hideModal {
+    animation: hideLoginForm 0.33s linear;
 }
 
 .notify-success {
