@@ -4,51 +4,52 @@ import styles from './Follow.module.scss';
 
 import Button from '../Button';
 import * as followService from '~/services/followService';
-import { useContext, useLayoutEffect, useState } from 'react';
+import * as videoService from '~/services/videoService';
+import { useState } from 'react';
 
-import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
-import { useDispatch } from 'react-redux';
-import { changeFollow } from '~/redux/followSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleRequestFollow, handleRequestUnFollow } from '~/redux/followSlice';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
-function Follow({
-    className,
-    primary = false,
-    outline = true,
-    userID,
-    index,
-    isFollow,
-    updateFollow,
-    handleFollow = () => {},
-    isUpdateFollow,
-}) {
-    const [isFollowed, setIsFollowed] = useState(false);
-    const context = useContext(VideoEnviroment);
+function Follow({ className, primary = false, outline = true, userID, videoID, isFollow }) {
+    const [isFollowed, setIsFollowed] = useState(isFollow);
     const dispatch = useDispatch();
+    const { isChangeFollow, synchronizedFollow } = useSelector((state) => state.follow);
 
-    useLayoutEffect(() => {
-        setIsFollowed(isFollow);
-    }, [userID]);
+    useEffect(() => {
+        const getFollowInfo = async () => {
+            const res = await videoService.getVideo(videoID);
+            setIsFollowed(res?.user?.is_followed);
+        };
+        if (videoID) {
+            synchronizedFollow && getFollowInfo();
+        }
+    }, [isChangeFollow]);
 
-    const follow = async () => {
-        const result = await followService.followUser({ userID: userID || context.listVideo[index]?.user?.id });
-        setIsFollowed(true);
-        handleFollow(result);
-        dispatch(changeFollow());
-    };
-
-    const unFollow = async () => {
-        const result = await followService.unFollowUser({ userID: userID || context.listVideo[index]?.user?.id });
-        setIsFollowed(false);
-        handleFollow(result);
-        dispatch(changeFollow());
+    const stateFollowUser = () => {
+        if (!isFollowed) {
+            const follow = async () => {
+                const result = await followService.followUser({ userID: userID });
+                setIsFollowed(result?.is_followed);
+                dispatch(handleRequestFollow());
+            };
+            follow();
+        } else {
+            const unFollow = async () => {
+                const result = await followService.unFollowUser({ userID: userID });
+                setIsFollowed(result?.is_followed);
+                dispatch(handleRequestUnFollow());
+            };
+            unFollow();
+        }
     };
 
     return (
         <div>
-            {((updateFollow?.is_followed ?? isFollowed) && isUpdateFollow) || isFollowed ? (
-                <Button custom className={cx('follow', { [className]: className })} onClick={() => unFollow()}>
+            {isFollowed ? (
+                <Button custom className={cx('follow', { [className]: className })} onClick={() => stateFollowUser()}>
                     Following
                 </Button>
             ) : (
@@ -57,7 +58,7 @@ function Follow({
                     outline={outline}
                     primary={primary}
                     className={cx('un-follow', { [className]: className })}
-                    onClick={() => follow()}
+                    onClick={() => stateFollowUser()}
                 >
                     Follow
                 </Button>

@@ -30,8 +30,6 @@ function Video({
     videoID,
     index,
     currentElement,
-    updateFollow,
-    handleFollow,
     onInView = () => {},
     inViewPlay = false,
     onCloseModal = false,
@@ -276,11 +274,10 @@ function Video({
                 ) : (
                     <Follow
                         className={cx('follow-btn')}
+                        videoID={videoID}
                         index={index}
                         isFollow={data?.user?.is_followed}
-                        handleFollow={handleFollow}
-                        updateFollow={updateFollow}
-                        isUpdateFollow={data?.user?.id === (updateFollow?.id ?? data?.user?.id)}
+                        userID={data?.user?.id}
                     />
                 )}
             </div>

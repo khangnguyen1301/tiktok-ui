@@ -15,7 +15,7 @@ import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 
 const cx = classNames.bind(styles);
-function AccountPreview({ data, outlineButton = false, bioDescription = false }) {
+function AccountPreview({ data, outlineButton = false, bioDescription = false, videoID }) {
     const isLogin = useSelector((state) => state.auth.login?.isLogin) ?? false;
 
     const { showLoginModal } = useContext(ModalEnviroment);
@@ -42,6 +42,7 @@ function AccountPreview({ data, outlineButton = false, bioDescription = false })
                         primary={!outlineButton}
                         outline={outlineButton}
                         userID={data?.id}
+                        videoID={videoID}
                         isFollow={data?.is_followed}
                         className={cx('follow-btn')}
                     />

@@ -16,7 +16,12 @@ function AccountPreviewHome({ children, data }) {
                 render={(attrs) => (
                     <div tabIndex="-1" {...attrs}>
                         <PopperWrapper>
-                            <AccountPreview data={data?.user} outlineButton={true} bioDescription={true} />
+                            <AccountPreview
+                                data={data?.user}
+                                outlineButton={true}
+                                bioDescription={true}
+                                videoID={data?.id}
+                            />
                         </PopperWrapper>
                     </div>
                 )}

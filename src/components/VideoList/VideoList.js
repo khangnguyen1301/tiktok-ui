@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 function VideoList({ data }) {
     const [positionCurrentElement, setPositionCurrentElement] = useState(0);
-    const [updateFollow, setUpdateFollow] = useState({});
     const [keyDown, setKeyDown] = useState(false);
     const [inView, setInView] = useState(false);
     const [positionInView, setPositionInView] = useState(0);
@@ -84,10 +83,6 @@ function VideoList({ data }) {
         setPositionCurrentElement(position);
     }, []);
 
-    const handleFollow = (data) => {
-        setUpdateFollow(data);
-    };
-
     const handleInViewPlay = (view) => {
         setInView(view);
     };
@@ -107,8 +102,6 @@ function VideoList({ data }) {
                     index={index}
                     onCloseModal={index === positionCurrentElement}
                     currentElement={handleSetCurrentElement}
-                    handleFollow={handleFollow}
-                    updateFollow={updateFollow}
                     onInView={handleInViewPlay}
                     inViewPlay={index === positionInView}
                 />

@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 const cx = classNames.bind(styles);
 
-function AccountItem({ data }) {
+function AccountItem({ data, videoID }) {
     const context = useContext(VideoEnviroment);
     const renderAccount = (props) => {
         return (

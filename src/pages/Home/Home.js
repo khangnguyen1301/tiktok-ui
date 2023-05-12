@@ -17,6 +17,7 @@ const cx = classNames.bind(styles);
 
 function Home() {
     const [videoForYou, setVideoForYou] = useState([]);
+    const [totalPages, setTotalPages] = useState(15);
     const [page, setPage] = useState(0);
     const videoContext = useContext(VideoEnviroment);
     const location = useLocation();
@@ -39,7 +40,8 @@ function Home() {
 
         const fetchApi = async () => {
             const result = await videoService.getVideoListForYou({ page: page });
-            const except = result.filter((video) => video.user.id !== userInfo?.id);
+            const except = result.data.filter((video) => video.user.id !== userInfo?.id);
+            setTotalPages(result.meta.pagination.total_pages);
             setVideoForYou((prev) => [...prev, ...except]);
             videoContext.handleSetListVideo((prev) => [...prev, ...except]);
         };
@@ -53,7 +55,7 @@ function Home() {
         let prevPage = 0;
         do {
             prevPage = page;
-            randomPage = Math.floor(Math.random() * 10 + 1);
+            randomPage = Math.floor(Math.random() * totalPages + 1);
             checkDuplicate = randomPage === prevPage;
         } while (checkDuplicate);
 
