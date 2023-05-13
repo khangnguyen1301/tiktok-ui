@@ -290,8 +290,6 @@ Video.propTypes = {
     videoID: PropTypes.number,
     index: PropTypes.number,
     currentElement: PropTypes.func,
-    updateFollow: PropTypes.object,
-    handleFollow: PropTypes.func,
     onInView: PropTypes.func,
     inViewPlay: PropTypes.bool,
     onCloseModal: PropTypes.bool,

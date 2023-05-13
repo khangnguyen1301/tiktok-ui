@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { useEffect, useLayoutEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './Follow.module.scss';
 
@@ -7,9 +9,7 @@ import * as followService from '~/services/followService';
 import * as videoService from '~/services/videoService';
 import { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { handleRequestFollow, handleRequestUnFollow } from '~/redux/followSlice';
-import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +17,10 @@ function Follow({ className, primary = false, outline = true, userID, videoID, i
     const [isFollowed, setIsFollowed] = useState(isFollow);
     const dispatch = useDispatch();
     const { isChangeFollow, synchronizedFollow } = useSelector((state) => state.follow);
+
+    useLayoutEffect(() => {
+        setIsFollowed(isFollow);
+    }, [userID]);
 
     useEffect(() => {
         const getFollowInfo = async () => {
@@ -72,11 +76,9 @@ Follow.propTypes = {
     primary: PropTypes.bool,
     outline: PropTypes.bool,
     userID: PropTypes.number,
+    videoID: PropTypes.number,
     index: PropTypes.number,
     isFollow: PropTypes.bool,
-    updateFollow: PropTypes.object,
-    handleFollow: PropTypes.func,
-    isUpdateFollow: PropTypes.bool,
 };
 
 export default Follow;

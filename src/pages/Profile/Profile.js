@@ -156,6 +156,7 @@ function Profile() {
                                         className={cx('custom-btn')}
                                         userID={user?.id}
                                         isFollow={follow}
+                                        videoID={user?.videos[0]?.id}
                                     />
                                 )}
                             </div>

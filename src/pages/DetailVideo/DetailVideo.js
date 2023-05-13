@@ -63,8 +63,10 @@ function DetailVideo() {
     useEffect(() => {
         const getListVideo = async () => {
             const result = await videoService.getVideoListForYou({ page: page });
-            setListVideo((prev) => (isFirstVideo ? [firstVideo, ...result] : [...prev, ...result]));
-            videoContext.handleSetListVideo((prev) => (isFirstVideo ? [firstVideo, ...result] : [...prev, ...result]));
+            setListVideo((prev) => (isFirstVideo ? [firstVideo, ...result.data] : [...prev, ...result.data]));
+            videoContext.handleSetListVideo((prev) =>
+                isFirstVideo ? [firstVideo, ...result.data] : [...prev, ...result.data],
+            );
             setIsFirstVideo(false);
         };
         if (isFirstVideo && Object.keys(firstVideo).length > 0) {
