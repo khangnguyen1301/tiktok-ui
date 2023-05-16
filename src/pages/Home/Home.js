@@ -18,6 +18,7 @@ const cx = classNames.bind(styles);
 function Home() {
     const [videoForYou, setVideoForYou] = useState([]);
     const [totalPages, setTotalPages] = useState(15);
+    const [listPreviousPages, setListPreviousPages] = useState([]);
     const [page, setPage] = useState(0);
     const videoContext = useContext(VideoEnviroment);
     const location = useLocation();
@@ -52,14 +53,13 @@ function Home() {
     const handleRandomPage = () => {
         let checkDuplicate = false;
         let randomPage = 0;
-        let prevPage = 0;
         do {
-            prevPage = page;
             randomPage = Math.floor(Math.random() * totalPages + 1);
-            checkDuplicate = randomPage === prevPage;
+            checkDuplicate = listPreviousPages.includes(randomPage);
         } while (checkDuplicate);
 
         setPage(randomPage);
+        setListPreviousPages((prev) => [...prev, randomPage]);
     };
 
     return (
