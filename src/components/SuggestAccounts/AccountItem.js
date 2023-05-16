@@ -27,17 +27,17 @@ function AccountItem({ data, videoID }) {
     };
 
     return (
-        <Link to={`/@${data.nickname}`} onClick={context.handleChangePathName}>
-            <div className={cx('wrapper-item')}>
-                <Tippy
-                    interactive
-                    appendTo={document.body}
-                    delay={[800, 600]}
-                    offset={[-25, 0]}
-                    render={renderAccount}
-                    placement={'bottom'}
-                    popperOptions={{ modifiers: [{ name: 'flip', enabled: false }] }}
-                >
+        <div className={cx('wrapper-item')}>
+            <Tippy
+                interactive
+                appendTo={document.body}
+                delay={[800, 600]}
+                offset={[-25, 0]}
+                render={renderAccount}
+                placement={'bottom'}
+                popperOptions={{ modifiers: [{ name: 'flip', enabled: false }] }}
+            >
+                <Link to={`/@${data.nickname}`} onClick={context.handleChangePathName}>
                     <div className={cx('container')}>
                         <Image src={data.avatar} alt={data.nickname} className={cx('logo')} />
                         <div className={cx('content-container')}>
@@ -50,9 +50,9 @@ function AccountItem({ data, videoID }) {
                             <p className={cx('nickname')}> {`${data.first_name} ${data.last_name}`} </p>
                         </div>
                     </div>
-                </Tippy>
-            </div>
-        </Link>
+                </Link>
+            </Tippy>
+        </div>
     );
 }
 
