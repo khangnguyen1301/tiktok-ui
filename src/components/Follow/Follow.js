@@ -6,7 +6,6 @@ import styles from './Follow.module.scss';
 
 import Button from '../Button';
 import * as followService from '~/services/followService';
-import * as videoService from '~/services/videoService';
 import { useState } from 'react';
 
 import { handleRequestFollow, handleRequestUnFollow, handleCurrentVideoId } from '~/redux/followSlice';
@@ -16,36 +15,32 @@ const cx = classNames.bind(styles);
 function Follow({ className, primary = false, outline = true, userID, videoID, isFollow }) {
     const [isFollowed, setIsFollowed] = useState(isFollow);
     const dispatch = useDispatch();
-    const { isChangeFollow, synchronizedFollow, currentVideoId } = useSelector((state) => state.follow);
+    const { isChangeFollow, stateFollow, synchronizedFollow, currentUserId } = useSelector((state) => state.follow);
 
     useLayoutEffect(() => {
         setIsFollowed(isFollow);
     }, [userID]);
 
     useEffect(() => {
-        const getFollowInfo = async (id) => {
-            const res = await videoService.getVideo(id);
-            setIsFollowed(res?.user?.is_followed);
-        };
-        if (videoID === currentVideoId) {
-            synchronizedFollow && getFollowInfo(currentVideoId);
+        if (userID === currentUserId) {
+            synchronizedFollow && setIsFollowed(stateFollow);
         }
     }, [isChangeFollow]);
 
     const stateFollowUser = () => {
-        dispatch(handleCurrentVideoId(videoID));
+        dispatch(handleCurrentVideoId(userID));
         if (!isFollowed) {
             const follow = async () => {
-                const result = await followService.followUser({ userID });
-                setIsFollowed(result?.is_followed);
+                setIsFollowed(true);
                 dispatch(handleRequestFollow());
+                await followService.followUser({ userID });
             };
             follow();
         } else {
             const unFollow = async () => {
-                const result = await followService.unFollowUser({ userID });
-                setIsFollowed(result?.is_followed);
+                setIsFollowed(false);
                 dispatch(handleRequestUnFollow());
+                await followService.unFollowUser({ userID });
             };
             unFollow();
         }

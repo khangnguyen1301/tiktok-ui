@@ -6,7 +6,7 @@ const followSlice = createSlice({
         stateFollow: false,
         isChangeFollow: false,
         synchronizedFollow: false,
-        currentVideoId: null,
+        currentUserId: null,
     },
     reducers: {
         handleRequestFollow: (state) => {
@@ -23,7 +23,7 @@ const followSlice = createSlice({
             state.synchronizedFollow = false;
         },
         handleCurrentVideoId: (state, action) => {
-            state.currentVideoId = action.payload;
+            state.currentUserId = action.payload;
         },
     },
 });
