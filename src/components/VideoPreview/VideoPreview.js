@@ -10,11 +10,14 @@ import Image from '../Image';
 import { PlayIcon } from '../Icons';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 import Follow from '../Follow/Follow';
+import { useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 function VideoPreview({ data, index, handleMouseMove, videoID, play = false, profile = false }) {
     const videoRef = useRef();
     const context = useContext(VideoEnviroment);
+
+    const { isLogin } = useSelector((state) => state.auth.login);
     useEffect(() => {
         play
             ? setTimeout(() => {
@@ -48,13 +51,23 @@ function VideoPreview({ data, index, handleMouseMove, videoID, play = false, pro
                                 </span>
                             </div>
 
-                            <Follow
-                                className={cx('follow-btn')}
-                                primary={true}
-                                outline={false}
-                                userID={data?.id}
-                                isFollow={data?.is_followed}
-                            />
+                            {!isLogin ? (
+                                <Follow
+                                    className={cx('follow-btn')}
+                                    primary={true}
+                                    outline={false}
+                                    userID={data?.id}
+                                    isFollow={false}
+                                />
+                            ) : (
+                                <Follow
+                                    className={cx('follow-btn')}
+                                    primary={true}
+                                    outline={false}
+                                    userID={data?.id}
+                                    isFollow={data?.is_followed}
+                                />
+                            )}
                         </div>
                     </Link>
                 ) : (

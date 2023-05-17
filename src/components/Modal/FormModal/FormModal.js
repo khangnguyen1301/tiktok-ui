@@ -143,10 +143,10 @@ function FormModal({ onHideModal }) {
     const handleCloseModal = () => {
         dispatch(resetLogin());
         dispatch(resetRegister());
-        setIsClosed(true);
         setTimeout(() => {
             onHideModal();
-        }, 330);
+        }, 300);
+        setIsClosed(true);
     };
 
     const handleShowPassword = (e) => {
@@ -155,7 +155,7 @@ function FormModal({ onHideModal }) {
     };
 
     return (
-        <div className={cx('modal-mask', { hideModal: isClosed })} ref={modalRef}>
+        <div className={cx('modal-mask')} ref={modalRef}>
             {(isLogin || isLoginError || isRegister || isRegisterError) && (
                 <div
                     className={cx('notify-success', {
@@ -173,7 +173,7 @@ function FormModal({ onHideModal }) {
                     />
                 </div>
             )}
-            <div className={cx('wrapper')}>
+            <div className={cx('wrapper', { hideModal: isClosed })}>
                 <div className={cx('container')}>
                     {!isChildren ? (
                         <div className={cx('inner')}>
