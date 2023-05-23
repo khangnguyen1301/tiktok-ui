@@ -2,6 +2,7 @@
     position: relative;
     width: 284px;
     height: 587px;
+    margin-top: 20px;
     &:hover > .video-control {
         opacity: 1;
     }
@@ -36,7 +37,7 @@
     .header-item {
         position: absolute;
         padding: 0 10px;
-        top: 50px;
+        top: 30px;
         left: 15px;
         width: 90%;
         display: flex;
@@ -70,11 +71,11 @@
 
     .control {
         position: absolute;
-        bottom: 22px;
-        left: 8px;
-        width: 94%;
+        bottom: 10px;
+        left: 11px;
+        width: 92%;
         height: 50px;
-        background-color: #000;
+        background-color: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
         z-index: 2;
         overflow: hidden;
         border-bottom-left-radius: 40px;
@@ -124,10 +125,10 @@
 
     .video-preview {
         position: absolute;
-        top: 26px;
-        left: 14px;
-        width: 90%;
-        height: 84%;
+        top: 10px;
+        left: 11px;
+        width: 92%;
+        height: 88%;
         border-top-left-radius: 30px;
         border-top-right-radius: 30px;
         background-color: #000;
@@ -142,8 +143,8 @@
 
     .video-control {
         position: absolute;
-        bottom: 50px;
-        left: 8px;
+        bottom: 40px;
+        left: 6px;
         width: 95%;
         height: auto;
         z-index: 5;

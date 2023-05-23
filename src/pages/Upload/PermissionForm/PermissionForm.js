@@ -31,6 +31,7 @@ function PermissionForm({
     const [listChecked, setListChecked] = useState(initialList);
     const [isSelected, setIsSelected] = useState(false);
     const [permissionViewer, setPermissionViewer] = useState('Public');
+
     const checkRef = useRef();
     const copyCheck = useRef();
     const captionRef = useRef();
@@ -303,7 +304,10 @@ function PermissionForm({
                     <button type="button" className={cx('btn-discard')} onClick={() => showDisCardModal()}>
                         Discard
                     </button>
-                    <button type="submit" className={cx('btn-post', { disabled: isChangeFile || isDiscardFile })}>
+                    <button
+                        type="submit"
+                        className={cx('btn-post', { disabled: isChangeFile || isDiscardFile || loading })}
+                    >
                         {loading ? (
                             <div className={cx('loading')}>
                                 <FontAwesomeIcon icon={faCircleNotch} />
