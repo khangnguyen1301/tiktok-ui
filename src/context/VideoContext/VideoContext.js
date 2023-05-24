@@ -19,7 +19,14 @@ function VideoContext({ children }) {
     const [, showVideoPlayer, hideVideoPlayer, isVideoModalShow] = useVideoModal(VideoPlayerModal);
 
     const videoInViewList = listVideo.map((video, index) => {
-        const newVideo = { dataInfo: video, inView: false, position: index, update: null };
+        const newVideo = {
+            dataInfo: video,
+            inView: false,
+            position: index,
+            updateInview: function (stateView) {
+                this.inView = stateView;
+            },
+        };
         return newVideo;
     });
 

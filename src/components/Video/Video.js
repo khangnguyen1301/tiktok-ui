@@ -35,6 +35,7 @@ function Video({
     onCloseModal = false,
 }) {
     const [isPlayed, setIsPlayed] = useState(false);
+    const [isLooping, setIsLooping] = useState(false);
     const [loading, setLoading] = useState(true);
     const [commentCount, setCommentCount] = useState(data?.comments_count);
 
@@ -60,8 +61,32 @@ function Video({
 
     const [inViewRef, isInView] = useInView({ root: null, rootMargin: '20px', threshold: 0.47 });
 
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') {
+                // Tạm dừng video khi tab trở thành không hiển thị
+                if (inViewPlay && !videoContext.isVideoModalShow) {
+                    setIsPlayed(false);
+                    videoRef.current.pause();
+                }
+            } else if (document.visibilityState === 'visible') {
+                // Phát video khi tab trở lại hiển thị
+                if (inViewPlay && !videoContext.isVideoModalShow) {
+                    setIsPlayed(true);
+                    videoRef.current.play();
+                }
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => {
+            // Xóa lắng nghe sự kiện khi component bị xóa khỏi DOM
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inViewPlay]);
+
     useLayoutEffect(() => {
-        videoContext.videoInViewList[index].inView = isInView;
+        videoContext.videoInViewList[index].updateInview(isInView);
         onInView(isInView);
         isInView ? currentElement(index) : handleReloadVideo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -150,6 +175,25 @@ function Video({
         videoContext.showVideoPlayer();
     };
 
+    const handleResetLoading = () => {
+        setIsLooping(false);
+        setLoading(false);
+    };
+
+    const handleVideoEnded = () => {
+        const video = videoRef.current;
+        const { currentTime, duration } = video;
+
+        if (currentTime >= +duration.toFixed(0)) {
+            setIsLooping(true);
+            setLoading(false);
+        }
+    };
+
+    const handleSetLoading = () => {
+        setLoading(true);
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -189,7 +233,7 @@ function Video({
                             horizontal: !directionVideoClass,
                         })}
                     >
-                        {loading && (
+                        {loading && isPlayed && (
                             <div className={cx('video-loading')}>
                                 <TiktokLoading medium />
                             </div>
@@ -204,7 +248,9 @@ function Video({
                             loop
                             ref={videoRef}
                             onClick={handleClickVideo}
-                            onLoadedMetadata={() => setLoading(false)}
+                            onPlaying={() => handleResetLoading()}
+                            onTimeUpdate={() => handleVideoEnded()}
+                            onWaiting={() => !isLooping && handleSetLoading()}
                         ></video>
                         <div className={cx('volume-icon', { muted: isMuted })}>
                             <div onClick={handleToggleMuted}>{isMuted ? <VolumeMutedIcon /> : <VolumeIcon />}</div>
