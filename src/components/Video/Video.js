@@ -37,6 +37,7 @@ function Video({
     const [isPlayed, setIsPlayed] = useState(false);
     const [isLooping, setIsLooping] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [userInteract, setUserInteract] = useState(false);
     const [commentCount, setCommentCount] = useState(data?.comments_count);
 
     const dispatch = useDispatch();
@@ -86,23 +87,54 @@ function Video({
     }, [inViewPlay]);
 
     useLayoutEffect(() => {
-        updateInView(isInView);
+        updateInViewList(isInView, index);
         isInView ? currentElement(index) : handleReloadVideo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInView]);
 
     useEffect(() => {
-        let timerID;
-        if (inViewPlay && !videoContext.isVideoModalShow) {
-            timerID = setTimeout(() => {
-                setIsPlayed(true);
-                videoRef.current.play();
-            }, 230);
-        } else {
-            handleReloadVideo();
+        const currentScrollPos = window.scrollY;
+        const handleInteractive = () => {
+            const newScrollPos = window.scrollY;
+            setUserInteract(false);
+            if (newScrollPos > currentScrollPos) {
+                //scroll down
+                updateInViewList(false, index);
+            } else {
+                //scroll up
+                if (isPlayed) {
+                    updateInViewList(true, index);
+                } else {
+                    setTimeout(() => {
+                        setIsPlayed(true);
+                        videoRef.current.play();
+                    }, 250);
+                }
+            }
+        };
+        if (userInteract) {
+            document.addEventListener('scroll', handleInteractive);
+            return () => {
+                document.removeEventListener('scroll', handleInteractive);
+            };
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userInteract, isPlayed]);
 
-        return () => clearTimeout(timerID);
+    useEffect(() => {
+        let timerID;
+        if (!userInteract) {
+            if (inViewPlay && !videoContext.isVideoModalShow) {
+                timerID = setTimeout(() => {
+                    setIsPlayed(true);
+                    videoRef.current.play();
+                }, 230);
+            } else {
+                videoRef.current.play && handleReloadVideo();
+            }
+
+            return () => clearTimeout(timerID);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inViewPlay]);
 
@@ -135,8 +167,8 @@ function Video({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoContext.isComment]);
 
-    const updateInView = (inView) => {
-        videoContext.videoInViewList[index].updateInview(inView);
+    const updateInViewList = (inView, position) => {
+        videoContext.videoInViewList[position].updateInview(inView);
         onInView(inView);
     };
 
@@ -160,13 +192,17 @@ function Video({
 
     const handlePlayVideo = () => {
         if (isPlayed) {
-            currentElement(index + 1);
-            updateInView(false);
+            if (!isInView) {
+                currentElement(index + 1);
+            }
             setIsPlayed(false);
             videoRef.current.pause();
         } else {
-            currentElement(index);
-            updateInView(true);
+            if (!isInView) {
+                currentElement(index);
+                updateInViewList(true, index);
+                setUserInteract(true);
+            }
             setIsPlayed(true);
             videoRef.current.play();
         }
@@ -175,6 +211,7 @@ function Video({
     const handleReloadVideo = () => {
         setIsPlayed(false);
         videoRef.current.load();
+        setUserInteract(false);
     };
 
     const handleClickVideo = () => {
