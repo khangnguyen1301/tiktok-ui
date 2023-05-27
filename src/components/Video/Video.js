@@ -86,7 +86,7 @@ function Video({
     }, [inViewPlay]);
 
     useLayoutEffect(() => {
-        videoContext.videoInViewList[index].updateInview(isInView);
+        updateInView(isInView);
         onInView(isInView);
         isInView ? currentElement(index) : handleReloadVideo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,6 +136,10 @@ function Video({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videoContext.isComment]);
 
+    const updateInView = (inView) => {
+        videoContext.videoInViewList[index].updateInview(inView);
+    };
+
     const handleAdjustVolume = (_value) => {
         const _volume = _value / 100;
         videoRef.current.volume = _volume;
@@ -155,10 +159,14 @@ function Video({
     };
 
     const handlePlayVideo = () => {
+        updateInView(true);
+        currentElement(index);
         if (isPlayed) {
+            onInView(false);
             setIsPlayed(false);
             videoRef.current.pause();
         } else {
+            onInView(true);
             setIsPlayed(true);
             videoRef.current.play();
         }
@@ -238,11 +246,7 @@ function Video({
                                 <TiktokLoading medium />
                             </div>
                         )}
-                        <img
-                            src={data?.thumb_url}
-                            alt=""
-                            className={cx('thumb-video', { active: inViewPlay && isInView })}
-                        />
+                        <img src={data?.thumb_url} alt="" className={cx('thumb-video', { active: inViewPlay })} />
                         <video
                             src={data?.file_url}
                             loop
