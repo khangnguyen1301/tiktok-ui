@@ -87,7 +87,6 @@ function Video({
 
     useLayoutEffect(() => {
         updateInView(isInView);
-        onInView(isInView);
         isInView ? currentElement(index) : handleReloadVideo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInView]);
@@ -138,6 +137,7 @@ function Video({
 
     const updateInView = (inView) => {
         videoContext.videoInViewList[index].updateInview(inView);
+        onInView(inView);
     };
 
     const handleAdjustVolume = (_value) => {
@@ -159,14 +159,14 @@ function Video({
     };
 
     const handlePlayVideo = () => {
-        updateInView(true);
-        currentElement(index);
         if (isPlayed) {
-            onInView(false);
+            currentElement(index + 1);
+            updateInView(false);
             setIsPlayed(false);
             videoRef.current.pause();
         } else {
-            onInView(true);
+            currentElement(index);
+            updateInView(true);
             setIsPlayed(true);
             videoRef.current.play();
         }
