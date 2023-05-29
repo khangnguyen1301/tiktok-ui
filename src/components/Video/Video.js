@@ -34,7 +34,7 @@ function Video({
     inViewPlay = false,
     onCloseModal = false,
 }) {
-    const [isPlayed, setIsPlayed] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
     const [isLooping, setIsLooping] = useState(false);
     const [loading, setLoading] = useState(true);
     const [userInteract, setUserInteract] = useState(false);
@@ -67,13 +67,13 @@ function Video({
             if (document.visibilityState === 'hidden') {
                 // Tạm dừng video khi tab trở thành không hiển thị
                 if (inViewPlay && !videoContext.isVideoModalShow) {
-                    setIsPlayed(false);
+                    setIsPlaying(false);
                     videoRef.current.pause();
                 }
             } else if (document.visibilityState === 'visible') {
                 // Phát video khi tab trở lại hiển thị
                 if (inViewPlay && !videoContext.isVideoModalShow) {
-                    setIsPlayed(true);
+                    setIsPlaying(true);
                     videoRef.current.play();
                 }
             }
@@ -102,11 +102,11 @@ function Video({
                 updateInViewList(false, index);
             } else {
                 //scroll up
-                if (isPlayed) {
+                if (isPlaying) {
                     updateInViewList(true, index);
                 } else {
                     setTimeout(() => {
-                        setIsPlayed(true);
+                        setIsPlaying(true);
                         videoRef.current.play();
                     }, 250);
                 }
@@ -119,14 +119,14 @@ function Video({
             };
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userInteract, isPlayed]);
+    }, [userInteract, isPlaying]);
 
     useEffect(() => {
         let timerID;
         if (!userInteract) {
             if (inViewPlay && !videoContext.isVideoModalShow) {
                 timerID = setTimeout(() => {
-                    setIsPlayed(true);
+                    setIsPlaying(true);
                     videoRef.current.play();
                 }, 230);
             } else {
@@ -146,11 +146,11 @@ function Video({
 
     useEffect(() => {
         if (videoContext.isVideoModalShow) {
-            setIsPlayed(false);
+            setIsPlaying(false);
             videoRef.current.pause();
         } else {
             if (onCloseModal && !videoContext.isVideoModalShow && isInView) {
-                setIsPlayed(true);
+                setIsPlaying(true);
                 videoRef.current.load();
                 videoRef.current.play();
             }
@@ -191,11 +191,11 @@ function Video({
     };
 
     const handlePlayVideo = () => {
-        if (isPlayed) {
+        if (isPlaying) {
             if (!isInView) {
                 currentElement(index + 1);
             }
-            setIsPlayed(false);
+            setIsPlaying(false);
             videoRef.current.pause();
         } else {
             if (!isInView) {
@@ -203,13 +203,13 @@ function Video({
                 updateInViewList(true, index);
                 setUserInteract(true);
             }
-            setIsPlayed(true);
+            setIsPlaying(true);
             videoRef.current.play();
         }
     };
 
     const handleReloadVideo = () => {
-        setIsPlayed(false);
+        setIsPlaying(false);
         videoRef.current.load();
         setUserInteract(false);
     };
@@ -278,7 +278,7 @@ function Video({
                             horizontal: !directionVideoClass,
                         })}
                     >
-                        {loading && isPlayed && (
+                        {loading && isPlaying && (
                             <div className={cx('video-loading')}>
                                 <TiktokLoading medium />
                             </div>
@@ -313,7 +313,7 @@ function Video({
                         </div>
 
                         <div className={cx('play-icon')} onClick={handlePlayVideo}>
-                            {isPlayed ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+                            {isPlaying ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
                         </div>
 
                         <div className={cx('report')}>
