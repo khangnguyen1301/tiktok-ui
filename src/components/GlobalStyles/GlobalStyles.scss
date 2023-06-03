@@ -104,6 +104,7 @@ html {
 }
 
 body {
+    position: fixed;
     background-color: var(--default-background);
     font-family: var(--font-family);
     font-size: 1.6rem;

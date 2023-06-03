@@ -9,6 +9,7 @@
     display: flex;
     background-color: var(--default-background);
     transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    overflow: overlay;
 }
 
 .content {
