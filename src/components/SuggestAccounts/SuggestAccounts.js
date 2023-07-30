@@ -72,7 +72,7 @@ function SuggestAccounts({ title, data, sideBarRef, noneFollow = false, follow =
 
 SuggestAccounts.propTypes = {
     title: PropTypes.string.isRequired,
-    data: PropTypes.array.isRequired,
+    data: PropTypes.array,
     noneFollow: PropTypes.bool,
     follow: PropTypes.bool,
 };

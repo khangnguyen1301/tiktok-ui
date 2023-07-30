@@ -39,7 +39,7 @@ function Following() {
             handleSetSuggestList(suggestAccountsList);
         };
         const getFollowing = async () => {
-            const followVideoList = await videoService.getVideoListFollowing({ page: page });
+            const followVideoList = await videoService.getVideoListFollowing({ page });
             handleSetFollowList((prev) => [...prev, ...followVideoList]);
             context.handleSetListVideo((prev) => [...prev, ...followVideoList]);
             getSuggestAccount();

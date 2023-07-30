@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const rawToken = document.cookie.split(';')[0].slice(6);
+const rawToken = document.cookie.split('token=')[1];
 
 const TOKEN = `Bearer ${rawToken || process.env.FAKE_TOKEN_AUTH}`;
 axios.defaults.headers.common['Authorization'] = TOKEN;
