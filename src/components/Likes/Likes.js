@@ -9,6 +9,7 @@ import styles from './Likes.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { liked, unliked } from '~/redux/likesSlice';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
+import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 
 const cx = classNames.bind(styles);
 
@@ -18,48 +19,54 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
     const [loading, setLoading] = useState(false);
 
     const { showLoginModal } = useContext(ModalEnviroment);
-
+    const videoContext = useContext(VideoEnviroment)
     const dispatch = useDispatch();
     const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
     const isChangeStateLike = useSelector((state) => state.like?.isLiked);
+    const syncLikes = useSelector((state) => state.like?.syncLikes)
+
+    useEffect(()=>{
+        setIsLiked(data?.is_liked);
+        setLikeCounts(data?.likes_count);
+    },[data])
 
     useEffect(() => {
-        const getLikeInfo = async () => {
-            const res = await videoService.getVideo(data?.id);
-            setIsLiked(res?.is_liked);
-            setLikeCounts(res?.likes_count);
-        };
-        data?.id && getLikeInfo();
-    }, [data, isChangeStateLike]);
+        if(data?.id === videoContext.videoID) {
+            if(syncLikes){
+                setIsLiked(isChangeStateLike);
+                isChangeStateLike ? setLikeCounts((prev)=> prev + 1) : setLikeCounts((prev)=> prev - 1);
+            }
+        }
+    }, [isChangeStateLike]);
 
     const stateLikeVideo = () => {
+        videoContext.handleSetVideoID(data.id)
         if (isLiked) {
             //unliked
             setIsLiked(false);
+            // setLikeCounts((prev)=> prev - 1);
+            dispatch(unliked());
             const unLikeVideo = async () => {
                 setLoading(true);
                 // eslint-disable-next-line no-unused-vars
-                const result = await likeService.unLikeVideo({ videoID: data?.id });
-                setLikeCounts(result?.likes_count);
-
-                dispatch(unliked());
+                await likeService.unLikeVideo({ videoID: data?.id });
                 setLoading(false);
             };
             unLikeVideo();
         } else {
             //likeVideo
             setIsLiked(true);
+            // setLikeCounts((prev)=> prev + 1);
+            dispatch(liked());
             const likeVideo = async () => {
                 setLoading(true);
-                const result = await likeService.likeVideo({ videoID: data?.id });
-                setLikeCounts(result?.likes_count);
-
-                dispatch(liked());
+                await likeService.likeVideo({ videoID: data?.id });
                 setLoading(false);
             };
             likeVideo();
         }
     };
+
     return (
         <div className={cx('wrapper', { horizontal })}>
             {!isLogin ? (

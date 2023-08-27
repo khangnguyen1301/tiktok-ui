@@ -63,6 +63,7 @@ function VideoPlayerModal({ onHideModal }) {
     const [isPlayed, setIsPlayed] = useState(true);
     const [contentComment, setContentComment] = useState('');
     const [commentCount, setCommentCount] = useState(0);
+    const [likesInfo, setLikesInfo] = useState({is_liked: false, likes_count: 0})
 
     const videoRef = useRef();
     const selectorRef = useRef();
@@ -129,6 +130,7 @@ function VideoPlayerModal({ onHideModal }) {
         setVideo(result);
         setCommentCount(result?.comments_count);
         setIsPlayed(true);
+        setLikesInfo({...likesInfo,...result, is_liked: result?.is_liked, likes_count: result?.likes_count})
     };
 
     const getComment = async () => {
@@ -227,7 +229,7 @@ function VideoPlayerModal({ onHideModal }) {
             ))}
         </div>
     );
-
+  
     return (
         <div className={cx('wrapper')}>
             <div className={cx('video-container')}>
@@ -376,7 +378,7 @@ function VideoPlayerModal({ onHideModal }) {
                         <div className={cx('interactive')}>
                             <div className={cx('internal-icon')}>
                                 <div className={cx('icon-box')}>
-                                    <Likes data={video} width="2rem" height="2rem" horizontal />
+                                    <Likes data={likesInfo} width="2rem" height="2rem" horizontal />
                                 </div>
                                 <div className={cx('icon-box')}>
                                     <div className={cx('icon')}>
@@ -483,7 +485,7 @@ function VideoPlayerModal({ onHideModal }) {
                                 <div className={cx('icon')}>
                                     <ThreeDotIcon className={cx('hidden')} />
                                     <HeartMiniIcon className={cx('color-icon')} />
-                                    <span className={cx('likes-count')}>{comment?.likes_count}</span>
+                                    <span className={cx('likes-count')}>{likesInfo.likes_count}</span>
                                 </div>
                             </div>
                         ))}
