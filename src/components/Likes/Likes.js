@@ -37,7 +37,8 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
                 isChangeStateLike ? setLikeCounts((prev)=> prev + 1) : setLikeCounts((prev)=> prev - 1);
             }
         }
-    }, [isChangeStateLike]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [videoContext.videoID]);
 
     const stateLikeVideo = () => {
         videoContext.handleSetVideoID(data.id)
