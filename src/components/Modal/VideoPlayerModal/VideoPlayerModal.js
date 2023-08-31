@@ -200,7 +200,6 @@ function VideoPlayerModal({ onHideModal }) {
     const handleAction = (action) => {
         switch (action) {
             case 'OPEN_UPDATEMODAL':
-                console.log('da click');
                 break;
             case 'DELETE_VIDEO':
                 handleDeleteVideo();
@@ -431,7 +430,7 @@ function VideoPlayerModal({ onHideModal }) {
                         </div>
                         <div className={cx('video-link')}>
                             <div className={cx('link')} ref={textRef}>
-                                {video.file_url}
+                                {window.location.href}
                             </div>
 
                             <div className={cx('btn-copy')} onClick={handleCopyLink}>
