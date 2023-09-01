@@ -7,7 +7,7 @@ import * as videoService from '~/services/videoService';
 import { HeartedIcon, HeartIcon } from '../Icons';
 import styles from './Likes.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { liked, unliked } from '~/redux/likesSlice';
+import { handleCurrentVideoId, liked, unliked } from '~/redux/likesSlice';
 import { ModalEnviroment } from '~/context/ModalContext/ModalContext';
 import { VideoEnviroment } from '~/context/VideoContext/VideoContext';
 
@@ -24,6 +24,7 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
     const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
     const isChangeStateLike = useSelector((state) => state.like?.isLiked);
     const syncLikes = useSelector((state) => state.like?.syncLikes)
+    const currentVideoId = useSelector((state)=>state.like?.currentVideoId)
 
     useEffect(()=>{
         setIsLiked(data?.is_liked);
@@ -31,17 +32,17 @@ function Likes({ data, width, height, horizontal = false, noneBorder = false, sh
     },[data])
 
     useEffect(() => {
-        if(data?.id === videoContext.videoID) {
+        if(data?.id === currentVideoId) {
             if(syncLikes){
                 setIsLiked(isChangeStateLike);
                 isChangeStateLike ? setLikeCounts((prev)=> prev + 1) : setLikeCounts((prev)=> prev - 1);
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isChangeStateLike,videoContext.videoID]);
+    }, [isChangeStateLike, currentVideoId]);
 
     const stateLikeVideo = () => {
-        videoContext.handleSetVideoID(data.id)
+        dispatch(handleCurrentVideoId(data.id))
         if (isLiked) {
             //unliked
             setIsLiked(false);
