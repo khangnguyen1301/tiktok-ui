@@ -8,11 +8,11 @@ import Button from '../Button';
 import * as followService from '~/services/followService';
 import { useState } from 'react';
 
-import { handleRequestFollow, handleRequestUnFollow, handleCurrentVideoId } from '~/redux/followSlice';
+import { handleRequestFollow, handleRequestUnFollow, handleCurrentVideoId, handleResetStateFollow } from '~/redux/followSlice';
 
 const cx = classNames.bind(styles);
 
-function Follow({ className, primary = false, outline = true, userID, videoID, isFollow }) {
+function Follow({ className, primary = false, outline = true, userID, isFollow }) {
     const [isFollowed, setIsFollowed] = useState(isFollow);
     const dispatch = useDispatch();
     const { isChangeFollow, stateFollow, synchronizedFollow, currentUserId } = useSelector((state) => state.follow);
@@ -25,7 +25,7 @@ function Follow({ className, primary = false, outline = true, userID, videoID, i
         if (userID === currentUserId) {
             synchronizedFollow && setIsFollowed(stateFollow);
         }
-    }, [isChangeFollow]);
+    }, [isChangeFollow, currentUserId]);
 
     const stateFollowUser = () => {
         dispatch(handleCurrentVideoId(userID));
@@ -34,6 +34,7 @@ function Follow({ className, primary = false, outline = true, userID, videoID, i
                 setIsFollowed(true);
                 dispatch(handleRequestFollow());
                 await followService.followUser({ userID });
+                dispatch(handleResetStateFollow())
             };
             follow();
         } else {
@@ -41,6 +42,7 @@ function Follow({ className, primary = false, outline = true, userID, videoID, i
                 setIsFollowed(false);
                 dispatch(handleRequestUnFollow());
                 await followService.unFollowUser({ userID });
+                dispatch(handleResetStateFollow())
             };
             unFollow();
         }

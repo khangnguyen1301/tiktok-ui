@@ -78,7 +78,16 @@ function Sidebar({ className }) {
     const sideBarRef = useRef();
 
     const isLogin = useSelector((state) => state.auth.login?.isLogin) || false;
-    const isUpdateFollowing = useSelector((state) => state.follow.isChangeFollow);
+    const {isChangeFollow, currentUserId} = useSelector((state) => state.follow);
+
+    useEffect(()=>{
+        const getSuggestAccount = async () => {
+            const data = await userService.getSuggested({ page: 1, perPage: DEFAULT_PERPAGE });
+            setSuggestedUsers(data);
+        };
+        getSuggestAccount();
+    },[])
+
     useEffect(() => {
         if (isLogin) {
             const getFollowAccount = async () => {
@@ -87,12 +96,8 @@ function Sidebar({ className }) {
             };
             getFollowAccount();
         }
-        const getSuggestAccount = async () => {
-            const data = await userService.getSuggested({ page: 1, perPage: DEFAULT_PERPAGE });
-            setSuggestedUsers(data);
-        };
-        getSuggestAccount();
-    }, [isLogin, isUpdateFollowing]);
+      
+    }, [isLogin, isChangeFollow, currentUserId]);
     return (
         <aside className={cx('wrapper', className)} ref={sideBarRef}>
             <Menu>
