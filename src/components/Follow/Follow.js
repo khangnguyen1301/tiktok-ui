@@ -34,7 +34,6 @@ function Follow({ className, primary = false, outline = true, userID, isFollow }
                 setIsFollowed(true);
                 dispatch(handleRequestFollow());
                 await followService.followUser({ userID });
-                dispatch(handleResetStateFollow())
             };
             follow();
         } else {
@@ -42,7 +41,6 @@ function Follow({ className, primary = false, outline = true, userID, isFollow }
                 setIsFollowed(false);
                 dispatch(handleRequestUnFollow());
                 await followService.unFollowUser({ userID });
-                dispatch(handleResetStateFollow())
             };
             unFollow();
         }

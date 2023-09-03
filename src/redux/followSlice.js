@@ -10,12 +10,12 @@ const followSlice = createSlice({
     },
     reducers: {
         handleRequestFollow: (state) => {
-            state.isChangeFollow = true;
+            state.isChangeFollow = !state.isChangeFollow;
             state.stateFollow = true;
             state.synchronizedFollow = true;
         },
         handleRequestUnFollow: (state) => {
-            state.isChangeFollow = true;
+            state.isChangeFollow = !state.isChangeFollow;
             state.stateFollow = false;
             state.synchronizedFollow = true;
         },
