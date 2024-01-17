@@ -65,7 +65,7 @@ function VideoList({ data }) {
         if (e.keyCode === ARROW_DOWN) {
             e.preventDefault();
             setTimeout(() => {
-                setPositionCurrentElement((prev) => prev + 1);
+                setPositionCurrentElement((prev) => prev + 1)
                 setKeyDown(true);
             }, 200);
         }
