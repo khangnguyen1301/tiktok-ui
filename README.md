@@ -471,12 +471,6 @@ We welcome all contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for
 
 This project is distributed under the MIT License. See [LICENSE](LICENSE) file for more details.
 
-## 📞 Contact
-
--   **Email**: your.email@example.com
--   **LinkedIn**: [Your LinkedIn](https://linkedin.com/in/your-profile)
--   **GitHub**: [@your-username](https://github.com/your-username)
-
 ## 🙏 Acknowledgments
 
 -   [TikTok](https://tiktok.com) - Inspiration for UI/UX design
